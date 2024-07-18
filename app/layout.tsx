@@ -1,12 +1,14 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'PLSG Dashboard',
-  description: 'This is admin dashboard for plateau state',
+  title: "PLSG Dashboard",
+  description: "This is admin dashboard for plateau state",
 };
 
 export default function RootLayout({
@@ -15,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html className={`${GeistSans.variable} ${GeistMono.variable}`} lang="en">
       <body className={inter.className}>{children}</body>
     </html>
   );
