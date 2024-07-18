@@ -1,18 +1,35 @@
-import React from 'react';
+"use client";
 
-import Link from 'next/link';
+import React, { useEffect, useState } from "react";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type SideBarItemProps = {
   link: string;
   title: string;
   icon: React.ReactNode;
+  logout?: boolean;
 };
 
-const SideBarItem = ({ link, title, icon }: SideBarItemProps) => {
+const SideBarItem = ({ link, title, icon, logout }: SideBarItemProps) => {
+  const pathname = usePathname();
+  const [activeTab, setActiveTab] = useState("Dashboard") as any;
+
   return (
-    <Link href={link}>
-      <div className='flex w-full px-4 gap-3 border-r-4 border-green-500 py-2 font-medium'>
-        {icon}
+    <Link href={link} onClick={() => setActiveTab(link)}>
+      <div
+        className={`transition-fx flex w-full px-4 gap-3  py-4 cursor-pointer font-medium hover:pl-8 ${
+          activeTab === pathname && `pl-8 border-r-4 border-main bg-green-100`
+        } ${
+          logout
+            ? ` border-r-4 border-red-500 hover:bg-red-100`
+            : `hover:bg-green-100`
+        }`}
+      >
+        <span className={`${logout ? ` text-red-500` : `text-main`}`}>
+          {icon}
+        </span>
         {title}
       </div>
     </Link>
