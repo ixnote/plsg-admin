@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,11 +18,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+  email: z.string().email({
+    message: 'Valid email is require.',
   }),
-  password: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+  password: z.string().min(8, {
+    message: 'Valid password is required minimun 8 characters.',
   }),
 });
 
