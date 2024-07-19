@@ -1,5 +1,5 @@
 import { setCookie, deleteCookie } from 'cookies-next';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { authApi } from '@/redux/services/auth/auth-api';
 // store/auth.ts
 const setAuthCookie = (token: string, name: string) => {
@@ -17,6 +17,7 @@ const setAuthCookie = (token: string, name: string) => {
 
 type LoginResponse = {
   token: string | null;
+  refreshToken: string | null;
   user: any;
 };
 
@@ -32,6 +33,12 @@ export const authSlice = createSlice({
       state.user = null;
       return {};
     },
+
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    setTokens: (state, action: PayloadAction<any>) => {
+      state.token = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -39,13 +46,17 @@ export const authSlice = createSlice({
         authApi.endpoints.login.matchFulfilled,
         (_state, { payload }) => {
           // set the token in the cookies
-          setAuthCookie(payload.data.tokens.accessToken, 'auth_token');
 
-          _state.user = payload.data;
+          setAuthCookie(payload.data.tokens.accessToken, 'auth_token');
+          setAuthCookie(payload.data.tokens.refreshToken, 'refresh_auth_token');
+
+          _state.token = payload.data.tokens.accessToken;
+          _state.refreshToken = payload.data.tokens.refreshToken;
 
           // "mutation" also works
           // state = payload;
-          return payload;
+          console.log(payload, 'from slice');
+          // return payload;
         }
       )
       .addMatcher(
@@ -60,5 +71,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setTokens } = authSlice.actions;
 export default authSlice.reducer;

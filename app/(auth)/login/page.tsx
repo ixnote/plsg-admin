@@ -47,11 +47,13 @@ const Login = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const result = await login(values).unwrap();
-      console.log(result);
+      console.log(result, 'from login');
 
-      showToast('success', <p>{result?.message}</p>);
+      showToast('success', <p>Login was successful</p>);
       push('/dashboard');
     } catch (error: any) {
+      console.log(error);
+
       showToast('error', <p>{error.data.message}</p>);
     }
   }

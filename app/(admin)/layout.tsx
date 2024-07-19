@@ -11,7 +11,7 @@ export default function AdminLayout({
     <AuthWrapper>
       <div className='flex h-screen w-full'>
         <SideNavBar />
-        <div className='flex flex-col w-full'>
+        <div className='flex flex-col w-full relative'>
           <NavBar />
           <div className='mt-[80px] w-full p-4 overflow-y-auto'>{children}</div>
         </div>

@@ -7,7 +7,8 @@ import {
 } from './router/routes';
 
 export function middleware(request: NextRequest) {
-  //   const currentUser = request.cookies.get('auth_token')?.value;
+  const currentUser = request.cookies.get('auth_token')?.value;
+  console.log(currentUser);
 
   //   if (
   //     protectedAdminRoutes.includes(request.nextUrl.pathname) ||
@@ -18,9 +19,9 @@ export function middleware(request: NextRequest) {
   //     return response;
   //   }
 
-  //   if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
-  //     return NextResponse.redirect(new URL('/', request.url));
-  //   }
+  if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }

@@ -30,7 +30,7 @@ export const authApi = createApi({
     }),
     getAuthData: builder.query<any, { token: string }>({
       query: ({ token }) => ({
-        url: '/users/profile',
+        url: '/auth/profile',
         // this is the default but I'm leaving it here for reference
         method: 'GET',
         headers: {
