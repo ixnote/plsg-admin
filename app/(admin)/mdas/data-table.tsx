@@ -66,14 +66,14 @@ export function DataTable<TData, TValue>({
     <div className=" flex flex-col gap-4 w-full">
       <div className="flex w-full justify-between">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter names..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <Button>Create News</Button>
+        <Button>Create MDA</Button>
       </div>
       <div className="rounded-md border w-full">
         {isLoading ? (
