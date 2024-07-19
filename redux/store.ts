@@ -5,12 +5,14 @@ import authReducer from './features/auth/auth-slice';
 import { authApi } from './services/auth/auth-api';
 import { roleApi } from './services/roles/role-api';
 import { userApi } from './services/users/user-api';
+import { newsApi } from './services/news/news-api';
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [roleApi.reducerPath]: roleApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [newsApi.reducerPath]: newsApi.reducer,
     dashboard: dashboardReducer,
     auth: authReducer,
   },
@@ -19,6 +21,7 @@ export const store = configureStore({
       authApi.middleware,
       roleApi.middleware,
       userApi.middleware,
+      newsApi.middleware,
     ]),
   devTools: true,
 });
