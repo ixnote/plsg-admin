@@ -8,6 +8,7 @@ export const newsApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
+      //   const { token } = getValidAuthTokens();
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
@@ -20,7 +21,7 @@ export const newsApi = createApi({
     createNews: builder.mutation<any, any>({
       query: (body) => {
         return {
-          url: '/news',
+          url: '/news/add',
           method: 'POST',
           body: body,
         };

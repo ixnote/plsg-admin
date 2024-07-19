@@ -12,15 +12,13 @@ const getAuthCookie = (name: string) => {
 
 export const getValidAuthTokens = () => {
   const token = getAuthCookie('auth_token');
-  console.log(token, 'get valid');
+  const refreshToken = getAuthCookie('refresh_auth_token');
 
-  // const now = new Date();
-  // const tokenDate = new Date(token || 0);
+  const now = new Date();
+  const tokenDate = new Date(token || 0);
 
-  // return {
-  //   token: now < tokenDate ? token : undefined,
-  // };
   return {
-    token,
+    token: token,
+    refreshToken: refreshToken,
   };
 };
