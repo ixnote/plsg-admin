@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ShieldBan } from 'lucide-react';
+import AddNewsTitleDialog from '../components/AddNewsTitleDialog';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,7 +74,7 @@ export function DataTable<TData, TValue>({
           }
           className='max-w-sm'
         />
-        <Button>Create ews</Button>
+        <AddNewsTitleDialog />
       </div>
       <div className='rounded-md border w-full'>
         {isLoading ? (
