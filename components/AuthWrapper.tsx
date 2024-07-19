@@ -29,6 +29,7 @@ export const AuthWrapper = ({ children }: Props) => {
 
   // if the user doesnt have a valid token, redirect to login page
   useEffect(() => {
+    console.log(error);
     if (!token && !refreshToken) {
       push('/login');
       // will explain this in a moment
@@ -36,6 +37,7 @@ export const AuthWrapper = ({ children }: Props) => {
     } else if (!error) {
       dispatch(setTokens({ token, refreshToken }));
     } else {
+      dispatch(logout());
       push('/login');
     }
   }, [token, push, dispatch, refreshToken, error]);
