@@ -11,15 +11,30 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
+import { showToast } from '@/lib/showToast';
 import Loader from './Loader';
 
-const AddNewsTitleDialog = ({ title = 'Add News' }: { title?: string }) => {
+import { useCreateNewsMutation } from '@/redux/services/news/news-api';
+
+const AddNewsTitleDialog = ({ title = 'Create News' }: { title?: string }) => {
+  const { push } = useRouter();
   const [inputValue, setInputValue] = useState<string>('New News Caption');
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [createNews, { data, isError, isLoading, isSuccess }] =
+    useCreateNewsMutation();
 
   const router = useRouter();
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      const result = await createNews({ header: inputValue }).unwrap();
+      console.log(result);
+      showToast('success', <p>{result?.message}</p>);
+      push(`/news/1`);
+    } catch (error: any) {
+      showToast('error', <p>{error.data.message}</p>);
+    }
+  };
 
   return (
     <Dialog>
@@ -45,7 +60,7 @@ const AddNewsTitleDialog = ({ title = 'Add News' }: { title?: string }) => {
             disabled={inputValue === '' || inputValue.length < 6}
             onClick={handleSubmit}
           >
-            {isLoading ? <Loader /> : 'Add News'}
+            {isLoading ? <Loader /> : 'Create News'}
           </Button>
         </DialogFooter>
       </DialogContent>

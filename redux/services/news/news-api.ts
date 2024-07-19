@@ -20,7 +20,7 @@ export const newsApi = createApi({
     createNews: builder.mutation<any, any>({
       query: (body) => {
         return {
-          url: '/news',
+          url: '/news/add',
           method: 'POST',
           body: body,
         };
