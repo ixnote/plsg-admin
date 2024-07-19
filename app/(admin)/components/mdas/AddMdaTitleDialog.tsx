@@ -23,16 +23,14 @@ const AddMdaTitleDialog = ({ title = "Create MDA" }: { title?: string }) => {
   const [createMda, { data, isError, isLoading, isSuccess }] =
     useCreateMdaMutation();
 
-  const router = useRouter();
-
   const handleSubmit = async () => {
     try {
       console.log("🚀 ~ AddMdaTitleDialog ~ inputValue:", inputValue);
 
-      const result = await createMda({ header: inputValue }).unwrap();
+      const result = await createMda({ name: inputValue }).unwrap();
       console.log(result);
       showToast("success", <p>{result?.message}</p>);
-      push(`/mdas/1`);
+      push(`/mdas/${result?.data?.id || "1"}`);
     } catch (error: any) {
       showToast("error", <p>{error.data.message}</p>);
     }
@@ -53,7 +51,7 @@ const AddMdaTitleDialog = ({ title = "Create MDA" }: { title?: string }) => {
             className="w-full"
             type="text"
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value.toString())}
+            onChange={(e) => setInputValue(e.target.value.toString() as string)}
           />
         </div>
         <DialogFooter>
