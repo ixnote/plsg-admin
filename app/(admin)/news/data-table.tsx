@@ -1,5 +1,5 @@
-'use client';
-import * as React from 'react';
+"use client";
+import * as React from "react";
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,11 +19,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from '@tanstack/react-table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ShieldBan } from 'lucide-react';
-import AddNewsTitleDialog from '../components/AddNewsTitleDialog';
+} from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ShieldBan } from "lucide-react";
+import AddNewsTitleDialog from "../components/news/AddNewsTitleDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -64,21 +64,21 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className=' flex flex-col gap-4 w-full'>
-      <div className='flex w-full justify-between'>
+    <div className=" flex flex-col gap-4 w-full">
+      <div className="flex w-full justify-between">
         <Input
-          placeholder='Filter emails...'
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className="max-w-sm"
         />
         <AddNewsTitleDialog />
       </div>
-      <div className='rounded-md border w-full'>
+      <div className="rounded-md border w-full">
         {isLoading ? (
-          <h1 className='p-4 rounded-lg'>Data is loading....</h1>
+          <h1 className="p-4 rounded-lg">Data is loading....</h1>
         ) : (
           <Table>
             <TableHeader>
@@ -104,7 +104,7 @@ export function DataTable<TData, TValue>({
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
+                    data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -120,7 +120,7 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className='h-24 text-center text-2xl'
+                    className="h-24 text-center text-2xl"
                   >
                     No results.
                   </TableCell>
