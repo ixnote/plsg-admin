@@ -49,7 +49,7 @@ const Login = () => {
       console.log(result);
 
       showToast('success', <p>{result?.message}</p>);
-      push('/');
+      push('/dashboard');
     } catch (error: any) {
       showToast('error', <p>{error.data.message}</p>);
     }
