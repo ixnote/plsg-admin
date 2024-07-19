@@ -17,7 +17,6 @@ export const AuthWrapper = ({ children }: Props) => {
   const { push } = useRouter();
 
   const { token, refreshToken } = getValidAuthTokens();
-  console.log(token, 'auth wrapper');
 
   // this query will only execute if the token is valid and the user email is not already in the redux store
   const { error, isLoading } = useGetAuthDataQuery(
@@ -30,20 +29,16 @@ export const AuthWrapper = ({ children }: Props) => {
 
   // if the user doesnt have a valid token, redirect to login page
   useEffect(() => {
-    if (!token && !refreshToken && error) {
+    if (!token && !refreshToken) {
       push('/login');
       // will explain this in a moment
       dispatch(logout());
-    } else {
+    } else if (!error) {
       dispatch(setTokens({ token, refreshToken }));
-    }
-  }, [token, push, dispatch, refreshToken, error]);
-
-  useEffect(() => {
-    if (error) {
+    } else {
       push('/login');
     }
-  }, [error, push]);
+  }, [token, push, dispatch, refreshToken, error]);
 
   // optional: show a loading indicator while the query is loading
   //   if (isLoading) {
