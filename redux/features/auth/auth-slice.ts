@@ -29,9 +29,9 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       deleteCookie('auth_token');
+      deleteCookie('auth_token');
       state.token = null;
       state.user = null;
-      return {};
     },
 
     // Use the PayloadAction type to declare the contents of `action.payload`
@@ -55,7 +55,7 @@ export const authSlice = createSlice({
 
           // "mutation" also works
           // state = payload;
-          console.log(payload, 'from slice');
+
           // return payload;
         }
       )
@@ -64,7 +64,6 @@ export const authSlice = createSlice({
         (_state, { payload }) => {
           // in case we receive a new token when refetching the details
           // setAuthCookie(payload.token, 'auth_token');
-          console.log(payload, 'fullfiled');
           _state.user = payload.data;
         }
       );

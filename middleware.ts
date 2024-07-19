@@ -8,7 +8,6 @@ import {
 
 export function middleware(request: NextRequest) {
   const currentUser = request.cookies.get('auth_token')?.value;
-  console.log(currentUser);
 
   //   if (
   //     protectedAdminRoutes.includes(request.nextUrl.pathname) ||
