@@ -1,47 +1,48 @@
-import { getValidAuthTokens } from "@/lib/cookies";
-import { RootState } from "@/redux/store";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getValidAuthTokens } from '@/lib/cookies';
+import { RootState } from '@/redux/store';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const mdasApi = createApi({
-  reducerPath: "mdasApi",
+  reducerPath: 'mdasApi',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
+      // const token = (getState() as RootState).auth.token;
+      const { token } = getValidAuthTokens();
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
-        headers.set("authorization", `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ["Mdas"],
+  tagTypes: ['Mdas'],
   endpoints: (builder) => ({
     createMda: builder.mutation<any, any>({
       query: (body) => {
         return {
-          url: "/mda/add",
-          method: "POST",
+          url: '/mda/add',
+          method: 'POST',
           body: body,
         };
       },
-      invalidatesTags: ["Mdas"],
+      invalidatesTags: ['Mdas'],
     }),
 
     getAllMdas: builder.query<any, void>({
       query: () => ({
-        url: "/mda",
-        method: "GET",
+        url: '/mda',
+        method: 'GET',
       }),
-      providesTags: ["Mdas"],
+      providesTags: ['Mdas'],
     }),
 
     getOneMda: builder.query<any, any>({
       query: (id) => ({
         url: `/mda/single/${id}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["Mdas"],
+      providesTags: ['Mdas'],
     }),
   }),
 });
