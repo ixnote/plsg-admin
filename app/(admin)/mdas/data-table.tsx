@@ -19,18 +19,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-<<<<<<< HEAD
-} from '@tanstack/react-table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ShieldBan } from 'lucide-react';
-import AddNewsTitleDialog from '../components/AddNewsTitleDialog';
-=======
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ShieldBan } from "lucide-react";
->>>>>>> 7d8a4375a554c4eace11874c6196f9fc824e83c0
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -74,14 +66,14 @@ export function DataTable<TData, TValue>({
     <div className=" flex flex-col gap-4 w-full">
       <div className="flex w-full justify-between">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter names..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <AddNewsTitleDialog />
+        <Button>Create MDA</Button>
       </div>
       <div className="rounded-md border w-full">
         {isLoading ? (
