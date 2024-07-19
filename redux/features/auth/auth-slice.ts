@@ -16,8 +16,6 @@ const setAuthCookie = (token: string, name: string) => {
 };
 
 type LoginResponse = {
-  token: string | null;
-  refreshToken: string | null;
   user: any;
 };
 
@@ -29,15 +27,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       deleteCookie('auth_token');
-      deleteCookie('auth_token');
-      state.token = null;
-      state.user = null;
-    },
-
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    setTokens: (state, action: PayloadAction<any>) => {
-      state.token = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      deleteCookie('refresh_auth_token');
     },
   },
   extraReducers: (builder) => {
@@ -49,9 +39,6 @@ export const authSlice = createSlice({
 
           setAuthCookie(payload.data.tokens.accessToken, 'auth_token');
           setAuthCookie(payload.data.tokens.refreshToken, 'refresh_auth_token');
-
-          _state.token = payload.data.tokens.accessToken;
-          _state.refreshToken = payload.data.tokens.refreshToken;
 
           // "mutation" also works
           // state = payload;
@@ -70,5 +57,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setTokens } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

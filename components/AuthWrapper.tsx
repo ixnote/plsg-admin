@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { getValidAuthTokens } from '@/lib/cookies';
 import { useEffect } from 'react';
-import { logout, setTokens } from '@/redux/features/auth/auth-slice';
+import { logout } from '@/redux/features/auth/auth-slice';
 import { RootState } from '@/redux/store';
 import { useGetAuthDataQuery } from '@/redux/services/auth/auth-api';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
@@ -28,24 +28,19 @@ export const AuthWrapper = ({ children }: Props) => {
   );
 
   // if the user doesnt have a valid token, redirect to login page
+
   useEffect(() => {
-    console.log(error);
-    if (!token && !refreshToken) {
+    if (!token) {
       push('/login');
       // will explain this in a moment
       dispatch(logout());
-    } else if (!error) {
-      dispatch(setTokens({ token, refreshToken }));
-    } else {
-      dispatch(logout());
-      push('/login');
     }
-  }, [token, push, dispatch, refreshToken, error]);
+  }, [token, push]);
 
   // optional: show a loading indicator while the query is loading
-  //   if (isLoading) {
-  //     return <div>Loading...</div>;
-  //   }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return children;
 };
