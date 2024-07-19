@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ShieldBan } from "lucide-react";
+import AddMdaTitleDialog from "../components/mdas/AddMdaTitleDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -73,7 +74,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Button>Create MDA</Button>
+        <AddMdaTitleDialog />
       </div>
       <div className="rounded-md border w-full">
         {isLoading ? (
