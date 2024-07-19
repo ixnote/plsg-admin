@@ -8,12 +8,37 @@ const MDAs = () => {
   const [mdas, setMdas] = useState([]);
 
   const { data, isLoading } = useGetAllMdasQuery();
+  console.log("🚀 ~ MDAs ~ data:", data);
 
-  console.log(data);
+  // console.log(
+  //   data.data?.mdas.map((item: any) => {
+  //     return {
+  //       id: item?.id,
+  //       name: item?.name,
+  //       director: item?.director?.name,
+  //       location: item?.contact?.location,
+  //       phone: item?.contact?.phone_number,
+  //       email: item?.contact?.email,
+  //       status: item?.published ? "Published" : "Draft",
+  //     };
+  //   })
+  // );
 
   useEffect(() => {
     if (data) {
-      setMdas(data);
+      setMdas(
+        data?.data?.mdas.map((item: any) => {
+          return {
+            id: item?.id,
+            name: item?.name,
+            director: item?.director?.name || "No director provided",
+            location: item?.contact?.location || "No contact provided",
+            phone: item?.contact?.phone_number || "No phone number provided",
+            email: item?.contact?.email || "No email provided",
+            status: item?.published ? "Published" : "Draft",
+          };
+        })
+      );
     }
   }, [mdas, data]);
 
