@@ -7,9 +7,16 @@ import NewsInfoSection from '../../components/news/NewsInfoSection';
 import SectionInfoSection from '../../components/news/SectionInfoSection';
 import { Button } from '@/components/ui/button';
 import Loader from '../../components/Loader';
+import { useGetAllTagsQuery } from '@/redux/services/tags/tags-api';
+
 const UpdateNews = () => {
   const params = useParams();
   const router = useRouter();
+  const {
+    data: tags,
+    error: tagsError,
+    isLoading: tagsIsLoading,
+  } = useGetAllTagsQuery();
 
   const { data, error, isLoading } = useGetOneNewsQuery(
     { id: params.id },
@@ -22,7 +29,6 @@ const UpdateNews = () => {
     router.back();
   };
 
-  // return <div>{data && <div>{data.data.headline}</div>}</div>;
   return (
     <div className='flex w-full h-full p-6'>
       {isLoading ? (
@@ -44,7 +50,7 @@ const UpdateNews = () => {
             <div className='flex gap-3'>
               <Button
                 onClick={() => {
-                  window.open(`/dynamic-route/${data?.data.id}`, '_blank');
+                  window.open(`/preview/${data?.data.id}`, '_blank');
                 }}
               >
                 Preview
@@ -54,7 +60,7 @@ const UpdateNews = () => {
           </div>
 
           <div className='flex w-full gap-3'>
-            <NewsInfoSection data={data} />
+            <NewsInfoSection data={data} tags={tags} />
             <SectionInfoSection data={data} />
           </div>
         </div>

@@ -33,8 +33,9 @@ const formSchema = z.object({
 
 type NewsInfoSectionProps = {
   data: any;
+  tags: any;
 };
-const NewsInfoSection = ({ data }: NewsInfoSectionProps) => {
+const NewsInfoSection = ({ data, tags }: NewsInfoSectionProps) => {
   const [updateNews, { isError, isLoading, isSuccess }] =
     useUpdateNewsMutation();
 
@@ -43,7 +44,7 @@ const NewsInfoSection = ({ data }: NewsInfoSectionProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       headline: data?.data.headline ?? '',
-      tags: data?.data.tags ?? [],
+      tags: data?.data.tags.map((tag: any) => tag.id) ?? [],
       image: data?.data?.image ?? '',
     },
   });
@@ -59,7 +60,7 @@ const NewsInfoSection = ({ data }: NewsInfoSectionProps) => {
     }
   }
   return (
-    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10'>
+    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit'>
       <h1 className='font-semibold tracking-tight text-xl'>News Information</h1>
       <div className='w-full '>
         <Form {...form}>
@@ -90,32 +91,15 @@ const NewsInfoSection = ({ data }: NewsInfoSectionProps) => {
                         type='multiple'
                         defaultValue={field.value}
                         onValueChange={(v) => {
-                          console.log(v);
-
                           field.onChange(v);
                         }}
                         className='flex w-full justify-start flex-wrap'
                       >
-                        <ToggleGroupItem value='Governace'>
-                          Governace
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value='Politics'>
-                          Politics
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value='Technology'>
-                          Technology
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value='Agriculture'>
-                          Agriculture
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value='Entertainment'>
-                          Entertainment
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value='Crime'>Crime</ToggleGroupItem>
-                        <ToggleGroupItem value='Sport'>Sport</ToggleGroupItem>
-                        <ToggleGroupItem value='Religion'>
-                          Religion
-                        </ToggleGroupItem>
+                        {tags.data.map((tag: any, index: number) => (
+                          <ToggleGroupItem value={tag.id} key={index}>
+                            {tag.name}
+                          </ToggleGroupItem>
+                        ))}
                       </ToggleGroup>
                     </div>
                   </FormControl>
