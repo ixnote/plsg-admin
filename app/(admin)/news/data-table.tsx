@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import { ShieldBan } from 'lucide-react';
 import AddNewsTitleDialog from '../components/news/AddNewsTitleDialog';
 import { useRouter } from 'next/navigation';
+import Loader from '../components/Loader';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -82,7 +83,9 @@ export function DataTable<TData, TValue>({
       </div>
       <div className='rounded-md border w-full'>
         {isLoading ? (
-          <h1 className='p-4 rounded-lg'>Data is loading....</h1>
+          <div className='flex w-full min-h-screen pt-52 justify-center'>
+            <Loader />
+          </div>
         ) : (
           <Table>
             <TableHeader>

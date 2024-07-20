@@ -94,7 +94,7 @@ const NewsInfoSection = ({ data }: NewsInfoSectionProps) => {
 
                           field.onChange(v);
                         }}
-                        className='flex w-full flex-wrap'
+                        className='flex w-full justify-start flex-wrap'
                       >
                         <ToggleGroupItem value='Governace'>
                           Governace

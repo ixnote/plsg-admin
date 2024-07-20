@@ -37,7 +37,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
   };
 
   return (
-    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10'>
+    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10 h-fit'>
       <h1 className='font-semibold tracking-tight text-xl'>
         Section Information
       </h1>
