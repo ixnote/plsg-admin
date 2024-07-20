@@ -6,7 +6,7 @@ const setAuthCookie = (token: string, name: string) => {
   const toBase64 = Buffer.from(token).toString('base64');
 
   setCookie(name, toBase64, {
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 60 * 60,
     path: '/',
     // more security options here
     // sameSite: 'strict',
@@ -16,8 +16,6 @@ const setAuthCookie = (token: string, name: string) => {
 };
 
 type LoginResponse = {
-  token: string | null;
-  refreshToken: string | null;
   user: any;
 };
 
@@ -29,15 +27,8 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       deleteCookie('auth_token');
-      deleteCookie('auth_token');
-      state.token = null;
-      state.user = null;
-    },
-
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    setTokens: (state, action: PayloadAction<any>) => {
-      state.token = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      deleteCookie('refresh_auth_token');
+      deleteCookie('user');
     },
   },
   extraReducers: (builder) => {
@@ -50,9 +41,6 @@ export const authSlice = createSlice({
           setAuthCookie(payload.data.tokens.accessToken, 'auth_token');
           setAuthCookie(payload.data.tokens.refreshToken, 'refresh_auth_token');
 
-          _state.token = payload.data.tokens.accessToken;
-          _state.refreshToken = payload.data.tokens.refreshToken;
-
           // "mutation" also works
           // state = payload;
 
@@ -63,12 +51,14 @@ export const authSlice = createSlice({
         authApi.endpoints.getAuthData.matchFulfilled,
         (_state, { payload }) => {
           // in case we receive a new token when refetching the details
-          // setAuthCookie(payload.token, 'auth_token');
+          console.log(payload);
+
+          setAuthCookie(JSON.stringify(payload.data), 'user');
           _state.user = payload.data;
         }
       );
   },
 });
 
-export const { logout, setTokens } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;
