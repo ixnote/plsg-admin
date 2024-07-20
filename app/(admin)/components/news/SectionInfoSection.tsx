@@ -8,14 +8,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { PlusCircle, Trash2Icon } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 type SectionInfoSectionProps = {
   data: any;
 };
 
 const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
-  const [section, setSection] = useState<{ type: string; value: string }[]>([]);
+  const [sectionType, setSectionType] = useState<string[]>([]);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       fields: [{ type: '', value: '' }],
@@ -51,9 +51,14 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                   control={control}
                   render={({ field }) => (
                     <Select
-                      onValueChange={() => {
-                        field.onChange(field.value);
-                        setSection([]);
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        console.log(value);
+                        setSectionType((arr) => {
+                          arr[index] = value;
+                          return arr;
+                        });
+                        console.log(sectionType);
                       }}
                       defaultValue={field.value}
                     >
@@ -68,15 +73,14 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                     </Select>
                   )}
                 />
-                {fields[index].type === 'Paragraph' && (
-                  <Controller
-                    name={`fields.${index}.value`}
-                    control={control}
-                    render={({ field }) => (
-                      <Input {...field} placeholder='Enter value' />
-                    )}
-                  />
-                )}
+
+                <Controller
+                  name={`fields.${index}.value`}
+                  control={control}
+                  render={({ field }) => (
+                    <Input {...field} placeholder='Enter value' />
+                  )}
+                />
               </div>
               <Button
                 type='button'
