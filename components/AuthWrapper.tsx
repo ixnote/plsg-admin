@@ -38,9 +38,9 @@ export const AuthWrapper = ({ children }: Props) => {
   }, [token, push]);
 
   // optional: show a loading indicator while the query is loading
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return children;
 };

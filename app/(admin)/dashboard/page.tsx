@@ -1,6 +1,5 @@
-import { Users } from 'lucide-react';
 import React from 'react';
-import StatCard from '../components/dashboard/statCard';
+import StatCard from '../components/dashboard/StatCard';
 
 const Dashboard = () => {
   return (
