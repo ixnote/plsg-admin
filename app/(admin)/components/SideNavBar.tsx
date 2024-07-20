@@ -71,8 +71,8 @@ const SideNavBar = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
 
   const handleLogout = () => {
-    push('/login');
     dispatch(logout());
+    window.location.reload();
   };
 
   const navBar = user?.role === 'super' ? navItemsSuperAdmin : navItemsMdaAdmin;
@@ -96,20 +96,6 @@ const SideNavBar = () => {
                 icon={nav.icon}
               />
             ))}
-            {/* <SideBarItem
-              title='MDAs'
-              link='/mdas'
-              icon={<BriefcaseBusiness />}
-            />
-            <SideBarItem title='News' link='/news' icon={<Newspaper />} />
-            <SideBarItem title='Users' link='/users' icon={<UsersRound />} />
-            <SideBarItem
-              title='Resources'
-              link='/resources'
-              icon={<SquareLibrary />}
-            />
-            {/* <SideBarItem title="Teams" link="/teams" icon={<Handshake />} /> */}
-            {/* <SideBarItem title='Settings' link='/settings' icon={<Cog />} /> */}
           </div>
         </div>
         <span

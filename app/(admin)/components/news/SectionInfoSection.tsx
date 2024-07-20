@@ -1,15 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CldUploadWidget } from 'next-cloudinary';
+import Image from 'next/image';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { PlusCircle, Trash2Icon } from 'lucide-react';
+  ALargeSmall,
+  FileVideo,
+  Heading1,
+  Heading2,
+  Highlighter,
+  ImageIcon,
+  LayoutPanelTop,
+  ListOrdered,
+  Pilcrow,
+  Trash2Icon,
+  UploadCloud,
+} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import SectionBtn from './SectionBtn';
+
 type SectionInfoSectionProps = {
   data: any;
 };
@@ -27,8 +36,8 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     name: 'fields',
   });
 
-  const handleAddSection = () => {
-    const section = { type: '', value: '' };
+  const handleAddSection = (type: string) => {
+    const section = { type: type, value: '' };
     append(section);
   };
 
@@ -46,41 +55,67 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
           {fields.map((field, index) => (
             <div key={field.id} className='flex w-full gap-3 items-center'>
               <div className='flex flex-col w-full gap-2'>
-                <Controller
-                  name={`fields.${index}.type`}
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        console.log(value);
-                        setSectionType((arr) => {
-                          arr[index] = value;
-                          return arr;
-                        });
-                        console.log(sectionType);
-                      }}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select type' />
-                      </SelectTrigger>
-
-                      <SelectContent>
-                        <SelectItem value='Paragraph'>Paragraph</SelectItem>
-                        <SelectItem value='Image'>Image</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-
-                <Controller
-                  name={`fields.${index}.value`}
-                  control={control}
-                  render={({ field }) => (
-                    <Input {...field} placeholder='Enter value' />
-                  )}
-                />
+                {fields[index].type === 'Paragraph' && (
+                  <Controller
+                    name={`fields.${index}.value`}
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder='Type your Paragraph content here'
+                      />
+                    )}
+                  />
+                )}
+                {fields[index].type === 'Bulletin' && (
+                  <Controller
+                    name={`fields.${index}.value`}
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder='Type your bulletin seperated by comma'
+                      />
+                    )}
+                  />
+                )}
+                {fields[index].type === 'Image' && (
+                  <Controller
+                    name={`fields.${index}.value`}
+                    control={control}
+                    render={({ field }) => (
+                      <CldUploadWidget
+                        onSuccess={(result, { widget }) => {
+                          field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                          widget.close();
+                        }}
+                        uploadPreset='mymakaranta_preset'
+                      >
+                        {({ open }) => {
+                          function handleOnClick() {
+                            field.onChange(undefined);
+                            open();
+                          }
+                          return (
+                            <div
+                              onClick={handleOnClick}
+                              className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                            >
+                              {field.value === '' ? (
+                                <div className='flex flex-col justify-center items-center gap-2 '>
+                                  <UploadCloud />
+                                  <h1>Upload image</h1>
+                                </div>
+                              ) : (
+                                <Image src={field.value} alt='images' fill />
+                              )}
+                            </div>
+                          );
+                        }}
+                      </CldUploadWidget>
+                    )}
+                  />
+                )}
               </div>
               <Button
                 type='button'
@@ -91,12 +126,54 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
               </Button>
             </div>
           ))}
-          <div
-            className='flex flex-col gap-2 justify-center items-center p-6 w-full border-2 border-green-300 border-dashed rounded-lg  cursor-pointer'
-            onClick={handleAddSection}
-          >
-            <PlusCircle size={50} className=' text-gray-400' />
-            <h1 className=' text-gray-400'>Add Section</h1>
+          <div className='flex justify-between items-center p-3 w-full border-2 bg-slate-100 border-dashed rounded-lg'>
+            <SectionBtn
+              title='Add Paragraph'
+              icon={<Pilcrow />}
+              onClick={() => {
+                handleAddSection('Paragraph');
+              }}
+            />
+            <SectionBtn
+              title='Add Image'
+              icon={<ImageIcon />}
+              onClick={() => {
+                handleAddSection('Image');
+              }}
+            />
+            <SectionBtn
+              title='Add Bulletin'
+              icon={<ListOrdered />}
+              onClick={() => {
+                handleAddSection('Bulletin');
+              }}
+            />
+            <SectionBtn
+              title='Add Header'
+              icon={<Heading1 />}
+              onClick={() => {}}
+            />
+            <SectionBtn
+              title='Add Highlight'
+              icon={<Highlighter />}
+              onClick={() => {}}
+            />
+            {/* <SectionBtn title='Add Video' icon={<FileVideo />} onClick={()=>{}} /> */}
+            <SectionBtn
+              title='Add Text'
+              icon={<ALargeSmall />}
+              onClick={() => {}}
+            />
+            <SectionBtn
+              title='Add Sub Heading'
+              icon={<Heading2 />}
+              onClick={() => {}}
+            />
+            <SectionBtn
+              title='Add Section Heading'
+              icon={<LayoutPanelTop />}
+              onClick={() => {}}
+            />
           </div>
           <Button type='submit' className='w-full'>
             Submit

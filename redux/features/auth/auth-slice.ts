@@ -44,7 +44,7 @@ export const authSlice = createSlice({
           // "mutation" also works
           // state = payload;
 
-          // return payload;
+          return payload;
         }
       )
       .addMatcher(
