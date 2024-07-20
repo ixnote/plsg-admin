@@ -28,6 +28,7 @@ export const authApi = createApi({
         };
       },
     }),
+
     getAuthData: builder.query<any, { token: string }>({
       query: ({ token }) => ({
         url: "/auth/profile",

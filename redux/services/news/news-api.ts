@@ -7,11 +7,7 @@ export const newsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.token;
       const { token } = getValidAuthTokens();
-      // console.log(token, 'from news api');
-
-      //   const { token } = getValidAuthTokens();
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -32,16 +28,27 @@ export const newsApi = createApi({
       invalidatesTags: ['News'],
     }),
 
+    updateNews: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/news/update/${id}`,
+          method: 'PUT',
+          body: rest,
+        };
+      },
+      invalidatesTags: ['News'],
+    }),
+
     getAllNews: builder.query<any, void>({
       query: () => ({
-        url: '/news',
+        url: '/news/admin/articles',
         method: 'GET',
       }),
       providesTags: ['News'],
     }),
 
     getOneNews: builder.query<any, any>({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/news/${id}`,
         method: 'GET',
       }),
@@ -50,5 +57,9 @@ export const newsApi = createApi({
   }),
 });
 
-export const { useCreateNewsMutation, useGetAllNewsQuery, useGetOneNewsQuery } =
-  newsApi;
+export const {
+  useCreateNewsMutation,
+  useUpdateNewsMutation,
+  useGetAllNewsQuery,
+  useGetOneNewsQuery,
+} = newsApi;

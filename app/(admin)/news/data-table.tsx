@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,11 +19,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ShieldBan } from "lucide-react";
-import AddNewsTitleDialog from "../components/news/AddNewsTitleDialog";
+} from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ShieldBan } from 'lucide-react';
+import AddNewsTitleDialog from '../components/news/AddNewsTitleDialog';
+import { useRouter } from 'next/navigation';
+import Loader from '../components/Loader';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,6 +38,7 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
 }: DataTableProps<TData, TValue>) {
+  const { push } = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -64,21 +67,25 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className=" flex flex-col gap-4 w-full">
-      <div className="flex w-full justify-between">
+    <div className=' flex flex-col gap-4 w-full'>
+      <div className='flex w-full justify-between'>
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+          placeholder='Filter headline...'
+          value={
+            (table.getColumn('headline')?.getFilterValue() as string) ?? ''
           }
-          className="max-w-sm"
+          onChange={(event) =>
+            table.getColumn('headline')?.setFilterValue(event.target.value)
+          }
+          className='max-w-sm'
         />
         <AddNewsTitleDialog />
       </div>
-      <div className="rounded-md border w-full">
+      <div className='rounded-md border w-full'>
         {isLoading ? (
-          <h1 className="p-4 rounded-lg">Data is loading....</h1>
+          <div className='flex w-full min-h-screen pt-52 justify-center'>
+            <Loader />
+          </div>
         ) : (
           <Table>
             <TableHeader>
@@ -101,12 +108,16 @@ export function DataTable<TData, TValue>({
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+                table.getRowModel().rows.map((row: any) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
+                    data-state={row.getIsSelected() && 'selected'}
+                    onClick={() => {
+                      push(`/news/${(data[row.id] as any).id}`);
+                    }}
+                    className=' cursor-pointer'
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell: any) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -120,7 +131,7 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center text-2xl"
+                    className='h-24 text-center text-2xl'
                   >
                     No results.
                   </TableCell>

@@ -1,6 +1,7 @@
 'use client';
 import { useAppSelector } from '@/redux/hook';
 import { RootState } from '@/redux/store';
+import { User } from 'lucide-react';
 import React from 'react';
 
 const NavBar = () => {
@@ -17,7 +18,9 @@ const NavBar = () => {
             <h1 className='font-semibold'>{user?.email}</h1>
             <h1>{user?.role}</h1>
           </div>
-          <div className=' w-10 h-10 rounded-full bg-slate-400'></div>
+          <div className='flex items-center justify-center w-10 h-10 rounded-full bg-slate-200 border border-gray-400'>
+            <User />
+          </div>
         </div>
       </div>
     </div>

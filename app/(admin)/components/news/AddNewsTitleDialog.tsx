@@ -1,6 +1,6 @@
-"use client";
-import React, { useContext, useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useContext, useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,17 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import { showToast } from "@/lib/showToast";
-import Loader from "../Loader";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
+import { showToast } from '@/lib/showToast';
+import Loader from '../Loader';
 
-import { useCreateNewsMutation } from "@/redux/services/news/news-api";
+import { useCreateNewsMutation } from '@/redux/services/news/news-api';
 
-const AddNewsTitleDialog = ({ title = "Create News" }: { title?: string }) => {
+const AddNewsTitleDialog = ({ title = 'Create News' }: { title?: string }) => {
   const { push } = useRouter();
-  const [inputValue, setInputValue] = useState<string>("New News Caption");
+  const [inputValue, setInputValue] = useState<string>('New News Caption');
 
   const [createNews, { data, isError, isLoading, isSuccess }] =
     useCreateNewsMutation();
@@ -27,40 +27,40 @@ const AddNewsTitleDialog = ({ title = "Create News" }: { title?: string }) => {
 
   const handleSubmit = async () => {
     try {
-      const result = await createNews({ header: inputValue }).unwrap();
+      const result = await createNews({ headline: inputValue }).unwrap();
       console.log(result);
-      showToast("success", <p>{result?.message}</p>);
-      push(`/news/1`);
+      showToast('success', <p>{result?.message}</p>);
+      push(`/news/${result.data.id}`);
     } catch (error: any) {
-      showToast("error", <p>{error.data.message}</p>);
+      showToast('error', <p>{error.data.message}</p>);
     }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-fit">{title}</Button>
+        <Button className='w-full sm:w-fit'>{title}</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>News caption</DialogTitle>
         </DialogHeader>
-        <div className="flex w-full">
+        <div className='flex w-full'>
           <Input
-            placeholder="News Caption"
-            className="w-full"
-            type="text"
+            placeholder='News Caption'
+            className='w-full'
+            type='text'
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
         </div>
         <DialogFooter>
           <Button
-            type="submit"
-            disabled={inputValue === "" || inputValue.length < 6}
+            type='submit'
+            disabled={inputValue === '' || inputValue.length < 6}
             onClick={handleSubmit}
           >
-            {isLoading ? <Loader /> : "Create News"}
+            {isLoading ? <Loader /> : 'Create News'}
           </Button>
         </DialogFooter>
       </DialogContent>
