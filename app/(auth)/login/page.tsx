@@ -47,16 +47,18 @@ const Login = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const result = await login(values).unwrap();
-      console.log(result, 'from login');
-
       showToast('success', <p>Login was successful</p>);
-      push('/dashboard');
+      let url =
+        result?.data?.role === 'super' ? '/dashboard' : '/mdas-dashboard';
+      if (result.data.first_time_login) {
+        url += '?firstlogin=true';
+      }
+      push(url);
     } catch (error: any) {
-      console.log(error);
-
       showToast('error', <p>{error.data.message}</p>);
     }
   }
+
   return (
     <div className='flex flex-col w-full h-full gap-10 '>
       <div className='flex w-full justify-between'>
@@ -72,10 +74,7 @@ const Login = () => {
           <h1 className='text-sm text-green-700 font-medium'>
             Login to your Account!
           </h1>
-          <h2 className=' text-3xl font-bold '>
-            WELCOME TO <br />
-            BACK
-          </h2>
+          <h2 className=' text-3xl font-bold '>WELCOME BACK</h2>
         </div>
         <div className='flex flex-col gap-10'>
           <Form {...form}>
