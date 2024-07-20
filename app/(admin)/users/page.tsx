@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { useGetAllUsersQuery } from "@/redux/services/users/user-api";
-import AddUsers from "../components/users/AddUsers";
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
