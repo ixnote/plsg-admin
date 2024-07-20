@@ -30,7 +30,7 @@ export const userApi = createApi({
 
     getAllUsers: builder.query<any, void>({
       query: () => ({
-        url: '/users',
+        url: '/user',
         method: 'GET',
       }),
       providesTags: ['User'],

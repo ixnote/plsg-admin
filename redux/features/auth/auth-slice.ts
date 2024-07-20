@@ -28,6 +28,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       deleteCookie('auth_token');
       deleteCookie('refresh_auth_token');
+      deleteCookie('user');
     },
   },
   extraReducers: (builder) => {
@@ -50,7 +51,9 @@ export const authSlice = createSlice({
         authApi.endpoints.getAuthData.matchFulfilled,
         (_state, { payload }) => {
           // in case we receive a new token when refetching the details
-          // setAuthCookie(payload.token, 'auth_token');
+          console.log(payload);
+
+          setAuthCookie(JSON.stringify(payload.data), 'user');
           _state.user = payload.data;
         }
       );

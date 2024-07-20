@@ -7,7 +7,15 @@ import {
 } from './router/routes';
 
 export function middleware(request: NextRequest) {
-  const currentUser = request.cookies.get('auth_token')?.value;
+  const token = request.cookies.get('auth_token')?.value;
+  // let user;
+  const cookieUser = request.cookies.get('user')?.value;
+  console.log(cookieUser, 'middleware....');
+  // if (cookieUser) {
+  //   console.log(cookieUser);
+
+  //   user = JSON.parse(cookieUser);
+  // }
 
   //   if (
   //     protectedAdminRoutes.includes(request.nextUrl.pathname) ||
@@ -18,8 +26,9 @@ export function middleware(request: NextRequest) {
   //     return response;
   //   }
 
-  if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
+  if (authRoutes.includes(request.nextUrl.pathname) && token) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
+    // : NextResponse.redirect(new URL('/mdas-dashboard', request.url));
   }
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/dashboard', request.url));
