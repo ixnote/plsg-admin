@@ -71,6 +71,7 @@ const SideNavBar = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
 
   const handleLogout = () => {
+    push('/login');
     dispatch(logout());
     window.location.reload();
   };

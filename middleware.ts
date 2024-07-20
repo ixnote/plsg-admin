@@ -8,7 +8,6 @@ import {
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value;
-
   // if (cookieUser) {
   //   console.log(cookieUser);
 

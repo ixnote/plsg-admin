@@ -22,11 +22,24 @@ import {
 } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import AddUsers from "../components/users/AddUsers";
+import PaginationButtons from "../components/PaginationButtons";
+
+interface Pagination {
+  currentPage: number;
+  totalPages: number;
+  nextPage: number | null;
+  prevPage: number | null;
+  totalNews: number;
+  pageSize: number;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  pagination: Pagination;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
   onUserCreated: any;
 }
 
@@ -34,6 +47,9 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  pagination,
+  onPageChange,
+  onPageSizeChange,
   onUserCreated,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -64,7 +80,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className=" flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <div className="flex w-full justify-between">
         <Input
           placeholder="Filter names..."
@@ -122,7 +138,7 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center text-2xl"
+                    className="h-24 text-center"
                   >
                     No results.
                   </TableCell>
@@ -131,6 +147,15 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         )}
+      </div>
+      <div className="py-4">
+        <PaginationButtons
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          pageSize={pagination.pageSize}
+        />
       </div>
     </div>
   );
