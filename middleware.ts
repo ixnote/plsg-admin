@@ -28,6 +28,6 @@ export function middleware(request: NextRequest) {
     // : NextResponse.redirect(new URL('/mdas-dashboard', request.url));
   }
   if (request.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/login, request.url));
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 }
