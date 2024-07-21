@@ -27,7 +27,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
   const [sectionType, setSectionType] = useState<string[]>([]);
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      fields: [{ type: '', value: '' }],
+      fields: [{ type: 'Paragraph', value: '' }],
     },
   });
 
