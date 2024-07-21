@@ -20,21 +20,35 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ShieldBan } from "lucide-react";
 import AddMdaTitleDialog from "../components/mdas/AddMdaTitleDialog";
+import PaginationButtons from "../components/PaginationButtons";
+
+interface Pagination {
+  currentPage: number;
+  totalPages: number;
+  nextPage: number | null;
+  prevPage: number | null;
+  totalNews: number;
+  pageSize: number;
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  pagination: Pagination;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  pagination,
+  onPageChange,
+  onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -129,6 +143,15 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         )}
+      </div>
+      <div className="py-4">
+        <PaginationButtons
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          pageSize={pagination.pageSize}
+        />
       </div>
     </div>
   );
