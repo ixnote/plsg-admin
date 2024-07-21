@@ -22,6 +22,7 @@ import SectionBtn from './SectionBtn';
 import { useCreateNewsSectionMutation } from '@/redux/services/news/news-api';
 import Loader from '../Loader';
 import { showToast } from '@/lib/showToast';
+import SectionList from './SectionList';
 
 type SectionInfoSectionProps = {
   data: any;
@@ -96,6 +97,12 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
       showToast('error', <p>{error?.data?.message}</p>);
     }
   };
+
+  const onReorder = (items: any) => {
+    console.log(data?.data?.newsSections);
+  };
+
+  const onDelete = (items: any) => {};
 
   return (
     <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10 h-fit gap-4'>
@@ -251,7 +258,13 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         <div className='flex flex-col w-full py-4 '>
           {data?.data?.newsSections.length > 0 ? (
             <div className='flex flex-col  w-full min-h-[200px]'>
-              <div className='flex flex-1'>list here</div>
+              <div className='flex flex-1 w-full'>
+                <SectionList
+                  sections={data?.data?.newsSections}
+                  onReOrder={onReorder}
+                  onDelete={onDelete}
+                />
+              </div>
               <Button
                 className='w-full '
                 variant={'destructive'}
