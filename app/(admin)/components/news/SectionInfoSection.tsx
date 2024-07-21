@@ -32,7 +32,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     { data: createNewsSectionData, isError, isLoading, isSuccess },
   ] = useCreateNewsSectionMutation();
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       fields: [
         {
@@ -50,10 +50,11 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
   });
 
   const handleAddSection = (type: string) => {
+    const count = data.data.newsSections.length + fields.length + 1;
     const section = {
       type: type,
       value: '',
-      position: data.data.newsSections.length + 1 + fields.length,
+      position: count,
     };
     append(section);
   };
@@ -80,10 +81,12 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
 
     const remain = payload.filter((b) => b.type !== 'bullet');
 
-    const combine = [
-      ...remain,
-      ...modifyBullets.map((b) => ({ type: 'bullet', value: b })),
-    ];
+    const combine = [...remain, ...modifyBullets];
+
+    console.log({
+      id: data.data.id,
+      items: [...combine],
+    });
 
     try {
       console.log({
@@ -94,6 +97,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         id: data.data.id,
         items: [...combine],
       }).unwrap();
+      reset();
       showToast('success', <p>{result?.message}</p>);
     } catch (error: any) {
       showToast('error', <p>{error?.data?.message}</p>);
