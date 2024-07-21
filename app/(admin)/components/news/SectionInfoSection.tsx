@@ -4,6 +4,7 @@ import { CldUploadWidget } from 'next-cloudinary';
 import Image from 'next/image';
 import {
   ALargeSmall,
+  BookMarkedIcon,
   FileVideo,
   Heading1,
   Heading2,
@@ -27,6 +28,7 @@ type SectionInfoSectionProps = {
 };
 
 const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
+  const [isEditting, setIsEditing] = useState(false);
   const [
     createNewsSection,
     { data: createNewsSectionData, isError, isLoading, isSuccess },
@@ -103,136 +105,182 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         </h1>
         <p>Add Sections in order you want to display on the page.</p>
       </div>
-      <div className='flex flex-col w-full py-4 '>
-        <form onSubmit={handleSubmit(onSubmit)} className=' space-y-6'>
-          {fields.map((field, index) => (
-            <div key={field.id} className='flex w-full gap-3 items-center'>
-              <div className='flex flex-col w-full gap-2'>
-                {fields[index].type === 'paragraph' && (
-                  <Controller
-                    name={`fields.${index}.value`}
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder='eg. Some great information'
-                      />
-                    )}
-                  />
-                )}
-                {fields[index].type === 'bullet' && (
-                  <Controller
-                    name={`fields.${index}.value`}
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder='eg. imformation,news,education'
-                      />
-                    )}
-                  />
-                )}
-                {fields[index].type === 'image' && (
-                  <Controller
-                    name={`fields.${index}.value`}
-                    control={control}
-                    render={({ field }) => (
-                      <CldUploadWidget
-                        onSuccess={(result, { widget }) => {
-                          field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
-                          widget.close();
-                        }}
-                        uploadPreset='mymakaranta_preset'
-                      >
-                        {({ open }) => {
-                          function handleOnClick() {
-                            field.onChange(undefined);
-                            open();
-                          }
-                          return (
-                            <div
-                              onClick={handleOnClick}
-                              className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
-                            >
-                              {field.value === '' ? (
-                                <div className='flex flex-col justify-center items-center gap-2 '>
-                                  <UploadCloud />
-                                  <h1>Upload image</h1>
-                                </div>
-                              ) : (
-                                <Image src={field.value} alt='images' fill />
-                              )}
-                            </div>
-                          );
-                        }}
-                      </CldUploadWidget>
-                    )}
-                  />
-                )}
+      {isEditting ? (
+        <div className='flex flex-col w-full py-4 '>
+          <form onSubmit={handleSubmit(onSubmit)} className=' space-y-6'>
+            {fields.map((field, index) => (
+              <div key={field.id} className='flex w-full gap-3 items-center'>
+                <div className='flex flex-col w-full gap-2'>
+                  {fields[index].type === 'paragraph' && (
+                    <Controller
+                      name={`fields.${index}.value`}
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          placeholder='eg. Some great information'
+                        />
+                      )}
+                    />
+                  )}
+                  {fields[index].type === 'bullet' && (
+                    <Controller
+                      name={`fields.${index}.value`}
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          placeholder='eg. imformation,news,education'
+                        />
+                      )}
+                    />
+                  )}
+                  {fields[index].type === 'image' && (
+                    <Controller
+                      name={`fields.${index}.value`}
+                      control={control}
+                      render={({ field }) => (
+                        <CldUploadWidget
+                          onSuccess={(result, { widget }) => {
+                            field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                            widget.close();
+                          }}
+                          uploadPreset='mymakaranta_preset'
+                        >
+                          {({ open }) => {
+                            function handleOnClick() {
+                              field.onChange(undefined);
+                              open();
+                            }
+                            return (
+                              <div
+                                onClick={handleOnClick}
+                                className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                              >
+                                {field.value === '' ? (
+                                  <div className='flex flex-col justify-center items-center gap-2 '>
+                                    <UploadCloud />
+                                    <h1>Upload image</h1>
+                                  </div>
+                                ) : (
+                                  <Image src={field.value} alt='images' fill />
+                                )}
+                              </div>
+                            );
+                          }}
+                        </CldUploadWidget>
+                      )}
+                    />
+                  )}
+                </div>
+                <Button
+                  type='button'
+                  variant={'destructive'}
+                  onClick={() => remove(index)}
+                >
+                  <Trash2Icon size={20} />
+                </Button>
               </div>
+            ))}
+            <div className='flex justify-between items-center p-3 w-full border-2 bg-slate-100 border-dashed rounded-lg'>
+              <SectionBtn
+                title='Add Paragraph'
+                icon={<Pilcrow />}
+                onClick={() => {
+                  handleAddSection('paragraph');
+                }}
+              />
+              <SectionBtn
+                title='Add Image'
+                icon={<ImageIcon />}
+                onClick={() => {
+                  handleAddSection('image');
+                }}
+              />
+              <SectionBtn
+                title='Add Bulletin'
+                icon={<ListOrdered />}
+                onClick={() => {
+                  handleAddSection('bullet');
+                }}
+              />
+              <SectionBtn
+                title='Add Header'
+                icon={<Heading1 />}
+                onClick={() => {}}
+              />
+              <SectionBtn
+                title='Add Highlight'
+                icon={<Highlighter />}
+                onClick={() => {}}
+              />
+              {/* <SectionBtn title='Add Video' icon={<FileVideo />} onClick={()=>{}} /> */}
+              <SectionBtn
+                title='Add Text'
+                icon={<ALargeSmall />}
+                onClick={() => {}}
+              />
+              <SectionBtn
+                title='Add Sub Heading'
+                icon={<Heading2 />}
+                onClick={() => {}}
+              />
+              <SectionBtn
+                title='Add Section Heading'
+                icon={<LayoutPanelTop />}
+                onClick={() => {}}
+              />
+            </div>
+            <div className='flex w-full justify-between'>
               <Button
-                type='button'
-                variant={'destructive'}
-                onClick={() => remove(index)}
+                variant={'outline'}
+                onClick={() => {
+                  setIsEditing(false);
+                  reset();
+                }}
               >
-                <Trash2Icon size={20} />
+                Cancel
+              </Button>
+              <Button type='submit'>
+                {isLoading ? <Loader /> : 'Create Section'}
               </Button>
             </div>
-          ))}
-          <div className='flex justify-between items-center p-3 w-full border-2 bg-slate-100 border-dashed rounded-lg'>
-            <SectionBtn
-              title='Add Paragraph'
-              icon={<Pilcrow />}
-              onClick={() => {
-                handleAddSection('paragraph');
-              }}
-            />
-            <SectionBtn
-              title='Add Image'
-              icon={<ImageIcon />}
-              onClick={() => {
-                handleAddSection('image');
-              }}
-            />
-            <SectionBtn
-              title='Add Bulletin'
-              icon={<ListOrdered />}
-              onClick={() => {
-                handleAddSection('bullet');
-              }}
-            />
-            <SectionBtn
-              title='Add Header'
-              icon={<Heading1 />}
-              onClick={() => {}}
-            />
-            <SectionBtn
-              title='Add Highlight'
-              icon={<Highlighter />}
-              onClick={() => {}}
-            />
-            {/* <SectionBtn title='Add Video' icon={<FileVideo />} onClick={()=>{}} /> */}
-            <SectionBtn
-              title='Add Text'
-              icon={<ALargeSmall />}
-              onClick={() => {}}
-            />
-            <SectionBtn
-              title='Add Sub Heading'
-              icon={<Heading2 />}
-              onClick={() => {}}
-            />
-            <SectionBtn
-              title='Add Section Heading'
-              icon={<LayoutPanelTop />}
-              onClick={() => {}}
-            />
-          </div>
-          <Button type='submit' className='w-full'>
-            {isLoading ? <Loader /> : 'Create Section'}
-          </Button>
-        </form>
-      </div>
+          </form>
+        </div>
+      ) : (
+        <div className='flex flex-col w-full py-4 '>
+          {data?.data?.newsSections.length > 0 ? (
+            <div className='flex flex-col  w-full min-h-[200px]'>
+              <div className='flex flex-1'>list here</div>
+              <Button
+                className='w-full '
+                variant={'destructive'}
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                Add Section
+              </Button>
+            </div>
+          ) : (
+            <div className='flex flex-col w-full min-h-[200px] justify-center items-center  gap-2'>
+              <div className='flex flex-col w-full text-gray-500 justify-center items-center'>
+                <BookMarkedIcon size={50} />
+                <p>You need to add a new section to publish your News</p>
+              </div>
+              <Button
+                className='w-full '
+                variant={'outline'}
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+              >
+                Continue
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
