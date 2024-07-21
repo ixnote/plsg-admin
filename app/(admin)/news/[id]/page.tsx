@@ -29,6 +29,16 @@ const UpdateNews = () => {
     router.back();
   };
 
+  const requiredFields = [
+    data?.data?.headline,
+    data?.data?.image,
+    data?.data?.tags.length > 0,
+    data?.data?.newsSections.length > 0,
+  ];
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+  const isCompleted = requiredFields.every(Boolean);
+
   return (
     <div className='flex w-full h-full p-6'>
       {isLoading ? (
@@ -52,13 +62,18 @@ const UpdateNews = () => {
                 onClick={() => {
                   window.open(`/preview/${data?.data.id}`, '_blank');
                 }}
+                disabled={!isCompleted}
               >
                 Preview
               </Button>
-              <Button variant={'destructive'}>Publish</Button>
+              <Button disabled={!isCompleted} variant={'destructive'}>
+                Publish
+              </Button>
             </div>
           </div>
-
+          <p>
+            Requirements - {completedFields}/{totalFields} Completed
+          </p>
           <div className='flex w-full gap-3'>
             <NewsInfoSection data={data} tags={tags} />
             <SectionInfoSection data={data} />
