@@ -14,8 +14,6 @@ const MDAs = () => {
     pageSize,
   });
 
-  console.log(mdasPagination);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

@@ -38,7 +38,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         {
           type: 'paragraph',
           value: '',
-          position: data.data.newsSections.length + 1,
+          position: data?.data?.newsSections?.length + 1,
         },
       ],
     },
@@ -50,7 +50,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
   });
 
   const handleAddSection = (type: string) => {
-    const count = data.data.newsSections.length + fields.length + 1;
+    const count = data?.data?.newsSections.length + fields.length + 1;
     const section = {
       type: type,
       value: '',
@@ -83,18 +83,9 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
 
     const combine = [...remain, ...modifyBullets];
 
-    console.log({
-      id: data.data.id,
-      items: [...combine],
-    });
-
     try {
-      console.log({
-        id: data.data.id,
-        items: [...combine],
-      });
       const result = await createNewsSection({
-        id: data.data.id,
+        id: data?.data.id,
         items: [...combine],
       }).unwrap();
       reset();
@@ -238,7 +229,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
             />
           </div>
           <Button type='submit' className='w-full'>
-            {isLoading ? <Loader /> : 'Create Sectios'}
+            {isLoading ? <Loader /> : 'Create Section'}
           </Button>
         </form>
       </div>
