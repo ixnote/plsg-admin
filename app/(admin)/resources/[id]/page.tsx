@@ -1,29 +1,24 @@
 "use client";
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useGetOneNewsQuery } from "@/redux/services/news/news-api";
 import { ArrowLeftIcon } from "lucide-react";
-import NewsInfoSection from "../../components/news/NewsInfoSection";
-import SectionInfoSection from "../../components/news/SectionInfoSection";
 import { Button } from "@/components/ui/button";
 import Loader from "../../components/Loader";
-import { useGetAllTagsQuery } from "@/redux/services/tags/tags-api";
+import ResourceInfoSection from "../../components/resources/ResourceInfoSection";
+import { useGetOneResourceQuery } from "@/redux/services/resources/resources-api";
 
-const UpdateNews = () => {
+const UpdateResource = () => {
   const params = useParams();
+  console.log("🚀 ~ UpdateResource ~ params:", params.id);
   const router = useRouter();
-  const {
-    data: tags,
-    error: tagsError,
-    isLoading: tagsIsLoading,
-  } = useGetAllTagsQuery();
 
-  const { data, error, isLoading } = useGetOneNewsQuery(
-    { id: params.id },
+  const { data, error, isLoading } = useGetOneResourceQuery(
+    { id: params?.id },
     {
       skip: !params?.id,
     }
   );
+  console.log("🚀 ~ UpdateResource ~ data:", data);
 
   const handleGoBack = () => {
     router.back();
@@ -59,9 +54,8 @@ const UpdateNews = () => {
             </div>
           </div>
 
-          <div className="flex w-full gap-3">
-            <NewsInfoSection data={data} tags={tags} />
-            <SectionInfoSection data={data} />
+          <div className="flex items-center justify-center w-full  gap-3">
+            <ResourceInfoSection data={data} />
           </div>
         </div>
       )}
@@ -69,4 +63,4 @@ const UpdateNews = () => {
   );
 };
 
-export default UpdateNews;
+export default UpdateResource;

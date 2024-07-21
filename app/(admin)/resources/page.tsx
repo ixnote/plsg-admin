@@ -14,7 +14,7 @@ const Resources = () => {
     pageSize,
   });
 
-  console.log(resourcesPagination);
+  // console.log(resourcesPagination);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -25,7 +25,7 @@ const Resources = () => {
   };
 
   useEffect(() => {
-    console.log("🚀 ~ Resources ~ data:", data);
+    // console.log("🚀 ~ Resources ~  ata:", data);
     if (data) {
       setResources(
         data?.data?.resources.map((item: any) => {
