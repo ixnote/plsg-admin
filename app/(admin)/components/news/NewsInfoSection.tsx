@@ -61,7 +61,12 @@ const NewsInfoSection = ({ data, tags }: NewsInfoSectionProps) => {
   }
   return (
     <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit'>
-      <h1 className='font-semibold tracking-tight text-xl'>News Information</h1>
+      <div className='flex flex-col gap-1'>
+        <h1 className='font-semibold tracking-tight text-xl'>
+          News Information
+        </h1>
+        <p>This information is display on the page.</p>
+      </div>
       <div className='w-full '>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
