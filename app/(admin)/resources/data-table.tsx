@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import PaginationButtons from "../components/PaginationButtons";
 import AddResourceTitleDialog from "../components/resources/AddResourceTitleDialog";
+import { useRouter } from "next/navigation";
 
 interface Pagination {
   currentPage: number;
@@ -50,6 +51,7 @@ export function DataTable<TData, TValue>({
   onPageChange,
   onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
+  const { push } = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -115,12 +117,16 @@ export function DataTable<TData, TValue>({
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+                table.getRowModel().rows.map((row: any) => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() => {
+                      push(`/resources/${(data[row.id] as any).id}`);
+                    }}
+                    className=" cursor-pointer"
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map((cell: any) => (
                       <TableCell key={cell.id} className="capitalize">
                         {flexRender(
                           cell.column.columnDef.cell,
