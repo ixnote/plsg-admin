@@ -18,16 +18,29 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import SectionBtn from './SectionBtn';
+import { useCreateNewsSectionMutation } from '@/redux/services/news/news-api';
+import Loader from '../Loader';
+import { showToast } from '@/lib/showToast';
 
 type SectionInfoSectionProps = {
   data: any;
 };
 
 const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
-  const [sectionType, setSectionType] = useState<string[]>([]);
+  const [
+    createNewsSection,
+    { data: createNewsSectionData, isError, isLoading, isSuccess },
+  ] = useCreateNewsSectionMutation();
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      fields: [{ type: 'Paragraph', value: '' }],
+      fields: [
+        {
+          type: 'paragraph',
+          value: '',
+          position: data.data.newsSections.length + 1,
+        },
+      ],
     },
   });
 
@@ -37,49 +50,94 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
   });
 
   const handleAddSection = (type: string) => {
-    const section = { type: type, value: '' };
+    const section = {
+      type: type,
+      value: '',
+      position: data.data.newsSections.length + 1 + fields.length,
+    };
     append(section);
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (values: any) => {
+    const payload = values.fields as {
+      type: string;
+      value: string;
+      position: number;
+    }[];
+
+    if (!payload.every((b) => b.value !== '')) {
+      // showToast('error', <p>All Sections Fields are required</p>);
+      return;
+    }
+
+    const bullet = payload.filter((b) => b.type === 'bullet');
+
+    const modifyBullets = bullet?.map((v) => ({
+      type: v.type,
+      value: v.value.split(','),
+      position: v.position,
+    }));
+
+    const remain = payload.filter((b) => b.type !== 'bullet');
+
+    const combine = [
+      ...remain,
+      ...modifyBullets.map((b) => ({ type: 'bullet', value: b })),
+    ];
+
+    try {
+      console.log({
+        id: data.data.id,
+        items: [...combine],
+      });
+      const result = await createNewsSection({
+        id: data.data.id,
+        items: [...combine],
+      }).unwrap();
+      showToast('success', <p>{result?.message}</p>);
+    } catch (error: any) {
+      showToast('error', <p>{error?.data?.message}</p>);
+    }
   };
 
   return (
-    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10 h-fit'>
-      <h1 className='font-semibold tracking-tight text-xl'>
-        Section Information
-      </h1>
+    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10 h-fit gap-4'>
+      <div className='flex flex-col gap-1'>
+        <h1 className='font-semibold tracking-tight text-xl'>
+          Section Information
+        </h1>
+        <p>Add Sections in order you want to display on the page.</p>
+      </div>
       <div className='flex flex-col w-full py-4 '>
         <form onSubmit={handleSubmit(onSubmit)} className=' space-y-6'>
           {fields.map((field, index) => (
             <div key={field.id} className='flex w-full gap-3 items-center'>
               <div className='flex flex-col w-full gap-2'>
-                {fields[index].type === 'Paragraph' && (
+                {fields[index].type === 'paragraph' && (
                   <Controller
                     name={`fields.${index}.value`}
                     control={control}
                     render={({ field }) => (
                       <Input
                         {...field}
-                        placeholder='Type your Paragraph content here'
+                        placeholder='eg. Some great information'
                       />
                     )}
                   />
                 )}
-                {fields[index].type === 'Bulletin' && (
+                {fields[index].type === 'bullet' && (
                   <Controller
                     name={`fields.${index}.value`}
                     control={control}
                     render={({ field }) => (
                       <Input
                         {...field}
-                        placeholder='Type your bulletin seperated by comma'
+                        placeholder='eg. imformation,news,education'
                       />
                     )}
                   />
                 )}
-                {fields[index].type === 'Image' && (
+                {fields[index].type === 'image' && (
                   <Controller
                     name={`fields.${index}.value`}
                     control={control}
@@ -131,21 +189,21 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
               title='Add Paragraph'
               icon={<Pilcrow />}
               onClick={() => {
-                handleAddSection('Paragraph');
+                handleAddSection('paragraph');
               }}
             />
             <SectionBtn
               title='Add Image'
               icon={<ImageIcon />}
               onClick={() => {
-                handleAddSection('Image');
+                handleAddSection('image');
               }}
             />
             <SectionBtn
               title='Add Bulletin'
               icon={<ListOrdered />}
               onClick={() => {
-                handleAddSection('Bulletin');
+                handleAddSection('bullet');
               }}
             />
             <SectionBtn
@@ -176,7 +234,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
             />
           </div>
           <Button type='submit' className='w-full'>
-            Submit
+            {isLoading ? <Loader /> : 'Create Sectios'}
           </Button>
         </form>
       </div>
