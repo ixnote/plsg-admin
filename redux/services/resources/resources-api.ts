@@ -1,8 +1,8 @@
-import { getValidAuthTokens } from "@/lib/cookies";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getValidAuthTokens } from '@/lib/cookies';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const resourcesApi = createApi({
-  reducerPath: "resourcesApi",
+  reducerPath: 'resourcesApi',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
@@ -10,38 +10,38 @@ export const resourcesApi = createApi({
       const { token } = getValidAuthTokens();
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ["Resources"],
+  tagTypes: ['Resources'],
   endpoints: (builder) => ({
     createResource: builder.mutation<any, any>({
       query: (body) => {
         return {
-          url: "/resource/create",
-          method: "POST",
+          url: '/resource/create',
+          method: 'POST',
           body: body,
         };
       },
-      invalidatesTags: ["Resources"],
+      invalidatesTags: ['Resources'],
     }),
 
     getAllResources: builder.query<any, { page: number; pageSize: number }>({
       query: ({ page, pageSize }) => ({
         url: `/resource/all?page=${page}&pageSize=${pageSize}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["Resources"],
+      providesTags: ['Resources'],
     }),
 
     getOneResource: builder.query<any, any>({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/resource/single/${id}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["Resources"],
+      providesTags: ['Resources'],
     }),
   }),
 });
