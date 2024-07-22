@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -18,13 +19,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { z } from "zod";
 import { UploadCloud } from "lucide-react";
-import { useUpdateNewsMutation } from "@/redux/services/news/news-api";
 import { showToast } from "@/lib/showToast";
 import Loader from "../Loader";
-import { useCreateResourceMutation } from "@/redux/services/resources/resources-api";
+import { useUpdateResourceMutation } from "@/redux/services/resources/resources-api";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -40,11 +39,11 @@ import {
 } from "@/redux/services/tags/tags-api";
 
 const formSchema = z.object({
-  name: z.string().min(2),
-  title: z.string().min(2),
-  description: z.string().min(2),
-  link: z.string().min(2),
-  file: z.string(),
+  name: z.string(),
+  title: z.string(),
+  description: z.string(),
+  link: z.string(),
+  image: z.string(),
   main_type_tag: z.string(),
   sub_type_tag: z.string(),
   main_topic_tag: z.string(),
@@ -57,14 +56,11 @@ type ResourceInfoSectionProps = {
 };
 
 const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
-  console.log("🚀 ~ ResourceInfoSection ~ data:", data);
-  // const [updateNews, { isError, isLoading, isSuccess }] =
-  //   useUpdateNewsMutation();
-
+  const router = useRouter();
   const [
-    createResource,
+    updateResource,
     { data: resourceData, isError, isLoading, isSuccess },
-  ] = useCreateResourceMutation();
+  ] = useUpdateResourceMutation();
 
   const {
     data: topicTags,
@@ -86,25 +82,34 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
       title: data?.data.title ?? "",
       description: data?.data?.description ?? "",
       link: data?.data?.link ?? "",
-      file: data?.data?.file ?? "",
-      main_type_tag: data?.data?.main_type_tag?.id ?? "",
-      sub_type_tag: data?.data?.sub_type_tag?.id ?? "",
-      main_topic_tag: data?.data?.main_topic_tag?.id ?? "",
-      sub_topic_tag: data?.data?.sub_topic_tag?.id ?? "",
-      all_topic_tags: data?.data.all_topic_tags.map((tag: any) => tag.id) ?? [],
+      image: data?.data?.image ?? "",
+      main_type_tag: data?.data?.main_type_tag ?? "",
+      sub_type_tag: data?.data?.sub_type_tag ?? "",
+      main_topic_tag: data?.data?.main_topic_tag ?? "",
+      sub_topic_tag: data?.data?.sub_topic_tag ?? "",
+      all_topic_tags: data?.data.all_topic_tags.map((tag: any) => tag) ?? [],
     },
   });
 
   // 2. Define a submit handler.
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   try {
-  //     console.log(values);
-  //     const result = await updateNews({ id: data.data.id, ...values }).unwrap();
-  //     showToast("success", <p>{result?.message}</p>);
-  //   } catch (error: any) {
-  //     showToast("error", <p>{error.data.message}</p>);
-  //   }
-  // }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // Filter out the empty values
+      const filteredValues = Object.fromEntries(
+        Object.entries(values).filter(([_, value]) => value !== "")
+      );
+
+      const result = await updateResource({
+        id: data.data.id,
+        ...filteredValues,
+      }).unwrap();
+
+      showToast("success", <p>{result?.message}</p>);
+      router.back();
+    } catch (error: any) {
+      showToast("error", <p>{error.data.message}</p>);
+    }
+  }
 
   return (
     <div className="flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit">
@@ -116,8 +121,8 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
       </div>
       <div className="w-full ">
         <Form {...form}>
-          {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8"> */}
-          <form className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* <form className="space-y-8"> */}
             <FormField
               control={form.control}
               name="name"
@@ -176,7 +181,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="file"
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
@@ -312,7 +317,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
 
             <Button type="submit" className="w-full">
-              {isLoading ? <Loader /> : " Update News"}
+              {isLoading ? <Loader /> : " Update Resource"}
             </Button>
           </form>
         </Form>
