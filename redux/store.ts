@@ -1,14 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import dashboardReducer from "./features/dashboard/dashboard-slice";
-import authReducer from "./features/auth/auth-slice";
-import { authApi } from "./services/auth/auth-api";
-import { roleApi } from "./services/roles/role-api";
-import { userApi } from "./services/users/user-api";
-import { newsApi } from "./services/news/news-api";
-import { mdasApi } from "./services/mdas/mdas-api";
-import { tagsApi } from "./services/tags/tags-api";
-import { resourcesApi } from "./services/resources/resources-api";
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import dashboardReducer from './features/dashboard/dashboard-slice';
+import mdasReducer from './features/mdas/mdas-slice';
+import authReducer from './features/auth/auth-slice';
+import { authApi } from './services/auth/auth-api';
+import { roleApi } from './services/roles/role-api';
+import { userApi } from './services/users/user-api';
+import { newsApi } from './services/news/news-api';
+import { mdasApi } from './services/mdas/mdas-api';
+import { tagsApi } from './services/tags/tags-api';
+import { resourcesApi } from './services/resources/resources-api';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     [resourcesApi.reducerPath]: resourcesApi.reducer,
     dashboard: dashboardReducer,
     auth: authReducer,
+    mdas: mdasReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
