@@ -9,7 +9,6 @@ import { useGetOneResourceQuery } from "@/redux/services/resources/resources-api
 
 const UpdateResource = () => {
   const params = useParams();
-  console.log("🚀 ~ UpdateResource ~ params:", params.id);
   const router = useRouter();
 
   const { data, error, isLoading } = useGetOneResourceQuery(
@@ -18,7 +17,6 @@ const UpdateResource = () => {
       skip: !params?.id,
     }
   );
-  console.log("🚀 ~ UpdateResource ~ data:", data);
 
   const handleGoBack = () => {
     router.back();
@@ -42,7 +40,7 @@ const UpdateResource = () => {
                 Update Resource
               </h1>
             </div>
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3">
               <Button
                 onClick={() => {
                   window.open(`/preview/${data?.data.id}`, "_blank");
@@ -51,9 +49,8 @@ const UpdateResource = () => {
                 Preview
               </Button>
               <Button variant={"destructive"}>Publish</Button>
-            </div>
+            </div> */}
           </div>
-
           <div className="flex items-center justify-center w-full  gap-3">
             <ResourceInfoSection data={data} />
           </div>
