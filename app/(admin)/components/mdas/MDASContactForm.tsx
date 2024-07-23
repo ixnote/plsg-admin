@@ -22,13 +22,28 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='name'
+                name='contact.name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Contact Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Enter Contact Name' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className='w-full'>
+              <FormField
+                control={form.control}
+                name='contact.location'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Location/address</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Enter MDAS Official Name'
+                        placeholder='Enter MDAS Location/address'
                         {...field}
                       />
                     </FormControl>
@@ -42,13 +57,13 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='about.title'
+                name='contact.phone'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>Phone Number</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Enter The Title on MDAS Home page'
+                        placeholder='Enter MDAS contact Phone Number'
                         {...field}
                       />
                     </FormControl>
@@ -60,44 +75,15 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='about.description'
+                name='contact.email'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter Description' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <div className='flex  w-full gap-x-4'>
-            <div className='w-full'>
-              <FormField
-                control={form.control}
-                name='about.vision'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Vision</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter MDAS Vision' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='w-full'>
-              <FormField
-                control={form.control}
-                name='about.mission'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>MDAs Mission</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter MDAS Mission' {...field} />
+                      <Input
+                        placeholder='Enter MDAS Contact Email'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -4,38 +4,32 @@ import { showToast } from '@/lib/showToast';
 import { cn } from '@/lib/utils';
 import { setStep } from '@/redux/features/mdas/mdas-slice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { useUpdateMdaMutation } from '@/redux/services/mdas/mdas-api';
 import { RootState } from '@/redux/store';
 import { MDASFormSchemaType } from '@/types';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import Loader from '../Loader';
 
-const Navigation = () => {
-  const [isLoading, setIsLoading] = useState(false);
+type NavigationProps = {
+  data: any;
+};
+
+const Navigation = ({ data }: NavigationProps) => {
   const { step } = useAppSelector((state: RootState) => state.mdas);
   const dispatch = useAppDispatch();
   const form = useFormContext<MDASFormSchemaType>();
 
-  async function onSubmit(payload: MDASFormSchemaType) {
-    setIsLoading(true);
-    // const result = await signUpAction({ ...values, ...payload });
-    // if (result.success) {
+  const [updateMDA, { isError, isLoading, isSuccess }] = useUpdateMdaMutation();
 
-    //   setValues({
-    //     email: '',
-    //     password: '',
-    //     username: '',
-    //     firstName: '',
-    //     lastName: '',
-    //     confirmPassword: '',
-    //     otp: '',
-    //   });
-    //   form.reset();
-    // } else {
-    //   showToast('error', <p>{result.message}</p>);
-    // }
-
-    setIsLoading(false);
-  }
+  const handleSubmit = async (data: any) => {
+    try {
+      const result = await updateMDA(data).unwrap();
+      showToast('success', <p>{result?.message}</p>);
+    } catch (error: any) {
+      showToast('error', <p>{error.data.message}</p>);
+    }
+  };
 
   async function handleNextStep() {
     switch (step) {
@@ -47,21 +41,114 @@ const Navigation = () => {
             'about.description',
             'about.vision',
             'about.mission',
+            'about.image',
           ],
           {
             shouldFocus: true,
           }
         );
-        result && dispatch(setStep(2));
+        if (result) {
+          if (
+            form.getFieldState('name').isDirty ||
+            form.getFieldState('about.title').isDirty ||
+            form.getFieldState('about.description').isDirty ||
+            form.getFieldState('about.vision').isDirty ||
+            form.getFieldState('about.mission').isDirty ||
+            form.getFieldState('about.image').isDirty
+          ) {
+            const about = form.getValues('about');
+            await handleSubmit({
+              id: data.id,
+              name: form.getValues('name'),
+              about,
+            });
+          }
+          dispatch(setStep(2));
+        }
         break;
       case 2:
-        dispatch(setStep(3));
+        const directorValidation = await form.trigger(
+          [
+            'director.title',
+            'director.name',
+            'director.position',
+            'director.message',
+            'director.image',
+          ],
+          {
+            shouldFocus: true,
+          }
+        );
+        if (directorValidation) {
+          if (
+            form.getFieldState('director.title').isDirty ||
+            form.getFieldState('director.name').isDirty ||
+            form.getFieldState('director.position').isDirty ||
+            form.getFieldState('director.message').isDirty ||
+            form.getFieldState('director.image').isDirty
+          ) {
+            const director = form.getValues('director');
+            await handleSubmit({
+              id: data.id,
+              director,
+            });
+          }
+          dispatch(setStep(3));
+        }
         break;
       case 3:
-        dispatch(setStep(4));
+        const contactValidation = await form.trigger(
+          [
+            'contact.name',
+            'contact.location',
+            'contact.email',
+            'contact.phone',
+          ],
+          {
+            shouldFocus: true,
+          }
+        );
+        if (contactValidation) {
+          if (
+            form.getFieldState('contact.name').isDirty ||
+            form.getFieldState('contact.location').isDirty ||
+            form.getFieldState('contact.email').isDirty ||
+            form.getFieldState('contact.phone').isDirty
+          ) {
+            const contact = form.getValues('contact');
+            await handleSubmit({
+              id: data.id,
+              contact,
+            });
+          }
+          dispatch(setStep(4));
+        }
+
         break;
       case 4:
-        dispatch(setStep(5));
+        const heroValidation = await form.trigger(
+          ['hero.logo', 'hero.title', 'hero.description', 'hero.image'],
+          {
+            shouldFocus: true,
+          }
+        );
+        if (heroValidation) {
+          if (
+            form.getFieldState('hero.logo').isDirty ||
+            form.getFieldState('hero.title').isDirty ||
+            form.getFieldState('hero.description').isDirty ||
+            form.getFieldState('hero.image').isDirty
+          ) {
+            const hero = form.getValues('hero');
+
+            await handleSubmit({
+              id: data.id,
+              hero,
+            });
+          }
+          dispatch(setStep(5));
+        }
+
         break;
       default:
         break;
@@ -92,10 +179,10 @@ const Navigation = () => {
 
       <Button
         type='button'
-        className={cn('block', { hidden: step >= 5 })}
+        className={cn('block min-w-[200px]', { hidden: step >= 5 })}
         onClick={handleNextStep}
       >
-        Next Step
+        {isLoading ? <Loader /> : 'Next Step'}
       </Button>
 
       <Button

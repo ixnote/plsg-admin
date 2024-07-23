@@ -18,11 +18,50 @@ import MDASTeamForm from './MDASTeamForm';
 import Navigation from './Navigation';
 import MDASContactForm from './MDASContactForm';
 
-const StepperFormPage = () => {
+type StepperFormPageProps = {
+  data: any;
+};
+
+const StepperFormPage = ({ data }: StepperFormPageProps) => {
   const form = useForm<MDASFormSchemaType>({
     resolver: zodResolver(MDASFormSchema),
-    defaultValues: getDefaultMDASFormSchemaValue({}),
+    defaultValues: getDefaultMDASFormSchemaValue(data),
   });
+
+  const mdaInfoRequiredFields = [
+    data?.name,
+    data?.about?.title,
+    data?.about?.description,
+    data?.about?.vision,
+    data?.about?.mission,
+    data?.about?.image,
+  ];
+  const directorRequiredFields = [
+    data?.director?.name,
+    data?.director?.title,
+    data?.director?.position,
+    data?.director?.message,
+    data?.director?.image,
+  ];
+
+  const contactRequiredFields = [
+    data?.contact?.name,
+    data?.contact?.location,
+    data?.contact?.phone,
+    data?.contact?.email,
+  ];
+
+  const heroRequiredFields = [
+    data?.hero?.name,
+    data?.hero?.description,
+    data?.hero?.image,
+    data?.hero?.logo,
+  ];
+
+  const mdaInfoRequiredFieldsIsCompleted = mdaInfoRequiredFields.every(Boolean);
+  const directorIsCompleted = directorRequiredFields.every(Boolean);
+  const contactIsCompleted = contactRequiredFields.every(Boolean);
+  const heroIsCompleted = heroRequiredFields.every(Boolean);
 
   const { step } = useAppSelector((state: RootState) => state.mdas);
   return (
@@ -33,11 +72,26 @@ const StepperFormPage = () => {
             step={1}
             title='MDAS Information'
             currentStep={step}
-            completed={true}
+            completed={mdaInfoRequiredFieldsIsCompleted}
           />
-          <StepperIndicator step={2} title='Director' currentStep={step} />
-          <StepperIndicator step={3} title='Contact' currentStep={step} />
-          <StepperIndicator step={4} title='Page Header' currentStep={step} />
+          <StepperIndicator
+            step={2}
+            title='Director'
+            currentStep={step}
+            completed={directorIsCompleted}
+          />
+          <StepperIndicator
+            step={3}
+            title='Contact'
+            currentStep={step}
+            completed={contactIsCompleted}
+          />
+          <StepperIndicator
+            step={4}
+            title='Page Header'
+            currentStep={step}
+            completed={heroIsCompleted}
+          />
           <StepperIndicator step={5} title='MDAS Team' currentStep={step} />
         </ol>
         <div className='flex flex-col w-full'>
@@ -45,7 +99,7 @@ const StepperFormPage = () => {
             <form className='flex flex-col w-full'>
               <div className={cn('hidden', { block: step === 1 })}>
                 <FormProvider {...form}>
-                  <MDASInfoForm />
+                  <MDASInfoForm data={data} />
                 </FormProvider>
               </div>
               <div className={cn('hidden', { block: step === 2 })}>
@@ -73,7 +127,7 @@ const StepperFormPage = () => {
         </div>
         <Form {...form}>
           <FormProvider {...form}>
-            <Navigation />
+            <Navigation data={data} />
           </FormProvider>
         </Form>
       </div>
