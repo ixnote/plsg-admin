@@ -22,10 +22,10 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='contact.name'
+                name='contact.phone_number_1'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contact Name</FormLabel>
+                    <FormLabel>Phone number 1</FormLabel>
                     <FormControl>
                       <Input placeholder='Enter Contact Name' {...field} />
                     </FormControl>
@@ -37,10 +37,10 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='contact.location'
+                name='contact.phone_number_2'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Location/address</FormLabel>
+                    <FormLabel>Phone number 2</FormLabel>
                     <FormControl>
                       <Input
                         placeholder='Enter MDAS Location/address'
@@ -57,13 +57,13 @@ const MDASContactForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='contact.phone'
+                name='contact.location'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>Location/address</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Enter MDAS contact Phone Number'
+                        placeholder='Enter MDAS Location/Address'
                         {...field}
                       />
                     </FormControl>

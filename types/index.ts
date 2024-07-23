@@ -17,9 +17,9 @@ export const MDASFormSchema = z.object({
     image: z.string().url({ message: 'Image is required' }),
   }),
   contact: z.object({
-    name: z.string(),
     location: z.string(),
-    phone: z.string(),
+    phone_number_1: z.string(),
+    phone_number_2: z.string(),
     email: z.string().email({ message: 'Email required' }),
   }),
   hero: z.object({
@@ -53,7 +53,8 @@ export const getDefaultMDASFormSchemaValue = (data: any) => {
     contact: {
       name: data?.contact?.name ?? '',
       location: data?.contact?.location ?? '',
-      phone: data?.contact?.phone ?? '',
+      phone_number_1: data?.contact?.phone_number_1 ?? '',
+      phone_number_2: data?.contact?.phone_number_2 ?? '',
       email: data?.contact?.email ?? '',
     },
     director: {

@@ -5,6 +5,7 @@ type StepperIndicatorProps = {
   step: number;
   currentStep: number;
   title: string;
+  onClick: () => void;
   completed?: boolean;
 };
 
@@ -12,6 +13,7 @@ const StepperIndicator = ({
   step,
   title,
   currentStep,
+  onClick,
   completed = false,
 }: StepperIndicatorProps) => {
   return (
@@ -21,6 +23,7 @@ const StepperIndicator = ({
         completed && 'text-green-600 cursor-default',
         step === currentStep && 'text-red-500'
       )}
+      onClick={onClick}
     >
       <div className="flex items-center whitespace-nowrap after:content-['/'] sm:after:hidden after:mx-2 ">
         <span
