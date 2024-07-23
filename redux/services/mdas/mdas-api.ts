@@ -26,6 +26,17 @@ export const mdasApi = createApi({
       invalidatesTags: ['Mdas'],
     }),
 
+    updateMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/update/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      invalidatesTags: ['Mdas'],
+    }),
+
     getAllMdas: builder.query<any, { page: number; pageSize: number }>({
       query: ({ page, pageSize }) => ({
         url: `/mda/admin?page=${page}&pageSize=${pageSize}`,
@@ -44,5 +55,9 @@ export const mdasApi = createApi({
   }),
 });
 
-export const { useCreateMdaMutation, useGetAllMdasQuery, useGetOneMdaQuery } =
-  mdasApi;
+export const {
+  useCreateMdaMutation,
+  useUpdateMdaMutation,
+  useGetAllMdasQuery,
+  useGetOneMdaQuery,
+} = mdasApi;

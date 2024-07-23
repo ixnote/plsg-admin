@@ -10,8 +10,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { MDASFormSchemaType } from '@/types';
 import { useFormContext } from 'react-hook-form';
+import { CldUploadWidget } from 'next-cloudinary';
+import Image from 'next/image';
+import { UploadCloud } from 'lucide-react';
 
-const MDASInfoForm = () => {
+type MDASInfoFormProps = {
+  data: any;
+};
+
+const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
   //   const form = useFormContext<MDASFormSchemaType>();
   const form = useFormContext<MDASFormSchemaType>();
 
@@ -99,6 +106,51 @@ const MDASInfoForm = () => {
                     <FormLabel>MDAs Mission</FormLabel>
                     <FormControl>
                       <Input placeholder='Enter MDAS Mission' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className='flex  w-full gap-x-4'>
+            <div className='w-full'>
+              <FormField
+                control={form.control}
+                name='about.image'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Image</FormLabel>
+                    <FormControl>
+                      <CldUploadWidget
+                        onSuccess={(result, { widget }) => {
+                          field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                          widget.close();
+                        }}
+                        uploadPreset='mymakaranta_preset'
+                      >
+                        {({ open }) => {
+                          function handleOnClick() {
+                            // field.onChange(undefined);
+                            open();
+                          }
+                          return (
+                            <div
+                              onClick={handleOnClick}
+                              className='flex justify-center h-[450px] border-2 border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                            >
+                              {field.value === '' ? (
+                                <div className='flex flex-col justify-center items-center gap-2 '>
+                                  <UploadCloud />
+                                  <h1>Upload image</h1>
+                                </div>
+                              ) : (
+                                <Image src={field.value} alt='images' fill />
+                              )}
+                            </div>
+                          );
+                        }}
+                      </CldUploadWidget>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

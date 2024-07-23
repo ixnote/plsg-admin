@@ -10,6 +10,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { MDASFormSchemaType } from '@/types';
 import { useFormContext } from 'react-hook-form';
+import Image from 'next/image';
+import { UploadCloud } from 'lucide-react';
+import { CldUploadWidget } from 'next-cloudinary';
 
 const MDASDirectorForm = () => {
   const form = useFormContext<MDASFormSchemaType>();
@@ -75,12 +78,15 @@ const MDASDirectorForm = () => {
             <div className='w-full'>
               <FormField
                 control={form.control}
-                name='about.mission'
+                name='director.message'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>MDAs Mission</FormLabel>
+                    <FormLabel>Directors Meassage</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter MDAS Mission' {...field} />
+                      <Input
+                        placeholder='Enter MDAS Directors message'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -89,18 +95,43 @@ const MDASDirectorForm = () => {
             </div>
           </div>
           <div className='flex  w-full gap-x-4'>
-            <div className='w-full'>
+            <div className='w-[250px]'>
               <FormField
                 control={form.control}
-                name='name'
+                name='director.image'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Image</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder='Enter MDAS Official Name'
-                        {...field}
-                      />
+                      <CldUploadWidget
+                        onSuccess={(result, { widget }) => {
+                          field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                          widget.close();
+                        }}
+                        uploadPreset='mymakaranta_preset'
+                      >
+                        {({ open }) => {
+                          function handleOnClick() {
+                            // field.onChange(undefined);
+                            open();
+                          }
+                          return (
+                            <div
+                              onClick={handleOnClick}
+                              className='flex justify-center h-[350px] border-2 border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                            >
+                              {field.value === '' ? (
+                                <div className='flex flex-col justify-center items-center gap-2 '>
+                                  <UploadCloud />
+                                  <h1>Upload image</h1>
+                                </div>
+                              ) : (
+                                <Image src={field.value} alt='images' fill />
+                              )}
+                            </div>
+                          );
+                        }}
+                      </CldUploadWidget>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

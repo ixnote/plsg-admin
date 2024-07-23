@@ -7,31 +7,31 @@ export const MDASFormSchema = z.object({
     description: z.string().min(10, { message: 'Field is required' }),
     vision: z.string().min(10, { message: 'Field is required' }),
     mission: z.string().min(10, { message: 'Field is required' }),
-    image: z.string().min(10, { message: 'Field is required' }),
+    image: z.string().url({ message: 'Image is required' }),
   }),
   director: z.object({
     name: z.string(),
     title: z.string(),
+    message: z.string(),
     position: z.string(),
-    image: z.string(),
+    image: z.string().url({ message: 'Image is required' }),
   }),
   contact: z.object({
     name: z.string(),
     location: z.string(),
     phone: z.string(),
-    email: z.string(),
+    email: z.string().email({ message: 'Email required' }),
   }),
-
   hero: z.object({
     title: z.string(),
     description: z.string(),
-    image: z.string(),
-    logo: z.string(),
+    image: z.string().url({ message: 'Image is required' }),
+    logo: z.string().url({ message: 'Image is required' }),
   }),
   team: z.array(
     z.object({
       name: z.string(),
-      image: z.string(),
+      image: z.string().url({ message: 'Image is required' }),
       role: z.string(),
     })
   ),
@@ -41,32 +41,33 @@ export type MDASFormSchemaType = z.infer<typeof MDASFormSchema>;
 
 export const getDefaultMDASFormSchemaValue = (data: any) => {
   const defaultMDASFormSchemaValue: MDASFormSchemaType = {
-    name: '',
+    name: data?.name ?? '',
     about: {
-      title: '',
-      description: '',
-      vision: '',
-      mission: '',
-      image: '',
+      title: data?.about?.title ?? '',
+      description: data?.about?.description ?? '',
+      vision: data?.about?.vision ?? '',
+      mission: data?.about?.mission ?? '',
+      image: data?.about?.image ?? '',
     },
     team: [],
     contact: {
-      name: '',
-      location: '',
-      phone: '',
-      email: '',
+      name: data?.contact?.name ?? '',
+      location: data?.contact?.location ?? '',
+      phone: data?.contact?.phone ?? '',
+      email: data?.contact?.email ?? '',
     },
     director: {
-      name: '',
-      title: '',
-      position: '',
-      image: '',
+      name: data?.director?.name ?? '',
+      title: data?.director?.title ?? '',
+      position: data?.director?.position ?? '',
+      message: data?.director?.message ?? '',
+      image: data?.director?.image ?? '',
     },
     hero: {
-      title: '',
-      description: '',
-      image: '',
-      logo: '',
+      title: data?.hero?.title ?? '',
+      description: data?.hero?.description ?? '',
+      image: data?.hero?.image ?? '',
+      logo: data?.hero?.logo ?? '',
     },
   };
 

@@ -40,7 +40,7 @@ const UpdateNews = () => {
             </div>
             <h1>{data.data.name}</h1>
           </div>
-          <StepperFormPage />
+          <StepperFormPage data={data.data} />
         </div>
       )}
     </>
