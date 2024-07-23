@@ -99,10 +99,10 @@ const Navigation = ({ data }: NavigationProps) => {
       case 3:
         const contactValidation = await form.trigger(
           [
-            'contact.name',
             'contact.location',
             'contact.email',
-            'contact.phone',
+            'contact.phone_number_1',
+            'contact.phone_number_2',
           ],
           {
             shouldFocus: true,
@@ -110,10 +110,10 @@ const Navigation = ({ data }: NavigationProps) => {
         );
         if (contactValidation) {
           if (
-            form.getFieldState('contact.name').isDirty ||
             form.getFieldState('contact.location').isDirty ||
             form.getFieldState('contact.email').isDirty ||
-            form.getFieldState('contact.phone').isDirty
+            form.getFieldState('contact.phone_number_1').isDirty ||
+            form.getFieldState('contact.phone_number_2').isDirty
           ) {
             const contact = form.getValues('contact');
             await handleSubmit({
