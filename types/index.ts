@@ -21,7 +21,6 @@ export const MDASFormSchema = z.object({
     phone: z.string(),
     email: z.string(),
   }),
-
   hero: z.object({
     title: z.string(),
     description: z.string(),
