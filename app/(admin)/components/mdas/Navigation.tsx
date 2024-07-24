@@ -31,6 +31,24 @@ const Navigation = ({ data }: NavigationProps) => {
     }
   };
 
+  const handleFinish = async () => {
+    const teamValidation = await form.trigger(['team'], {
+      shouldFocus: true,
+    });
+
+    console.log(teamValidation);
+
+    if (teamValidation) {
+      const team = form.getValues('team');
+      await handleSubmit({
+        id: data.id,
+        team,
+      });
+
+      // dispatch(setStep(2));
+    }
+  };
+
   async function handleNextStep() {
     switch (step) {
       case 1:
@@ -190,9 +208,9 @@ const Navigation = ({ data }: NavigationProps) => {
         className={cn('hidden min-w-28 ', {
           ' flex justify-center items-center': step === 5,
         })}
-        // onClick={form.handleSubmit(onSubmit)}
+        onClick={handleFinish}
       >
-        {isLoading ? <h1>Loading.....</h1> : 'Confirm'}
+        {isLoading ? <Loader /> : 'Finish'}
       </Button>
     </div>
   );

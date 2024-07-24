@@ -60,10 +60,13 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
     data?.hero?.logo,
   ];
 
+  const teamRequiredFields = [data?.team.length > 0];
+
   const mdaInfoRequiredFieldsIsCompleted = mdaInfoRequiredFields.every(Boolean);
   const directorIsCompleted = directorRequiredFields.every(Boolean);
   const contactIsCompleted = contactRequiredFields.every(Boolean);
   const heroIsCompleted = heroRequiredFields.every(Boolean);
+  const teamIsCompleted = teamRequiredFields.every(Boolean);
 
   const { step } = useAppSelector((state: RootState) => state.mdas);
   const handleClick = (step: number) => dispatch(setStep(step));
@@ -117,6 +120,7 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
             step={5}
             title='MDAS Team'
             currentStep={step}
+            completed={teamIsCompleted}
             onClick={() => {
               if (heroIsCompleted) {
                 handleClick(5);
