@@ -20,39 +20,19 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ShieldBan } from "lucide-react";
-import AddNewsTitleDialog from "../components/news/AddNewsTitleDialog";
 import { useRouter } from "next/navigation";
 import Loader from "../components/Loader";
-import PaginationButtons from "../components/PaginationButtons";
-
-interface Pagination {
-  currentPage: number;
-  totalPages: number;
-  nextPage: number | null;
-  prevPage: number | null;
-  totalNews: number;
-  pageSize: number;
-}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
-  pagination: Pagination;
-  onPageChange: (page: number) => void;
-  onPageSizeChange: (size: number) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
-  pagination,
-  onPageChange,
-  onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
   const { push } = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -84,19 +64,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className=" flex flex-col gap-4 w-full">
-      <div className="flex w-full justify-between">
-        <Input
-          placeholder="Filter headline..."
-          value={
-            (table.getColumn("headline")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("headline")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <AddNewsTitleDialog />
-      </div>
       <div className="rounded-md border w-full">
         {isLoading ? (
           <div className="flex w-full min-h-screen pt-52 justify-center">
@@ -156,15 +123,6 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         )}
-      </div>
-      <div className="py-4">
-        <PaginationButtons
-          currentPage={pagination?.currentPage}
-          totalPages={pagination?.totalPages}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-          pageSize={pagination?.pageSize}
-        />
       </div>
     </div>
   );

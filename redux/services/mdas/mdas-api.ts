@@ -28,6 +28,14 @@ export const mdasApi = createApi({
       invalidatesTags: ["Mdas"],
     }),
 
+    getMdasDashboard: builder.query<any, any>({
+      query: () => ({
+        url: `statics/mda/dashboard`,
+        method: "GET",
+      }),
+      providesTags: ["Mdas"],
+    }),
+
     getAllMdas: builder.query<any, { page: number; pageSize: number }>({
       query: ({ page, pageSize }) => ({
         url: `/mda/admin?page=${page}&pageSize=${pageSize}`,
@@ -46,5 +54,9 @@ export const mdasApi = createApi({
   }),
 });
 
-export const { useCreateMdaMutation, useGetAllMdasQuery, useGetOneMdaQuery } =
-  mdasApi;
+export const {
+  useCreateMdaMutation,
+  useGetAllMdasQuery,
+  useGetOneMdaQuery,
+  useGetMdasDashboardQuery,
+} = mdasApi;

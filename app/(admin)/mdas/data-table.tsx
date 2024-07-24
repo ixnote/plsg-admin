@@ -146,11 +146,11 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="py-4">
         <PaginationButtons
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
+          currentPage={pagination?.currentPage}
+          totalPages={pagination?.totalPages}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
-          pageSize={pagination.pageSize}
+          pageSize={pagination?.pageSize}
         />
       </div>
     </div>

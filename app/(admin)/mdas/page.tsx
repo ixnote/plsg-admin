@@ -14,7 +14,7 @@ const MDAs = () => {
     pageSize,
   });
 
-  console.log(mdasPagination);
+  // console.log(mdasPagination);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -55,7 +55,7 @@ const MDAs = () => {
               columns={columns}
               data={mdas}
               isLoading={isLoading}
-              pagination={mdasPagination.data.pagination}
+              pagination={mdasPagination?.data?.pagination}
               onPageChange={handlePageChange}
               onPageSizeChange={handlePageSizeChange}
             />
