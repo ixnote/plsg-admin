@@ -1,30 +1,30 @@
-import { getValidAuthTokens } from '@/lib/cookies';
-import { RootState } from '@/redux/store';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getValidAuthTokens } from "@/lib/cookies";
+import { RootState } from "@/redux/store";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const newsApi = createApi({
-  reducerPath: 'newsApi',
+  reducerPath: "newsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getValidAuthTokens();
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ['News'],
+  tagTypes: ["News"],
   endpoints: (builder) => ({
     createNews: builder.mutation<any, any>({
       query: (body) => {
         return {
-          url: '/news/add',
-          method: 'POST',
+          url: "/news/add",
+          method: "POST",
           body: body,
         };
       },
-      invalidatesTags: ['News'],
+      invalidatesTags: ["News"],
     }),
 
     createNewsSection: builder.mutation<any, any>({
@@ -42,27 +42,27 @@ export const newsApi = createApi({
       query: ({ id, ...rest }) => {
         return {
           url: `/news/update/${id}`,
-          method: 'PUT',
+          method: "PUT",
           body: rest,
         };
       },
-      invalidatesTags: ['News'],
+      invalidatesTags: ["News"],
     }),
 
-    getAllNews: builder.query<any, void>({
-      query: () => ({
-        url: '/news/admin/articles',
-        method: 'GET',
+    getAllNews: builder.query<any, { page: number; pageSize: number }>({
+      query: ({ page, pageSize }) => ({
+        url: `/news/admin/articles?page=${page}&pageSize=${pageSize}`,
+        method: "GET",
       }),
-      providesTags: ['News'],
+      providesTags: ["News"],
     }),
 
     getOneNews: builder.query<any, any>({
       query: ({ id }) => ({
         url: `/news/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
-      providesTags: ['News'],
+      providesTags: ["News"],
     }),
   }),
 });
