@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { useUpdateMdaMutation } from '@/redux/services/mdas/mdas-api';
 import { RootState } from '@/redux/store';
 import { MDASFormSchemaType } from '@/types';
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Loader from '../Loader';
 
@@ -169,7 +168,23 @@ const Navigation = ({ data }: NavigationProps) => {
           }
           dispatch(setStep(5));
         }
+        break;
+      case 5:
+        const teamValidation = await form.trigger(['team'], {
+          shouldFocus: true,
+        });
 
+        console.log(teamValidation);
+
+        if (teamValidation) {
+          const team = form.getValues('team');
+          await handleSubmit({
+            id: data.id,
+            team,
+          });
+
+          dispatch(setStep(6));
+        }
         break;
       default:
         break;
@@ -177,7 +192,7 @@ const Navigation = ({ data }: NavigationProps) => {
   }
 
   function handleBackStep() {
-    if (step <= 1 || step >= 6) {
+    if (step <= 1 || step >= 7) {
       return;
     }
     const currentStep = step;
@@ -200,7 +215,7 @@ const Navigation = ({ data }: NavigationProps) => {
 
       <Button
         type='button'
-        className={cn('block min-w-[200px]', { hidden: step >= 5 })}
+        className={cn('block min-w-[200px]', { hidden: step >= 6 })}
         onClick={handleNextStep}
       >
         {isLoading ? <Loader /> : 'Next Step'}
@@ -209,7 +224,7 @@ const Navigation = ({ data }: NavigationProps) => {
       <Button
         type='button'
         className={cn('hidden min-w-28 ', {
-          ' flex justify-center items-center': step === 5,
+          ' flex justify-center items-center': step === 6,
         })}
         onClick={handleFinish}
       >

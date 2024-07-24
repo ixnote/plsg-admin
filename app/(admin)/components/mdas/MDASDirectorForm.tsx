@@ -118,7 +118,7 @@ const MDASDirectorForm = () => {
                           return (
                             <div
                               onClick={handleOnClick}
-                              className='flex justify-center h-[350px] border-2 border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                              className='flex justify-center h-[300px] border-2 border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
                             >
                               {field.value === '' ? (
                                 <div className='flex flex-col justify-center items-center gap-2 '>

@@ -18,6 +18,7 @@ import MDASTeamForm from './MDASTeamForm';
 import Navigation from './Navigation';
 import MDASContactForm from './MDASContactForm';
 import { setStep } from '@/redux/features/mdas/mdas-slice';
+import MDASAdmin from './MDASAdmin';
 
 type StepperFormPageProps = {
   data: any;
@@ -128,10 +129,21 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
               }
             }}
           />
+          <StepperIndicator
+            step={6}
+            title='MDAS Admin'
+            currentStep={step}
+            completed={false}
+            onClick={() => {
+              if (teamIsCompleted) {
+                handleClick(6);
+              }
+            }}
+          />
         </ol>
         <div className='flex flex-col w-full'>
           <Form {...form}>
-            <form className='flex flex-col w-full'>
+            <form className='flex flex-col w-full min-h-[400px]'>
               <div className={cn('hidden', { block: step === 1 })}>
                 <FormProvider {...form}>
                   <MDASInfoForm data={data} />
@@ -155,6 +167,11 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
               <div className={cn('hidden', { block: step === 5 })}>
                 <FormProvider {...form}>
                   <MDASTeamForm />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 6 })}>
+                <FormProvider {...form}>
+                  <MDASAdmin data={data} />
                 </FormProvider>
               </div>
             </form>
