@@ -42,12 +42,12 @@ const MDAs = () => {
   }, [data]);
 
   return (
-    <div className='flex w-full h-full p-6'>
+    <div className='flex w-full h-full p-6 overflow-y-scroll'>
       <div className='flex flex-col w-full gap-6'>
-        <h1 className='text-2xl font-geistsans font-semibold'>
+        <h1 className='text-2xl font-semibold font-oswald'>
           Ministries, Departments and Agencies
         </h1>
-        <div className='flex w-full'>
+        <div className='flex w-full h-full'>
           {mdas && (
             <DataTable
               columns={columns}

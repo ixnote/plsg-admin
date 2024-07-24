@@ -1,8 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
-import { useGetAllResourcesQuery } from "@/redux/services/resources/resources-api";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { columns } from './columns';
+import { DataTable } from './data-table';
+import { useGetAllResourcesQuery } from '@/redux/services/resources/resources-api';
 
 const Resources = () => {
   const [resources, setResources] = useState([]);
@@ -33,8 +33,8 @@ const Resources = () => {
             id: item?.id,
             name: item?.name,
             main_topic_tag:
-              item?.main_topic_tag?.name || "Main Topic Tag not set",
-            main_type_tag: item?.main_type_tag?.name || "Main Type Tag not set",
+              item?.main_topic_tag?.name || 'Main Topic Tag not set',
+            main_type_tag: item?.main_type_tag?.name || 'Main Type Tag not set',
           };
         })
       );
@@ -43,10 +43,10 @@ const Resources = () => {
   }, [data]);
 
   return (
-    <div className="flex w-full h-full p-6">
-      <div className="flex flex-col w-full gap-6">
-        <h1 className="text-2xl font-geistsans font-semibold">Resources</h1>
-        <div className="flex w-full">
+    <div className='flex w-full h-full p-6 overflow-y-scroll'>
+      <div className='flex flex-col w-full gap-6'>
+        <h1 className='text-2xl font-semibold font-oswald'>Resources</h1>
+        <div className='flex w-full'>
           {resources && (
             <DataTable
               columns={columns}

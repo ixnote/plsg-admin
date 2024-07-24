@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import { DataTable } from "./data-table";
-import { columns } from "./columns";
-import { useGetAllUsersQuery } from "@/redux/services/users/user-api";
+import React, { useEffect, useState } from 'react';
+import { DataTable } from './data-table';
+import { columns } from './columns';
+import { useGetAllUsersQuery } from '@/redux/services/users/user-api';
 
 const UsersPage = () => {
   const [users, setUsers] = useState<any>();
@@ -34,11 +34,11 @@ const UsersPage = () => {
   };
 
   return (
-    <div className="flex w-full h-full p-6">
-      <div className="flex flex-col w-full gap-6">
-        <h1 className="text-4xl font-geistsans font-semibold">Users</h1>
-        <div className="flex w-full justify-between"></div>
-        <div className="flex w-full">
+    <div className='flex w-full h-full p-6'>
+      <div className='flex flex-col w-full gap-6'>
+        <h1 className='text-2xl font-semibold font-oswald'>Users</h1>
+        <div className='flex w-full justify-between'></div>
+        <div className='flex w-full'>
           {users?.data?.users && (
             <DataTable
               columns={columns}

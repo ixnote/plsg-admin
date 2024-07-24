@@ -49,7 +49,21 @@ export const getDefaultMDASFormSchemaValue = (data: any) => {
       mission: data?.about?.mission ?? '',
       image: data?.about?.image ?? '',
     },
-    team: [],
+    team:
+      data?.team.length > 0
+        ? data?.team
+        : [
+            {
+              image: '',
+              name: '',
+              role: '',
+            },
+            {
+              image: '',
+              name: '',
+              role: '',
+            },
+          ],
     contact: {
       location: data?.contact?.location ?? '',
       phone_number_1: data?.contact?.phone_number_1 ?? '',
