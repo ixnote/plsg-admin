@@ -32,6 +32,7 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
 
   const mdaInfoRequiredFields = [
     data?.name,
+    data?.abbreviation,
     data?.about?.title,
     data?.about?.description,
     data?.about?.vision,

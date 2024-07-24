@@ -45,6 +45,21 @@ const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
                 )}
               />
             </div>
+            <div className='w-full'>
+              <FormField
+                control={form.control}
+                name='abbreviation'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Abbreviation</FormLabel>
+                    <FormControl>
+                      <Input placeholder='Enter MDAS abbreviation' {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
           <div className='flex  w-full gap-x-4'>
             <div className='w-full'>
