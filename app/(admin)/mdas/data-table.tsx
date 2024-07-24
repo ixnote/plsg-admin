@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
         />
         <AddMdaTitleDialog />
       </div>
-      <div className='rounded-md border w-full'>
+      <div className='rounded-md border w-full min-h-full'>
         {isLoading ? (
           <h1 className='p-4 rounded-lg'>Data is loading....</h1>
         ) : (
