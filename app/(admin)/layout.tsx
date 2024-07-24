@@ -9,11 +9,13 @@ export default function AdminLayout({
 }>) {
   return (
     <AuthWrapper>
-      <div className='flex h-screen w-full'>
+      <div className='flex h-screen w-full overflow-hidden'>
         <SideNavBar />
         <div className='flex flex-col w-full relative'>
           <NavBar />
-          <div className='mt-[80px] w-full p-4 overflow-y-auto'>{children}</div>
+          <div className='mt-[80px] w-full p-4 h-[calc(100vh-80px)]'>
+            {children}
+          </div>
         </div>
       </div>
     </AuthWrapper>

@@ -7,14 +7,10 @@ export const roleApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.token;
       const { token } = getValidAuthTokens();
-
-      // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
-
       return headers;
     },
   }),

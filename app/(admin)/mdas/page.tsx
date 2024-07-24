@@ -1,8 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { columns, Mdas } from "./columns";
-import { DataTable } from "./data-table";
-import { useGetAllMdasQuery } from "@/redux/services/mdas/mdas-api";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { columns, Mdas } from './columns';
+import { DataTable } from './data-table';
+import { useGetAllMdasQuery } from '@/redux/services/mdas/mdas-api';
 
 const MDAs = () => {
   const [mdas, setMdas] = useState([]);
@@ -31,11 +31,11 @@ const MDAs = () => {
           return {
             id: item?.id,
             name: item?.name,
-            director: item?.director?.name || "No director provided",
-            location: item?.contact?.location || "No contact provided",
-            phone: item?.contact?.phone_number || "No phone number provided",
-            email: item?.contact?.email || "No email provided",
-            status: item?.published ? "Published" : "Draft",
+            director: item?.director?.name || 'No director provided',
+            location: item?.contact?.location || 'No contact provided',
+            phone: item?.contact?.phone_number || 'No phone number provided',
+            email: item?.contact?.email || 'No email provided',
+            status: item?.published ? 'Published' : 'Draft',
           };
         })
       );
@@ -44,12 +44,12 @@ const MDAs = () => {
   }, [data]);
 
   return (
-    <div className="flex w-full h-full p-6">
-      <div className="flex flex-col w-full gap-6">
-        <h1 className="text-2xl font-geistsans font-semibold">
+    <div className='flex w-full h-full p-6 overflow-y-scroll'>
+      <div className='flex flex-col w-full gap-6'>
+        <h1 className='text-2xl font-semibold font-oswald'>
           Ministries, Departments and Agencies
         </h1>
-        <div className="flex w-full">
+        <div className='flex w-full h-full'>
           {mdas && (
             <DataTable
               columns={columns}

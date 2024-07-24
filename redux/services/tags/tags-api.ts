@@ -8,7 +8,6 @@ export const tagsApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getValidAuthTokens();
-      // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -35,7 +34,28 @@ export const tagsApi = createApi({
       }),
       providesTags: ['Tags'],
     }),
+
+    getAllTopicTags: builder.query<any, void>({
+      query: () => ({
+        url: '/tag/topics',
+        method: 'GET',
+      }),
+      providesTags: ['Tags'],
+    }),
+
+    getAllTypeTags: builder.query<any, void>({
+      query: () => ({
+        url: '/tag/types',
+        method: 'GET',
+      }),
+      providesTags: ['Tags'],
+    }),
   }),
 });
 
-export const { useCreateTagsMutation, useGetAllTagsQuery } = tagsApi;
+export const {
+  useCreateTagsMutation,
+  useGetAllTagsQuery,
+  useGetAllTopicTagsQuery,
+  useGetAllTypeTagsQuery,
+} = tagsApi;

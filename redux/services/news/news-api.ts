@@ -8,7 +8,6 @@ export const newsApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getValidAuthTokens();
-      // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -26,6 +25,17 @@ export const newsApi = createApi({
         };
       },
       invalidatesTags: ["News"],
+    }),
+
+    createNewsSection: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/news/section/add/${id}`,
+          method: 'PUT',
+          body: { ...rest },
+        };
+      },
+      invalidatesTags: ['News'],
     }),
 
     updateNews: builder.mutation<any, any>({
@@ -59,6 +69,7 @@ export const newsApi = createApi({
 
 export const {
   useCreateNewsMutation,
+  useCreateNewsSectionMutation,
   useUpdateNewsMutation,
   useGetAllNewsQuery,
   useGetOneNewsQuery,
