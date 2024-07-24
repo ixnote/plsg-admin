@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const MDASFormSchema = z.object({
   name: z.string().min(2, { message: 'Field is required' }),
+  abbreviation: z.string().min(2, { message: 'Field is required' }),
   about: z.object({
     title: z.string().min(8, { message: 'Field is required' }),
     description: z.string().min(10, { message: 'Field is required' }),
@@ -42,6 +43,7 @@ export type MDASFormSchemaType = z.infer<typeof MDASFormSchema>;
 export const getDefaultMDASFormSchemaValue = (data: any) => {
   const defaultMDASFormSchemaValue: MDASFormSchemaType = {
     name: data?.name ?? '',
+    abbreviation: data?.abbreviation ?? '',
     about: {
       title: data?.about?.title ?? '',
       description: data?.about?.description ?? '',

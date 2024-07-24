@@ -55,6 +55,7 @@ const Navigation = ({ data }: NavigationProps) => {
         const result = await form.trigger(
           [
             'name',
+            'abbreviation',
             'about.title',
             'about.description',
             'about.vision',
@@ -68,6 +69,7 @@ const Navigation = ({ data }: NavigationProps) => {
         if (result) {
           if (
             form.getFieldState('name').isDirty ||
+            form.getFieldState('abbreviation').isDirty ||
             form.getFieldState('about.title').isDirty ||
             form.getFieldState('about.description').isDirty ||
             form.getFieldState('about.vision').isDirty ||
@@ -78,6 +80,7 @@ const Navigation = ({ data }: NavigationProps) => {
             await handleSubmit({
               id: data.id,
               name: form.getValues('name'),
+              abbreviation: form.getValues('abbreviation'),
               about,
             });
           }
