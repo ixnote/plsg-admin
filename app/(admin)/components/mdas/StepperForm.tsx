@@ -6,184 +6,187 @@ import {
 } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { Form, useForm } from 'react-hook-form';
+import { Form, FormProvider, useForm } from 'react-hook-form';
 import StepperIndicator from './StepperIndicator';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/utils';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { RootState } from '@/redux/store';
+import MDASInfoForm from './MDASInfoForm';
+import MDASDirectorForm from './MDASDirectorForm';
+import MDASHeroForm from './MDASHeroForm';
+import MDASTeamForm from './MDASTeamForm';
+import Navigation from './Navigation';
+import MDASContactForm from './MDASContactForm';
+import { setStep } from '@/redux/features/mdas/mdas-slice';
+import MDASAdmin from './MDASAdmin';
 
-const StepperForm = () => {
+type StepperFormPageProps = {
+  data: any;
+};
+
+const StepperFormPage = ({ data }: StepperFormPageProps) => {
+  const dispatch = useAppDispatch();
   const form = useForm<MDASFormSchemaType>({
     resolver: zodResolver(MDASFormSchema),
-    defaultValues: getDefaultMDASFormSchemaValue({}),
+    defaultValues: getDefaultMDASFormSchemaValue(data),
   });
 
+  const mdaInfoRequiredFields = [
+    data?.name,
+    data?.abbreviation,
+    data?.about?.title,
+    data?.about?.description,
+    data?.about?.vision,
+    data?.about?.mission,
+    data?.about?.image,
+  ];
+  const directorRequiredFields = [
+    data?.director?.name,
+    data?.director?.title,
+    data?.director?.position,
+    data?.director?.message,
+    data?.director?.image,
+  ];
+
+  const contactRequiredFields = [
+    data?.contact?.location,
+    data?.contact?.phone_number_1,
+    data?.contact?.phone_number_2,
+    data?.contact?.email,
+  ];
+
+  const heroRequiredFields = [
+    data?.hero?.title,
+    data?.hero?.description,
+    data?.hero?.image,
+    data?.hero?.logo,
+  ];
+
+  const teamRequiredFields = [data?.team.length > 0];
+  const adminRequiredFields = [data?.admin];
+
+  const mdaInfoRequiredFieldsIsCompleted = mdaInfoRequiredFields.every(Boolean);
+  const directorIsCompleted = directorRequiredFields.every(Boolean);
+  const contactIsCompleted = contactRequiredFields.every(Boolean);
+  const heroIsCompleted = heroRequiredFields.every(Boolean);
+  const teamIsCompleted = teamRequiredFields.every(Boolean);
+  const adminIsCompleted = adminRequiredFields.every(Boolean);
+
+  const { step } = useAppSelector((state: RootState) => state.mdas);
+  const handleClick = (step: number) => dispatch(setStep(step));
   return (
-    <div className='flex flex-col w-full'>
-      <ol className='flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-12'>
-        <StepperIndicator step={1} title='MDAS Information' completed={true} />
-        <StepperIndicator step={2} title='Director' />
-        <StepperIndicator step={3} title='Contact' />
-        <StepperIndicator step={4} title='Page Header' />
-        <StepperIndicator step={5} title='MDAS Team' />
-      </ol>
-      <div className='flex flex-col'>
+    <div className='flex w-full'>
+      <div className='flex flex-col w-full'>
+        <ol className='flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-12'>
+          <StepperIndicator
+            step={1}
+            title='MDAS Information'
+            currentStep={step}
+            onClick={() => {
+              handleClick(1);
+            }}
+            completed={mdaInfoRequiredFieldsIsCompleted}
+          />
+          <StepperIndicator
+            step={2}
+            title='Director'
+            currentStep={step}
+            onClick={() => {
+              if (mdaInfoRequiredFieldsIsCompleted) {
+                handleClick(2);
+              }
+            }}
+            completed={directorIsCompleted}
+          />
+          <StepperIndicator
+            step={3}
+            title='Contact'
+            currentStep={step}
+            onClick={() => {
+              if (directorIsCompleted) {
+                handleClick(3);
+              }
+            }}
+            completed={contactIsCompleted}
+          />
+          <StepperIndicator
+            step={4}
+            title='Page Header'
+            currentStep={step}
+            onClick={() => {
+              if (contactIsCompleted) {
+                handleClick(4);
+              }
+            }}
+            completed={heroIsCompleted}
+          />
+          <StepperIndicator
+            step={5}
+            title='MDAS Team'
+            currentStep={step}
+            completed={teamIsCompleted}
+            onClick={() => {
+              if (heroIsCompleted) {
+                handleClick(5);
+              }
+            }}
+          />
+          <StepperIndicator
+            step={6}
+            title='MDAS Admin'
+            currentStep={step}
+            completed={adminIsCompleted}
+            onClick={() => {
+              if (teamIsCompleted) {
+                handleClick(6);
+              }
+            }}
+          />
+        </ol>
+        <div className='flex flex-col w-full'>
+          <Form {...form}>
+            <form className='flex flex-col w-full min-h-[300px]'>
+              <div className={cn('hidden', { block: step === 1 })}>
+                <FormProvider {...form}>
+                  <MDASInfoForm data={data} />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 2 })}>
+                <FormProvider {...form}>
+                  <MDASDirectorForm />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 3 })}>
+                <FormProvider {...form}>
+                  <MDASContactForm />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 4 })}>
+                <FormProvider {...form}>
+                  <MDASHeroForm />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 5 })}>
+                <FormProvider {...form}>
+                  <MDASTeamForm />
+                </FormProvider>
+              </div>
+              <div className={cn('hidden', { block: step === 6 })}>
+                <FormProvider {...form}>
+                  <MDASAdmin data={data} />
+                </FormProvider>
+              </div>
+            </form>
+          </Form>
+        </div>
         <Form {...form}>
-          <form>
-            <div className='flex gap-x-6 mb-6'>
-              <div className='w-full relative'>
-                <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                  First Name{' '}
-                  <svg
-                    width='7'
-                    height='7'
-                    className='ml-1'
-                    viewBox='0 0 7 7'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                      fill='#EF4444'
-                    />
-                  </svg>
-                </label>
-                <input
-                  type='text'
-                  id='default-search'
-                  className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                  placeholder=''
-                />
-              </div>
-              <div className='w-full relative'>
-                <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                  Last Name{' '}
-                  <svg
-                    width='7'
-                    height='7'
-                    className='ml-1'
-                    viewBox='0 0 7 7'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                      fill='#EF4444'
-                    />
-                  </svg>
-                </label>
-                <input
-                  type='text'
-                  id='default-search'
-                  className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                  placeholder=''
-                />
-              </div>
-            </div>
-            <div className='relative mb-6'>
-              <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                Email Address{' '}
-                <svg
-                  width='7'
-                  height='7'
-                  className='ml-1'
-                  viewBox='0 0 7 7'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                    fill='#EF4444'
-                  />
-                </svg>
-              </label>
-              <input
-                type='text'
-                id='default-search'
-                className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                placeholder=''
-              />
-            </div>
-            <div className='flex gap-x-6 mb-6'>
-              <div className='w-full relative'>
-                <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                  DOB{' '}
-                  <svg
-                    width='7'
-                    height='7'
-                    className='ml-1'
-                    viewBox='0 0 7 7'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                      fill='#EF4444'
-                    />
-                  </svg>
-                </label>
-                <input
-                  type='text'
-                  id='default-search'
-                  className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                  placeholder=''
-                />
-              </div>
-              <div className='w-full relative'>
-                <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                  Country{' '}
-                  <svg
-                    width='7'
-                    height='7'
-                    className='ml-1'
-                    viewBox='0 0 7 7'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                      fill='#EF4444'
-                    />
-                  </svg>
-                </label>
-                <input
-                  type='text'
-                  id='default-search'
-                  className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                  placeholder=''
-                />
-              </div>
-            </div>
-            <div className='relative mb-6'>
-              <label className='flex  items-center mb-2 text-gray-600 text-sm font-medium'>
-                Phone Number{' '}
-                <svg
-                  width='7'
-                  height='7'
-                  className='ml-1'
-                  viewBox='0 0 7 7'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z'
-                    fill='#EF4444'
-                  />
-                </svg>
-              </label>
-              <input
-                type='text'
-                id='default-search'
-                className='block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none '
-                placeholder=''
-              />
-            </div>
-            <Button className=' min-w-32 text-white text-base font-semibold leading-7'>
-              Next
-            </Button>
-          </form>
+          <FormProvider {...form}>
+            <Navigation data={data} />
+          </FormProvider>
         </Form>
       </div>
     </div>
   );
 };
 
-export default StepperForm;
+export default StepperFormPage;

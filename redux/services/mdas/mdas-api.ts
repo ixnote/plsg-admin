@@ -6,9 +6,7 @@ export const mdasApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.token;
       const { token } = getValidAuthTokens();
-      // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -26,6 +24,47 @@ export const mdasApi = createApi({
         };
       },
       invalidatesTags: ['Mdas'],
+    }),
+
+    updateMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/update/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      invalidatesTags: ['Mdas'],
+    }),
+
+    assingAdminMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/assign/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      // invalidatesTags: ['Mdas'],
+    }),
+
+    disabledAdminMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/unassign/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      invalidatesTags: ['Mdas'],
+    }),
+
+    getMdasDashboard: builder.query<any, any>({
+      query: () => ({
+        url: `statics/mda/dashboard`,
+        method: 'GET',
+      }),
+      providesTags: ['Mdas'],
     }),
 
     getAllMdas: builder.query<any, { page: number; pageSize: number }>({
@@ -46,5 +85,12 @@ export const mdasApi = createApi({
   }),
 });
 
-export const { useCreateMdaMutation, useGetAllMdasQuery, useGetOneMdaQuery } =
-  mdasApi;
+export const {
+  useCreateMdaMutation,
+  useGetAllMdasQuery,
+  useUpdateMdaMutation,
+  useAssingAdminMdaMutation,
+  useDisabledAdminMdaMutation,
+  useGetOneMdaQuery,
+  useGetMdasDashboardQuery,
+} = mdasApi;

@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import StepperForm from '../../components/mdas/StepperForm';
 import { ArrowLeftIcon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useGetOneMdaQuery } from '@/redux/services/mdas/mdas-api';
+import StepperFormPage from '../../components/mdas/StepperForm';
 
 const UpdateNews = () => {
   const params = useParams();
@@ -25,7 +25,7 @@ const UpdateNews = () => {
   return (
     <>
       {data && (
-        <div className='flex flex-col px-20 gap-10'>
+        <div className='flex flex-col  gap-10 h-full overflow-y-scroll p-10'>
           <div className='flex flex-col gap-4'>
             <div className='flex w-full items-center justify-between'>
               <div
@@ -40,7 +40,7 @@ const UpdateNews = () => {
             </div>
             <h1>{data.data.name}</h1>
           </div>
-          <StepperForm />
+          <StepperFormPage data={data.data} />
         </div>
       )}
     </>

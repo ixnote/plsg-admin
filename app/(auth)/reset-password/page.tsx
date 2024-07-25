@@ -16,47 +16,61 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useLoginMutation } from '@/redux/services/auth/auth-api';
+import {
+  useLoginMutation,
+  useResetPasswordMutation,
+} from '@/redux/services/auth/auth-api';
 import { useRouter } from 'next/navigation';
 import { showToast } from '@/lib/showToast';
 import Loader from '@/app/(admin)/components/Loader';
+import { useAppDispatch } from '@/redux/hook';
+import { logout } from '@/redux/features/auth/auth-slice';
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: 'Valid email is require.',
-  }),
-  password: z.string().min(8, {
-    message: 'Valid password is required minimun 8 characters.',
-  }),
-});
+const formSchema = z
+  .object({
+    password: z.string().min(8, {
+      message: 'Valid email is require.',
+    }),
+    newPassword: z.string().min(8, {
+      message: 'Valid email is require.',
+    }),
+    confirmPassword: z.string().min(8, {
+      message: 'Valid password is required minimun 8 characters.',
+    }),
+  })
+  .superRefine(({ confirmPassword, newPassword }, ctx) => {
+    if (confirmPassword !== newPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'The passwords did not match',
+        path: ['confirmPassword'],
+      });
+    }
+  });
 
-const Login = () => {
+const ResetPassword = () => {
   const { push } = useRouter();
-  const [login, { data, isError, isLoading, isSuccess }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const [resetPassword, { data, isError, isLoading, isSuccess }] =
+    useResetPasswordMutation();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
       password: '',
+      newPassword: '',
+      confirmPassword: '',
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const result = await login(values).unwrap();
+      const result = await resetPassword(values).unwrap();
       showToast('success', <p>Login was successful</p>);
-      let url =
-        result?.data?.role === 'super' ? '/dashboard' : '/mdas-dashboard';
-      console.log(result.data.first_time_login);
-
-      if (result.data.password_updated) {
-        push('/reset-password');
-      } else {
-        push(url);
-      }
+      dispatch(logout());
+      push('/login');
     } catch (error: any) {
       showToast('error', <p>{error.data.message}</p>);
     }
@@ -75,26 +89,13 @@ const Login = () => {
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col gap-3'>
           <h1 className='text-sm text-green-700 font-medium'>
-            Login to your Account!
+            Reset password to your Account!
           </h1>
-          <h2 className=' text-3xl font-bold '>WELCOME BACK</h2>
+          <h2 className=' text-3xl font-bold '>PASSWORD CHANGE</h2>
         </div>
         <div className='flex flex-col gap-10'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-10'>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Enter your email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name='password'
@@ -112,8 +113,42 @@ const Login = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name='newPassword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Enter New password again'
+                        {...field}
+                        type='password'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='confirmPassword'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder='Enter password again'
+                        {...field}
+                        type='password'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button type='submit' className='w-full'>
-                {isLoading ? <Loader /> : <h1>Submit</h1>}
+                {isLoading ? <Loader /> : <h1>Reset</h1>}
               </Button>
             </form>
           </Form>
@@ -126,4 +161,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

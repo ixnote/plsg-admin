@@ -79,7 +79,7 @@ const SideNavBar = () => {
   const navBar = user?.role === 'super' ? navItemsSuperAdmin : navItemsMdaAdmin;
 
   return (
-    <div className=' sticky inset-y-0 w-[250px]  h-full border-r-[1px] '>
+    <div className=' sticky inset-y-0 w-[260px]  h-full border-r-[1px] '>
       <div className='flex flex-col h-screen py-3 gap-4 justify-between'>
         <div className='flex flex-col gap-4'>
           <div className='flex gap-2 items-center px-4 py-2'>

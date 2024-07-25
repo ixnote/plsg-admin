@@ -221,7 +221,6 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                 icon={<Highlighter />}
                 onClick={() => {}}
               />
-              {/* <SectionBtn title='Add Video' icon={<FileVideo />} onClick={()=>{}} /> */}
               <SectionBtn
                 title='Add Text'
                 icon={<ALargeSmall />}

@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -55,7 +57,7 @@ type ResourceInfoSectionProps = {
 
 const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
   const router = useRouter();
-  const [subTopic, setSubTopic] = useState() as any;
+  // const [subTopic, setSubTopic] = useState() as any;
   const [
     updateResource,
     { data: resourceData, isError, isLoading, isSuccess },

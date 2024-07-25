@@ -23,7 +23,7 @@ const UpdateResource = () => {
   };
 
   return (
-    <div className="flex w-full h-full p-6">
+    <div className="flex w-full h-full p-6 overflow-y-scroll">
       {isLoading ? (
         <div className="flex w-full min-h-screen pt-52 justify-center">
           <Loader />
@@ -51,7 +51,7 @@ const UpdateResource = () => {
               <Button variant={"destructive"}>Publish</Button>
             </div> */}
           </div>
-          <div className="flex items-center justify-center w-full gap-3 overflow-y-hidden bg-red-300">
+          <div className="flex items-center justify-center w-full  gap-3">
             <ResourceInfoSection data={data} />
           </div>
         </div>
