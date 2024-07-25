@@ -115,80 +115,92 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
       {isEditting ? (
         <div className='flex flex-col w-full py-4 '>
           <form onSubmit={handleSubmit(onSubmit)} className=' space-y-6'>
-            {fields.map((field, index) => (
-              <div key={field.id} className='flex w-full gap-3 items-center'>
-                <div className='flex flex-col w-full gap-2'>
-                  {fields[index].type === 'paragraph' && (
-                    <Controller
-                      name={`fields.${index}.value`}
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          placeholder='eg. Some great information'
-                        />
-                      )}
-                    />
-                  )}
-                  {fields[index].type === 'bullet' && (
-                    <Controller
-                      name={`fields.${index}.value`}
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          placeholder='eg. imformation,news,education'
-                        />
-                      )}
-                    />
-                  )}
-                  {fields[index].type === 'image' && (
-                    <Controller
-                      name={`fields.${index}.value`}
-                      control={control}
-                      render={({ field }) => (
-                        <CldUploadWidget
-                          onSuccess={(result, { widget }) => {
-                            field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
-                            widget.close();
-                          }}
-                          uploadPreset='mymakaranta_preset'
-                        >
-                          {({ open }) => {
-                            function handleOnClick() {
-                              field.onChange(undefined);
-                              open();
-                            }
-                            return (
-                              <div
-                                onClick={handleOnClick}
-                                className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
-                              >
-                                {field.value === '' ? (
-                                  <div className='flex flex-col justify-center items-center gap-2 '>
-                                    <UploadCloud />
-                                    <h1>Upload image</h1>
-                                  </div>
-                                ) : (
-                                  <Image src={field.value} alt='images' fill />
-                                )}
-                              </div>
-                            );
-                          }}
-                        </CldUploadWidget>
-                      )}
-                    />
-                  )}
+            {fields.map((field, index) => {
+              const ren =
+                fields[index].type === 'paragraph' ||
+                fields[index].type === 'heading' ||
+                fields[index].type === 'section_title' ||
+                fields[index].type === 'text' ||
+                fields[index].type === 'sub_heading';
+              return (
+                <div key={field.id} className='flex w-full gap-3 items-center'>
+                  <div className='flex flex-col w-full gap-2'>
+                    {ren && (
+                      <Controller
+                        name={`fields.${index}.value`}
+                        control={control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            placeholder='eg. Some great information'
+                          />
+                        )}
+                      />
+                    )}
+                    {fields[index].type === 'bullet' && (
+                      <Controller
+                        name={`fields.${index}.value`}
+                        control={control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            placeholder='eg. imformation,news,education'
+                          />
+                        )}
+                      />
+                    )}
+                    {fields[index].type === 'image' && (
+                      <Controller
+                        name={`fields.${index}.value`}
+                        control={control}
+                        render={({ field }) => (
+                          <CldUploadWidget
+                            onSuccess={(result, { widget }) => {
+                              field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                              widget.close();
+                            }}
+                            uploadPreset='mymakaranta_preset'
+                          >
+                            {({ open }) => {
+                              function handleOnClick() {
+                                field.onChange(undefined);
+                                open();
+                              }
+                              return (
+                                <div
+                                  onClick={handleOnClick}
+                                  className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
+                                >
+                                  {field.value === '' ? (
+                                    <div className='flex flex-col justify-center items-center gap-2 '>
+                                      <UploadCloud />
+                                      <h1>Upload image</h1>
+                                    </div>
+                                  ) : (
+                                    <Image
+                                      src={field.value}
+                                      alt='images'
+                                      fill
+                                    />
+                                  )}
+                                </div>
+                              );
+                            }}
+                          </CldUploadWidget>
+                        )}
+                      />
+                    )}
+                  </div>
+                  <Button
+                    type='button'
+                    variant={'destructive'}
+                    onClick={() => remove(index)}
+                  >
+                    <Trash2Icon size={20} />
+                  </Button>
                 </div>
-                <Button
-                  type='button'
-                  variant={'destructive'}
-                  onClick={() => remove(index)}
-                >
-                  <Trash2Icon size={20} />
-                </Button>
-              </div>
-            ))}
+              );
+            })}
             <div className='flex justify-between items-center p-3 w-full border-2 bg-slate-100 border-dashed rounded-lg'>
               <SectionBtn
                 title='Add Paragraph'
@@ -214,28 +226,36 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
               <SectionBtn
                 title='Add Header'
                 icon={<Heading1 />}
-                onClick={() => {}}
-              />
-              <SectionBtn
-                title='Add Highlight'
-                icon={<Highlighter />}
-                onClick={() => {}}
-              />
-              <SectionBtn
-                title='Add Text'
-                icon={<ALargeSmall />}
-                onClick={() => {}}
+                onClick={() => {
+                  handleAddSection('heading');
+                }}
               />
               <SectionBtn
                 title='Add Sub Heading'
                 icon={<Heading2 />}
-                onClick={() => {}}
+                onClick={() => {
+                  handleAddSection('sub_heading');
+                }}
               />
               <SectionBtn
-                title='Add Section Heading'
+                title='Add Section Title'
                 icon={<LayoutPanelTop />}
-                onClick={() => {}}
+                onClick={() => {
+                  handleAddSection('section_title');
+                }}
               />
+              <SectionBtn
+                title='Add Text'
+                icon={<ALargeSmall />}
+                onClick={() => {
+                  handleAddSection('text');
+                }}
+              />
+              {/* <SectionBtn
+                title='Add Highlight'
+                icon={<Highlighter />}
+                onClick={() => {}}
+              /> */}
             </div>
             <div className='flex w-full justify-between'>
               <Button
