@@ -220,16 +220,6 @@ const Navigation = ({ data }: NavigationProps) => {
       >
         {isLoading ? <Loader /> : 'Next Step'}
       </Button>
-
-      <Button
-        type='button'
-        className={cn('hidden min-w-28 ', {
-          ' flex justify-center items-center': step === 6,
-        })}
-        onClick={handleFinish}
-      >
-        {isLoading ? <Loader /> : 'Finish'}
-      </Button>
     </div>
   );
 };

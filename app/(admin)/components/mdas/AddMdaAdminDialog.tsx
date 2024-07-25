@@ -9,29 +9,64 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
-import { showToast } from '@/lib/showToast';
+
+import Link from 'next/link';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import Loader from '../Loader';
+import { useGetAllAdminUsersQuery } from '@/redux/services/users/user-api';
+import { useAssingAdminMdaMutation } from '@/redux/services/mdas/mdas-api';
+import { showToast } from '@/lib/showToast';
 
-import { useCreateMdaMutation } from '@/redux/services/mdas/mdas-api';
+const FormSchema = z.object({
+  userId: z.string(),
+});
 
-const AddMdaAdminDialog = () => {
-  const [createMda, { data, isError, isLoading, isSuccess }] =
-    useCreateMdaMutation();
+type AddMdaAdminDialogProps = {
+  data: any;
+};
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     console.log("🚀 ~ AddMdaTitleDialog ~ inputValue:", inputValue);
+const AddMdaAdminDialog = ({ data: mda }: AddMdaAdminDialogProps) => {
+  const [assingAdminMda, assignAdminData] = useAssingAdminMdaMutation();
 
-  //     const result = await createMda({ name: inputValue }).unwrap();
-  //     console.log(result);
-  //     showToast("success", <p>{result?.message}</p>);
-  //     push(`/mdas/${result?.data?.id || "1"}`);
-  //   } catch (error: any) {
-  //     showToast("error", <p>{error.data.message}</p>);
-  //   }
-  // };
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      userId: '',
+    },
+  });
+
+  const { data, isLoading, refetch } = useGetAllAdminUsersQuery();
+
+  const onSubmit = async (data: any) => {
+    try {
+      const result = await assingAdminMda({
+        id: mda.id,
+        admin: data.userId,
+      }).unwrap();
+      console.log(result);
+      showToast('success', <p>{result?.message}</p>);
+    } catch (error: any) {
+      showToast('error', <p>{error.data.message}</p>);
+    }
+  };
 
   return (
     <Dialog>
@@ -42,12 +77,58 @@ const AddMdaAdminDialog = () => {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>MDA caption</DialogTitle>
+          <DialogTitle>MDA Admin</DialogTitle>
         </DialogHeader>
-        <div className='flex w-full'></div>
-        <DialogFooter>
-          <Button type='submit'>{isLoading ? <Loader /> : 'Create MDA'}</Button>
-        </DialogFooter>
+        {data?.data?.users && (
+          <div className='flex w-full'>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='flex w-full gap-6 flex-col'
+              >
+                <FormField
+                  control={form.control}
+                  name='userId'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select MDA Admin' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {data?.data?.users.map((user: any, index: any) => {
+                            if (user.role !== 'super') {
+                              return (
+                                <SelectItem value={user.id} key={index}>
+                                  {user.email} | {user.full_name}
+                                </SelectItem>
+                              );
+                            }
+                          })}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        You can manage MDA admins in the{' '}
+                        <Link href='/user'>Users section</Link>.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type='submit' className=''>
+                  {assignAdminData.isLoading ? <Loader /> : 'Assign'}
+                </Button>
+              </form>
+            </Form>
+          </div>
+        )}
+        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );

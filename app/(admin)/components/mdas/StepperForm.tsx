@@ -63,17 +63,19 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
   ];
 
   const teamRequiredFields = [data?.team.length > 0];
+  const adminRequiredFields = [data?.admin];
 
   const mdaInfoRequiredFieldsIsCompleted = mdaInfoRequiredFields.every(Boolean);
   const directorIsCompleted = directorRequiredFields.every(Boolean);
   const contactIsCompleted = contactRequiredFields.every(Boolean);
   const heroIsCompleted = heroRequiredFields.every(Boolean);
   const teamIsCompleted = teamRequiredFields.every(Boolean);
+  const adminIsCompleted = adminRequiredFields.every(Boolean);
 
   const { step } = useAppSelector((state: RootState) => state.mdas);
   const handleClick = (step: number) => dispatch(setStep(step));
   return (
-    <div className='flex w-full p-0 relative'>
+    <div className='flex w-full'>
       <div className='flex flex-col w-full'>
         <ol className='flex items-center w-full text-sm text-gray-500 font-medium sm:text-base mb-12'>
           <StepperIndicator
@@ -133,7 +135,7 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
             step={6}
             title='MDAS Admin'
             currentStep={step}
-            completed={false}
+            completed={adminIsCompleted}
             onClick={() => {
               if (teamIsCompleted) {
                 handleClick(6);
@@ -143,7 +145,7 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
         </ol>
         <div className='flex flex-col w-full'>
           <Form {...form}>
-            <form className='flex flex-col w-full min-h-[400px]'>
+            <form className='flex flex-col w-full min-h-[300px]'>
               <div className={cn('hidden', { block: step === 1 })}>
                 <FormProvider {...form}>
                   <MDASInfoForm data={data} />
