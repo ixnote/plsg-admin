@@ -51,7 +51,7 @@ const UpdateResource = () => {
               <Button variant={"destructive"}>Publish</Button>
             </div> */}
           </div>
-          <div className="flex items-center justify-center w-full  gap-3">
+          <div className="flex items-center justify-center w-full gap-3 overflow-y-hidden bg-red-300">
             <ResourceInfoSection data={data} />
           </div>
         </div>
