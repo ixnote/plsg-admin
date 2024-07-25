@@ -28,6 +28,22 @@ export const authApi = createApi({
       },
     }),
 
+    resetPassword: builder.mutation<
+      any,
+      { password: string; newPassword: string; confirmPassword: string }
+    >({
+      query: ({ password, newPassword, confirmPassword }) => {
+        return {
+          url: '/auth/change-password',
+          method: 'PUT',
+          body: {
+            password,
+            newPassword,
+          },
+        };
+      },
+    }),
+
     getAuthData: builder.query<any, { token: string }>({
       query: ({ token }) => ({
         url: '/auth/profile',
@@ -52,5 +68,9 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useGetAuthDataQuery, useCreateUsersMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useResetPasswordMutation,
+  useGetAuthDataQuery,
+  useCreateUsersMutation,
+} = authApi;

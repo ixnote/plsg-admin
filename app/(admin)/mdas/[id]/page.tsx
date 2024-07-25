@@ -25,7 +25,7 @@ const UpdateNews = () => {
   return (
     <>
       {data && (
-        <div className='flex flex-col px-20 gap-10 h-full overflow-y-scroll'>
+        <div className='flex flex-col  gap-10 h-full overflow-y-scroll p-10'>
           <div className='flex flex-col gap-4'>
             <div className='flex w-full items-center justify-between'>
               <div

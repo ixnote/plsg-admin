@@ -37,12 +37,34 @@ export const mdasApi = createApi({
       invalidatesTags: ['Mdas'],
     }),
 
+    assingAdminMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/assign/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      // invalidatesTags: ['Mdas'],
+    }),
+
+    disabledAdminMda: builder.mutation<any, any>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `/mda/unassign/${id}`,
+          method: 'PATCH',
+          body: rest,
+        };
+      },
+      invalidatesTags: ['Mdas'],
+    }),
+
     getMdasDashboard: builder.query<any, any>({
       query: () => ({
         url: `statics/mda/dashboard`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["Mdas"],
+      providesTags: ['Mdas'],
     }),
 
     getAllMdas: builder.query<any, { page: number; pageSize: number }>({
@@ -66,6 +88,9 @@ export const mdasApi = createApi({
 export const {
   useCreateMdaMutation,
   useGetAllMdasQuery,
+  useUpdateMdaMutation,
+  useAssingAdminMdaMutation,
+  useDisabledAdminMdaMutation,
   useGetOneMdaQuery,
   useGetMdasDashboardQuery,
 } = mdasApi;

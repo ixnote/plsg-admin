@@ -1,14 +1,14 @@
-"use client";
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { CldUploadWidget } from "next-cloudinary";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+'use client';
+import React from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { CldUploadWidget } from 'next-cloudinary';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -17,26 +17,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { UploadCloud } from "lucide-react";
-import { showToast } from "@/lib/showToast";
-import Loader from "../Loader";
-import { useUpdateResourceMutation } from "@/redux/services/resources/resources-api";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
+import { UploadCloud } from 'lucide-react';
+import { showToast } from '@/lib/showToast';
+import Loader from '../Loader';
+import { useUpdateResourceMutation } from '@/redux/services/resources/resources-api';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 import {
   useGetAllTopicTagsQuery,
   useGetAllTypeTagsQuery,
-} from "@/redux/services/tags/tags-api";
+} from '@/redux/services/tags/tags-api';
 
 const formSchema = z.object({
   name: z.string(),
@@ -78,15 +78,15 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: data?.data?.name ?? "",
-      title: data?.data.title ?? "",
-      description: data?.data?.description ?? "",
-      link: data?.data?.link ?? "",
-      image: data?.data?.image ?? "",
-      main_type_tag: data?.data?.main_type_tag ?? "",
-      sub_type_tag: data?.data?.sub_type_tag ?? "",
-      main_topic_tag: data?.data?.main_topic_tag ?? "",
-      sub_topic_tag: data?.data?.sub_topic_tag ?? "",
+      name: data?.data?.name ?? '',
+      title: data?.data.title ?? '',
+      description: data?.data?.description ?? '',
+      link: data?.data?.link ?? '',
+      image: data?.data?.image ?? '',
+      main_type_tag: data?.data?.main_type_tag ?? '',
+      sub_type_tag: data?.data?.sub_type_tag ?? '',
+      main_topic_tag: data?.data?.main_topic_tag ?? '',
+      sub_topic_tag: data?.data?.sub_topic_tag ?? '',
       all_topic_tags: data?.data.all_topic_tags.map((tag: any) => tag) ?? [],
     },
   });
@@ -96,7 +96,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
     try {
       // Filter out the empty values
       const filteredValues = Object.fromEntries(
-        Object.entries(values).filter(([_, value]) => value !== "")
+        Object.entries(values).filter(([_, value]) => value !== '')
       );
 
       const result = await updateResource({
@@ -104,33 +104,33 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
         ...filteredValues,
       }).unwrap();
 
-      showToast("success", <p>{result?.message}</p>);
+      showToast('success', <p>{result?.message}</p>);
       router.back();
     } catch (error: any) {
-      showToast("error", <p>{error.data.message}</p>);
+      showToast('error', <p>{error.data.message}</p>);
     }
   }
 
   return (
-    <div className="flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit">
-      <div className="flex flex-col gap-1">
-        <h1 className="font-semibold tracking-tight text-xl">
+    <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit'>
+      <div className='flex flex-col gap-1'>
+        <h1 className='font-semibold tracking-tight text-xl'>
           Resource Information
         </h1>
         <p>Update necessary information about this resource.</p>
       </div>
-      <div className="w-full ">
+      <div className='w-full '>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
             {/* <form className="space-y-8"> */}
             <FormField
               control={form.control}
-              name="name"
+              name='name'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter name here" {...field} />
+                    <Input placeholder='Enter name here' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,12 +138,12 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="title"
+              name='title'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter title here" {...field} />
+                    <Input placeholder='Enter title here' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,14 +151,14 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="description"
+              name='description'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Write a little bit about this resource"
-                      className="resize-none"
+                      placeholder='Write a little bit about this resource'
+                      className='resize-none'
                       {...field}
                     />
                   </FormControl>
@@ -168,12 +168,12 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="link"
+              name='link'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter link here" {...field} />
+                    <Input placeholder='Enter link here' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,7 +181,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="image"
+              name='image'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image</FormLabel>
@@ -191,7 +191,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                         field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
                         widget.close();
                       }}
-                      uploadPreset="mymakaranta_preset"
+                      uploadPreset='mymakaranta_preset'
                     >
                       {({ open }) => {
                         function handleOnClick() {
@@ -201,15 +201,15 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                         return (
                           <div
                             onClick={handleOnClick}
-                            className="flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip"
+                            className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
                           >
-                            {field.value === "" ? (
-                              <div className="flex flex-col justify-center items-center gap-2 ">
+                            {field.value === '' ? (
+                              <div className='flex flex-col justify-center items-center gap-2 '>
                                 <UploadCloud />
                                 <h1>Upload image</h1>
                               </div>
                             ) : (
-                              <Image src={field.value} alt="images" fill />
+                              <Image src={field.value} alt='images' fill />
                             )}
                           </div>
                         );
@@ -222,7 +222,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="main_topic_tag"
+              name='main_topic_tag'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Main Topic Tag</FormLabel>
@@ -233,8 +233,8 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
-                          className="capitalize"
-                          placeholder="Select Main Topic Tag"
+                          className='capitalize'
+                          placeholder='Select Main Topic Tag'
                         />
                       </SelectTrigger>
                     </FormControl>
@@ -243,7 +243,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                         <SelectItem
                           key={i}
                           value={item?.id}
-                          className="capitalize"
+                          className='capitalize'
                         >
                           {item?.name}
                         </SelectItem>
@@ -255,7 +255,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="main_type_tag"
+              name='main_type_tag'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Main Type Tag</FormLabel>
@@ -266,8 +266,8 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
-                          className="capitalize"
-                          placeholder="Select Main Type Tag"
+                          className='capitalize'
+                          placeholder='Select Main Type Tag'
                         />
                       </SelectTrigger>
                     </FormControl>
@@ -276,7 +276,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                         <SelectItem
                           key={i}
                           value={item?.id}
-                          className="capitalize"
+                          className='capitalize'
                         >
                           {item?.name}
                         </SelectItem>
@@ -288,20 +288,20 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="all_topic_tags"
+              name='all_topic_tags'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>All Topic Tags</FormLabel>
                   <FormControl>
                     {/* <Input placeholder='Enter name here' {...field} /> */}
-                    <div className="flex w-full flex-wrap">
+                    <div className='flex w-full flex-wrap'>
                       <ToggleGroup
-                        type="multiple"
+                        type='multiple'
                         defaultValue={field.value}
                         onValueChange={(v) => {
                           field.onChange(v);
                         }}
-                        className="flex w-full justify-start flex-wrap"
+                        className='flex w-full justify-start flex-wrap'
                       >
                         {topicTags?.data?.map((tag: any, index: number) => (
                           <ToggleGroupItem value={tag.id} key={index}>
@@ -316,8 +316,8 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              {isLoading ? <Loader /> : " Update Resource"}
+            <Button type='submit' className='w-full'>
+              {isLoading ? <Loader /> : ' Update Resource'}
             </Button>
           </form>
         </Form>
