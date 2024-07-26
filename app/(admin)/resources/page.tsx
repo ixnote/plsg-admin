@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 import { useGetAllResourcesQuery } from '@/redux/services/resources/resources-api';
+import LoadingSkeleton from '../components/dashboard/LoadingSkeleton';
 
 const Resources = () => {
   const [resources, setResources] = useState([]);
@@ -47,7 +48,9 @@ const Resources = () => {
       <div className='flex flex-col w-full gap-6'>
         <h1 className='text-2xl font-semibold font-oswald'>Resources</h1>
         <div className='flex w-full'>
-          {resources && (
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : (
             <DataTable
               columns={columns}
               data={resources}
