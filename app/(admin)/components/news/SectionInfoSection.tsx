@@ -21,7 +21,7 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import SectionBtn from './SectionBtn';
 import {
   useCreateNewsSectionMutation,
-  useUpdateNewsSectionMutation,
+  useUpdateReorderNewsSectionMutation,
 } from '@/redux/services/news/news-api';
 import Loader from '../Loader';
 import { showToast } from '@/lib/showToast';
@@ -38,14 +38,14 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     { data: createNewsSectionData, isError, isLoading, isSuccess },
   ] = useCreateNewsSectionMutation();
   const [
-    updateNewsSection,
+    updateReorderNewsSection,
     {
       data: updateNewsSectionData,
       isError: updateewsSectionIsError,
       isLoading: updateNewsSectionIsLoading,
       isSuccess: updateNewsSectionIsSuccess,
     },
-  ] = useUpdateNewsSectionMutation();
+  ] = useUpdateReorderNewsSectionMutation();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -112,11 +112,10 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
 
   const onReorder = async (items: any) => {
     try {
-      const result = await updateNewsSection({
+      const result = await updateReorderNewsSection({
         id: data?.data.id,
-        items,
+        sections: items,
       }).unwrap();
-      reset();
       showToast('success', <p>{result?.message}</p>);
     } catch (error: any) {
       showToast('error', <p>{error?.data?.message}</p>);
@@ -303,6 +302,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                   sections={data?.data?.newsSections}
                   onReOrder={onReorder}
                   onDelete={onDelete}
+                  isLoading={updateNewsSectionIsLoading}
                 />
               </div>
               <Button

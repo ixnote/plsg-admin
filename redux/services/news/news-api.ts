@@ -49,10 +49,10 @@ export const newsApi = createApi({
       invalidatesTags: ['News'],
     }),
 
-    updateNewsSection: builder.mutation<any, any>({
+    updateReorderNewsSection: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/news/${id}/section`,
+          url: `/news/section/reorder/${id}`,
           method: 'PATCH',
           body: rest,
         };
@@ -81,7 +81,7 @@ export const newsApi = createApi({
 export const {
   useCreateNewsMutation,
   useCreateNewsSectionMutation,
-  useUpdateNewsSectionMutation,
+  useUpdateReorderNewsSectionMutation,
   useUpdateNewsMutation,
   useGetAllNewsQuery,
   useGetOneNewsQuery,
