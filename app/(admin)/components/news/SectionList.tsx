@@ -9,14 +9,21 @@ import {
 import { cn } from '@/lib/utils';
 import { Grip, Pencil, Trash2 } from 'lucide-react';
 import RenderElement from './RenderElement';
+import Loader from '../Loader';
 
 type SectionListProps = {
   sections: any[];
   onReOrder: (updateData: { id: number; position: number }[]) => void;
   onDelete: (id: number) => void;
+  isLoading: boolean;
 };
 
-const SectionList = ({ sections, onReOrder, onDelete }: SectionListProps) => {
+const SectionList = ({
+  sections,
+  onReOrder,
+  onDelete,
+  isLoading,
+}: SectionListProps) => {
   const [items, setItems] = useState(sections);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -55,8 +62,13 @@ const SectionList = ({ sections, onReOrder, onDelete }: SectionListProps) => {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className='flex flex-col w-full max-h-[580px] overflow-y-scroll'
+            className='flex relative flex-col w-full max-h-[580px] overflow-y-scroll mb-3'
           >
+            {isLoading && (
+              <div className='flex items-center justify-center absolute inset-0 bg-black/30 backdrop-blur-sm z-10 rounded-xl'>
+                <Loader />
+              </div>
+            )}
             {items.map((item, index) => (
               <RenderElement
                 item={item}

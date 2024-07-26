@@ -50,7 +50,7 @@ const Login = () => {
       showToast('success', <p>Login was successful</p>);
       let url =
         result?.data?.role === 'super' ? '/dashboard' : '/mdas-dashboard';
-      if (result.data.password_updated) {
+      if (result.data.first_time_login) {
         push('/reset-password');
       } else {
         push(url);
