@@ -19,7 +19,10 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import SectionBtn from './SectionBtn';
-import { useCreateNewsSectionMutation } from '@/redux/services/news/news-api';
+import {
+  useCreateNewsSectionMutation,
+  useUpdateNewsSectionMutation,
+} from '@/redux/services/news/news-api';
 import Loader from '../Loader';
 import { showToast } from '@/lib/showToast';
 import SectionList from './SectionList';
@@ -34,6 +37,15 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     createNewsSection,
     { data: createNewsSectionData, isError, isLoading, isSuccess },
   ] = useCreateNewsSectionMutation();
+  const [
+    updateNewsSection,
+    {
+      data: updateNewsSectionData,
+      isError: updateewsSectionIsError,
+      isLoading: updateNewsSectionIsLoading,
+      isSuccess: updateNewsSectionIsSuccess,
+    },
+  ] = useUpdateNewsSectionMutation();
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -98,8 +110,17 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     }
   };
 
-  const onReorder = (items: any) => {
-    console.log(data?.data?.newsSections);
+  const onReorder = async (items: any) => {
+    try {
+      const result = await updateNewsSection({
+        id: data?.data.id,
+        items,
+      }).unwrap();
+      reset();
+      showToast('success', <p>{result?.message}</p>);
+    } catch (error: any) {
+      showToast('error', <p>{error?.data?.message}</p>);
+    }
   };
 
   const onDelete = (items: any) => {};
