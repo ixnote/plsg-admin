@@ -13,6 +13,7 @@ import {
   Cog,
   LogOut,
   SquareLibrary,
+  FlagIcon,
 } from 'lucide-react';
 import { useAppDispatch } from '@/redux/hook';
 import { logout } from '@/redux/features/auth/auth-slice';
@@ -26,6 +27,11 @@ export const navItemsSuperAdmin = [
     icon: <LayoutDashboard />,
   },
   {
+    title: 'Governments',
+    link: '/governments',
+    icon: <FlagIcon />,
+  },
+  {
     title: 'MDAs',
     link: '/mdas',
     icon: <BriefcaseBusiness />,
@@ -35,11 +41,7 @@ export const navItemsSuperAdmin = [
     link: '/users',
     icon: <UsersRound />,
   },
-  {
-    title: 'Resources',
-    link: '/resources',
-    icon: <SquareLibrary />,
-  },
+
   {
     title: 'Settings',
     link: '/settings',
