@@ -65,7 +65,7 @@ const SectionList = ({
             className='flex relative flex-col w-full max-h-[580px] overflow-y-scroll mb-3'
           >
             {isLoading && (
-              <div className='flex items-center justify-center absolute inset-0 bg-black/30 backdrop-blur-sm z-10 rounded-xl'>
+              <div className='flex items-center justify-center absolute inset-0 bg-black/15 backdrop-blur-sm z-10 rounded-xl'>
                 <Loader />
               </div>
             )}

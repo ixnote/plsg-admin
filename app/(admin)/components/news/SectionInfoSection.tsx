@@ -116,9 +116,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         id: data?.data.id,
         sections: items,
       }).unwrap();
-      console.log(result);
-
-      // showToast('success', <p>{result?.message}</p>);
+      showToast('success', <p>{result?.message}</p>);
     } catch (error: any) {
       showToast('error', <p>{error?.data?.message}</p>);
     }
