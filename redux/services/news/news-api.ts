@@ -37,6 +37,16 @@ export const newsApi = createApi({
       invalidatesTags: ['News'],
     }),
 
+    deleteNewsSection: builder.mutation<any, any>({
+      query: ({ id }) => {
+        return {
+          url: `/news/section/delete/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['News'],
+    }),
+
     updateNews: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
@@ -91,6 +101,7 @@ export const newsApi = createApi({
 export const {
   useCreateNewsMutation,
   useCreateNewsSectionMutation,
+  useDeleteNewsSectionMutation,
   useUpdateReorderNewsSectionMutation,
   useUpdateNewsMutation,
   usePublishNewsMutation,

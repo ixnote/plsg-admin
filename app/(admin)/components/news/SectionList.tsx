@@ -14,16 +14,10 @@ import Loader from '../Loader';
 type SectionListProps = {
   sections: any[];
   onReOrder: (updateData: { id: number; position: number }[]) => void;
-  onDelete: (id: number) => void;
   isLoading: boolean;
 };
 
-const SectionList = ({
-  sections,
-  onReOrder,
-  onDelete,
-  isLoading,
-}: SectionListProps) => {
+const SectionList = ({ sections, onReOrder, isLoading }: SectionListProps) => {
   const [items, setItems] = useState(sections);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -70,12 +64,7 @@ const SectionList = ({
               </div>
             )}
             {items.map((item, index) => (
-              <RenderElement
-                item={item}
-                key={item.id}
-                onDelete={onDelete}
-                index={index}
-              />
+              <RenderElement item={item} key={item.id} index={index} />
             ))}
             {provided.placeholder}
           </div>

@@ -17,11 +17,6 @@ import { showToast } from '@/lib/showToast';
 const UpdateNews = () => {
   const params = useParams();
   const router = useRouter();
-  const {
-    data: tags,
-    error: tagsError,
-    isLoading: tagsIsLoading,
-  } = useGetAllTagsQuery();
 
   const { data, error, isLoading } = useGetOneNewsQuery(
     { id: params.id },
@@ -29,6 +24,22 @@ const UpdateNews = () => {
       skip: !params?.id,
     }
   );
+
+  const requiredFields = [
+    data?.data?.headline,
+    data?.data?.image,
+    data?.data?.tags.length > 0,
+    data?.data?.newsSections.length > 0,
+  ];
+  const totalFields = requiredFields.length;
+  const completedFields = requiredFields.filter(Boolean).length;
+  const isCompleted = requiredFields.every(Boolean);
+
+  const {
+    data: tags,
+    error: tagsError,
+    isLoading: tagsIsLoading,
+  } = useGetAllTagsQuery();
 
   const [publishNews, { isLoading: updateIsLoadig }] = usePublishNewsMutation();
 
@@ -47,16 +58,6 @@ const UpdateNews = () => {
       showToast('error', <p>{error.data.message}</p>);
     }
   };
-
-  const requiredFields = [
-    data?.data?.headline,
-    data?.data?.image,
-    data?.data?.tags.length > 0,
-    data?.data?.newsSections.length > 0,
-  ];
-  const totalFields = requiredFields.length;
-  const completedFields = requiredFields.filter(Boolean).length;
-  const isCompleted = requiredFields.every(Boolean);
 
   return (
     <div className='flex w-full h-full p-6 overflow-y-scroll scrollbar-hide'>
