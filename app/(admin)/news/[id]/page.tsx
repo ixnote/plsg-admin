@@ -59,7 +59,7 @@ const UpdateNews = () => {
   const isCompleted = requiredFields.every(Boolean);
 
   return (
-    <div className='flex w-full h-full p-6 overflow-y-scroll'>
+    <div className='flex w-full h-full p-6 overflow-y-scroll scrollbar-hide'>
       {isLoading ? (
         <div className='flex w-full min-h-screen pt-52 justify-center'>
           <Loader />
