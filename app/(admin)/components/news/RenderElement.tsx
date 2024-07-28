@@ -1,16 +1,32 @@
+'use client';
+import { showToast } from '@/lib/showToast';
+import { useDeleteNewsSectionMutation } from '@/redux/services/news/news-api';
 import { cn } from '@/utils';
 import { Draggable } from '@hello-pangea/dnd';
 import { Grip, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
+import Loader from '../Loader';
 
 type RenderElementProps = {
   item: any;
   index: number;
-  onDelete: (index: number) => void;
 };
 
-const RenderElement = ({ item, index, onDelete }: RenderElementProps) => {
+const RenderElement = ({ item, index }: RenderElementProps) => {
+  const [deleteNewsSection, { data, isError, isLoading, isSuccess }] =
+    useDeleteNewsSectionMutation();
+  const handleDelete = async (id: any) => {
+    try {
+      const result = await deleteNewsSection({
+        id: id,
+      }).unwrap();
+      showToast('success', <p>{result?.message}</p>);
+    } catch (error: any) {
+      showToast('error', <p>{error?.data?.message}</p>);
+    }
+  };
+
   return (
     <Draggable draggableId={`${item.id}`} index={index}>
       {(provided) => (
@@ -57,12 +73,16 @@ const RenderElement = ({ item, index, onDelete }: RenderElementProps) => {
             </div>
           )}
           <div className=' ml-auto pr-2 flex items-center gap-x-2'>
-            <Trash2
-              onClick={() => {
-                onDelete(item.id);
-              }}
-              className=' h-4 w-4 cursor-pointer hover:opacity-75 transition'
-            />
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <Trash2
+                onClick={() => {
+                  handleDelete(item.id);
+                }}
+                className=' h-4 w-4 cursor-pointer hover:opacity-75 transition'
+              />
+            )}
           </div>
         </div>
       )}

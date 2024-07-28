@@ -122,8 +122,6 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
     }
   };
 
-  const onDelete = (items: any) => {};
-
   return (
     <div className='flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 mb-10 h-fit gap-4'>
       <div className='flex flex-col gap-1'>
@@ -301,7 +299,6 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                 <SectionList
                   sections={data?.data?.newsSections}
                   onReOrder={onReorder}
-                  onDelete={onDelete}
                   isLoading={updateNewsSectionIsLoading}
                 />
               </div>

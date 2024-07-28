@@ -1,5 +1,4 @@
 import { getValidAuthTokens } from '@/lib/cookies';
-import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const newsApi = createApi({
@@ -33,6 +32,16 @@ export const newsApi = createApi({
           url: `/news/section/add/${id}`,
           method: 'PUT',
           body: { ...rest },
+        };
+      },
+      invalidatesTags: ['News'],
+    }),
+
+    deleteNewsSection: builder.mutation<any, any>({
+      query: ({ id }) => {
+        return {
+          url: `/news/section/delete/${id}`,
+          method: 'DELETE',
         };
       },
       invalidatesTags: ['News'],
@@ -92,6 +101,7 @@ export const newsApi = createApi({
 export const {
   useCreateNewsMutation,
   useCreateNewsSectionMutation,
+  useDeleteNewsSectionMutation,
   useUpdateReorderNewsSectionMutation,
   useUpdateNewsMutation,
   usePublishNewsMutation,
