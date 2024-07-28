@@ -1,5 +1,4 @@
 import { getValidAuthTokens } from '@/lib/cookies';
-import { RootState } from '@/redux/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const newsApi = createApi({
