@@ -155,7 +155,7 @@ const ResetPassword = () => {
         </div>
       </div>
       <div className='flex flex-col h-full w-full justify-end'>
-        <h1 className='text-xs text-gree-700'>Power by IXOTE@2024</h1>
+        <h1 className='text-xs text-gree-700'>Powered by IXNOTE@2024</h1>
       </div>
     </div>
   );
