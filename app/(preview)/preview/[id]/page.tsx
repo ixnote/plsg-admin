@@ -59,12 +59,12 @@ const Preview = () => {
             </span>
           </span>
           <span className='my-8 flex flex-col gap-16'>
-            <span>
+            <span className='flex w-full h-[500px] relative'>
               <Image
                 src={data?.data?.image}
                 alt=''
                 width={1200}
-                height={1200}
+                height={100}
                 className='w-full h-auto rounded-2xl object-cover'
               />
             </span>
@@ -74,15 +74,15 @@ const Preview = () => {
                 <p>INTRODUCTION</p>
               </span>
               <p className='text-[18px] font-normal text-[#00000099] m-0 lg:col-span-4 col-span-1'>
-                {data?.data?.headline}
+                {data?.data?.description}
               </p>
             </span>
           </span>
-          <span className='my-8 flex gap-16'>
-            <span className='text-[#00000080] opacity-80 font-light flex gap-4 text-[16px] uppercase col-span-1'>
-              <p>DETAILS</p>
+          <span className='grid lg:grid-cols-5 grid-cols-2 gap-5 items-start mb-10'>
+            <span className='text-[#00000080] opacity-80 font-light flex items-center gap-4 text-[16px] uppercase col-span-1'>
+              <p>Details</p>
             </span>
-            <span className='flex flex-col'>
+            <span className=' m-0 lg:col-span-4 col-span-1'>
               {data?.data?.newsSections.map((item: any, index: any) => (
                 <span key={index}>
                   {item?.type === 'image' && (
@@ -95,61 +95,15 @@ const Preview = () => {
                     />
                   )}
                   {item?.type === 'paragraph' && (
-                    <p className='text-[18px] font-normal text-[#00000099] m-0 lg:col-span-4 col-span-1'>
+                    <p className='text-[18px] font-normal text-[#00000099] m-0'>
                       {item?.value}
                     </p>
                   )}
-                  {/* {item?.type === 'heading1' && (
-                  <span className='grid lg:grid-cols-5 grid-cols-1 gap-5 items-start'>
-                    <span className='text-[#00000080] opacity-80 font-light flex items-center gap-4 text-[16px] uppercase col-span-1'>
-                      <p>{item?.title}</p>
-                    </span>
-                    <p className='text-[40px] leading-[40px] font-normal text-brand-main m-0 lg:col-span-4 col-span-1'>
-                      {item?.text}
-                    </p>
-                  </span>
-                )} */}
                 </span>
               ))}
             </span>
-            {/* {data?.subContent?.map((item: any, index: any) => (
-              <span key={index}>
-                <span className='grid lg:grid-cols-5 grid-cols-1 gap-5 items-start'>
-                  <span className='text-[#00000080] opacity-80 font-light flex items-center gap-4 text-[16px] uppercase col-span-1'>
-                    <p>{item?.title}</p>
-                  </span>
-                  <span className='lg:col-span-4 col-span-1 flex flex-col gap-6'>
-                    <p className='text-[24px] leading-[36px] font-normal text-brand-main m-0 lg:col-span-4 col-span-1'>
-                      {item?.heading}
-                    </p>
-                    <p className='text-[18px] font-normal text-[#00000099] m-0 '>
-                      {item?.text}
-                    </p>
-                    <ul>
-                      {item?.lists.map((element: any, index: any) => (
-                        <li
-                          className='list-disc ml-8 pl-3 my-2 text-[#00000099]'
-                          key={index}
-                        >
-                          {element}
-                        </li>
-                      ))}
-                    </ul>
-                    {item?.text2 && (
-                      <p className='text-[18px] font-normal text-[#00000099] m-0 '>
-                        {item?.text2}
-                      </p>
-                    )}
-                    {item?.text3 && (
-                      <p className='text-[18px] font-normal text-[#00000099] m-0 '>
-                        {item?.text3}
-                      </p>
-                    )}
-                  </span>
-                </span>
-              </span>
-            ))} */}
           </span>
+
           <span className='grid lg:grid-cols-5 grid-cols-1 gap-5'>
             <span className='col-span-1'></span>
             <span className='flex gap-3 flex-wrap lg:col-span-4 col-span-1 '>

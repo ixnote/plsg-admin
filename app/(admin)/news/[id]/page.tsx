@@ -27,6 +27,7 @@ const UpdateNews = () => {
 
   const requiredFields = [
     data?.data?.headline,
+    data?.data?.description,
     data?.data?.image,
     data?.data?.tags.length > 0,
     data?.data?.newsSections.length > 0,
