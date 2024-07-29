@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useGetOneNewsQuery } from '@/redux/services/news/news-api';
 import LoadingSkeleton from '@/app/(admin)/components/dashboard/LoadingSkeleton';
+import RenderNewsSection from '@/app/(admin)/components/news/RenderNewsSection';
 
 const Preview = () => {
   const params = useParams();
@@ -84,22 +85,7 @@ const Preview = () => {
             </span>
             <span className=' m-0 lg:col-span-4 col-span-1'>
               {data?.data?.newsSections.map((item: any, index: any) => (
-                <span key={index}>
-                  {item?.type === 'image' && (
-                    <Image
-                      src={item?.value}
-                      alt=''
-                      width={1200}
-                      height={1200}
-                      className='w-full h-auto rounded-2xl object-cover'
-                    />
-                  )}
-                  {item?.type === 'paragraph' && (
-                    <p className='text-[18px] font-normal text-[#00000099] m-0'>
-                      {item?.value}
-                    </p>
-                  )}
-                </span>
+                <RenderNewsSection data={item} key={index} />
               ))}
             </span>
           </span>
