@@ -114,7 +114,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
   }
 
   return (
-    <div className="flex flex-col w-1/2 rounded-xl border bg-card text-card-foreground shadow p-6 gap-3 mb-10 h-fit">
+    <div className="flex flex-col w-full rounded-xl text-card-foreground p-6 gap-3 mb-10 h-fit">
       <div className="flex flex-col gap-1">
         <h1 className="font-semibold tracking-tight text-xl">
           Resource Information
@@ -123,8 +123,10 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
       </div>
       <div className="w-full ">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* <form className="space-y-8"> */}
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-2 gap-5"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -183,47 +185,6 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
             />
             <FormField
               control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <CldUploadWidget
-                      onSuccess={(result, { widget }) => {
-                        field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
-                        widget.close();
-                      }}
-                      uploadPreset="mymakaranta_preset"
-                    >
-                      {({ open }) => {
-                        function handleOnClick() {
-                          field.onChange(undefined);
-                          open();
-                        }
-                        return (
-                          <div
-                            onClick={handleOnClick}
-                            className="flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip"
-                          >
-                            {field.value === "" ? (
-                              <div className="flex flex-col justify-center items-center gap-2 ">
-                                <UploadCloud />
-                                <h1>Upload image</h1>
-                              </div>
-                            ) : (
-                              <Image src={field.value} alt="images" fill />
-                            )}
-                          </div>
-                        );
-                      }}
-                    </CldUploadWidget>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="main_topic_tag"
               render={({ field }) => (
                 <FormItem>
@@ -259,6 +220,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="main_type_tag"
@@ -292,39 +254,87 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="all_topic_tags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>All Topic Tags</FormLabel>
-                  <FormControl>
-                    {/* <Input placeholder='Enter name here' {...field} /> */}
-                    <div className="flex w-full flex-wrap">
-                      <ToggleGroup
-                        type="multiple"
-                        defaultValue={field.value}
-                        onValueChange={(v) => {
-                          field.onChange(v);
-                        }}
-                        className="flex w-full justify-start flex-wrap"
-                      >
-                        {topicTags?.data?.map((tag: any, index: number) => (
-                          <ToggleGroupItem value={tag.id} key={index}>
-                            {tag.name}
-                          </ToggleGroupItem>
-                        ))}
-                      </ToggleGroup>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
-            <Button type="submit" className="w-full">
-              {isLoading ? <Loader /> : " Update Resource"}
-            </Button>
+            <div className="col-span-2 flex">
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Image</FormLabel>
+                    <FormControl>
+                      <CldUploadWidget
+                        onSuccess={(result, { widget }) => {
+                          field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                          widget.close();
+                        }}
+                        uploadPreset="mymakaranta_preset"
+                      >
+                        {({ open }) => {
+                          function handleOnClick() {
+                            field.onChange(undefined);
+                            open();
+                          }
+                          return (
+                            <div
+                              onClick={handleOnClick}
+                              className="flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip"
+                            >
+                              {field.value === "" ? (
+                                <div className="flex flex-col justify-center items-center gap-2 ">
+                                  <UploadCloud />
+                                  <h1>Upload image</h1>
+                                </div>
+                              ) : (
+                                <Image src={field.value} alt="images" fill />
+                              )}
+                            </div>
+                          );
+                        }}
+                      </CldUploadWidget>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="col-span-2 flex">
+              <FormField
+                control={form.control}
+                name="all_topic_tags"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Select from Topic Tags</FormLabel>
+                    <FormControl>
+                      {/* <Input placeholder='Enter name here' {...field} /> */}
+                      <div className="flex w-full flex-wrap">
+                        <ToggleGroup
+                          type="multiple"
+                          defaultValue={field.value}
+                          onValueChange={(v) => {
+                            field.onChange(v);
+                          }}
+                          className="flex w-full justify-start flex-wrap"
+                        >
+                          {topicTags?.data?.map((tag: any, index: number) => (
+                            <ToggleGroupItem value={tag.id} key={index}>
+                              {tag.name}
+                            </ToggleGroupItem>
+                          ))}
+                        </ToggleGroup>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="col-span-2 flex items-center justify-end">
+              <Button type="submit" className="">
+                {isLoading ? <Loader /> : " Update Resource"}
+              </Button>
+            </div>
           </form>
         </Form>
       </div>
