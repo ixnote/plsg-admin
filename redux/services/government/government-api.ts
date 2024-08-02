@@ -26,6 +26,17 @@ export const governmentApi = createApi({
       invalidatesTags: ["Government"],
     }),
 
+    updateGovernment: builder.mutation<any, any>({
+      query: ({ id, body }) => {
+        return {
+          url: `/statics/government/${id}`,
+          method: "PUT",
+          body: body,
+        };
+      },
+      invalidatesTags: ["Government"],
+    }),
+
     getGovernment: builder.query<any, { page: number; pageSize: number }>({
       query: ({ page, pageSize }) => ({
         url: `/statics/governments?page=${page}&pageSize=${pageSize}`,
@@ -44,5 +55,9 @@ export const governmentApi = createApi({
   }),
 });
 
-export const { useCreateGovernmentMutation, useGetGovernmentQuery, useGetAGovernmentQuery } =
-  governmentApi;
+export const {
+  useCreateGovernmentMutation,
+  useUpdateGovernmentMutation,
+  useGetGovernmentQuery,
+  useGetAGovernmentQuery,
+} = governmentApi;
