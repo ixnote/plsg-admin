@@ -39,16 +39,6 @@ const UpdateResource = () => {
                 Update Resource
               </h1>
             </div>
-            {/* <div className="flex gap-3">
-              <Button
-                onClick={() => {
-                  window.open(`/preview/${data?.data.id}`, "_blank");
-                }}
-              >
-                Preview
-              </Button>
-              <Button variant={"destructive"}>Publish</Button>
-            </div> */}
           </div>
           <div className='flex items-center justify-center w-full  gap-3'>
             <ResourceInfoSection data={data} />

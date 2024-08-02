@@ -39,16 +39,14 @@ const Editor = ({ value, onChange }: EditorProps) => {
   ];
 
   return (
-    <div className='bg-white overflow-hidden flex w-full'>
-      <QuillEditor
-        value={value}
-        theme='snow'
-        onChange={onChange}
-        modules={quillModules}
-        formats={quillFormats}
-        className='flex flex-col w-[100%] h-[75%] mt-2 mb-3 bg-white'
-      />
-    </div>
+    <QuillEditor
+      value={value}
+      theme='snow'
+      onChange={onChange}
+      modules={quillModules}
+      formats={quillFormats}
+      className='flex flex-col w-[100%] h-[95%] bg-white'
+    />
   );
 };
 
