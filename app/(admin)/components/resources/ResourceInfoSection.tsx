@@ -46,6 +46,7 @@ const formSchema = z.object({
   main_type_tag: z.string(),
   main_topic_tag: z.string(),
   body: z.string(),
+  document: z.string(),
   all_topic_tags: z.array(z.string()),
 });
 
@@ -82,6 +83,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
       description: data?.data?.description ?? '',
       image: data?.data?.image ?? '',
       body: data?.data?.body ?? '',
+      document: data?.data?.document ?? '',
       main_type_tag: data.data?.main_type_tag?.id ?? '',
       main_topic_tag: data?.data?.main_topic_tag?.id ?? '',
       all_topic_tags: data?.data.all_topic_tags.map((tag: any) => tag.id) ?? [],
@@ -288,10 +290,10 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
               <div className='w-full'>
                 <FormField
                   control={form.control}
-                  name='body'
+                  name='document'
                   render={({ field }) => (
                     <FormItem className='w-full'>
-                      <FormLabel>Document</FormLabel>
+                      <FormLabel>Rich Text</FormLabel>
                       <FormControl>
                         <CldUploadWidget
                           onSuccess={(result, { widget }) => {
