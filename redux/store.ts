@@ -1,16 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import dashboardReducer from './features/dashboard/dashboard-slice';
-import mdasReducer from './features/mdas/mdas-slice';
-import authReducer from './features/auth/auth-slice';
-import { authApi } from './services/auth/auth-api';
-import { roleApi } from './services/roles/role-api';
-import { userApi } from './services/users/user-api';
-import { newsApi } from './services/news/news-api';
-import { mdasApi } from './services/mdas/mdas-api';
-import { tagsApi } from './services/tags/tags-api';
-import { resourcesApi } from './services/resources/resources-api';
-
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import dashboardReducer from "./features/dashboard/dashboard-slice";
+import mdasReducer from "./features/mdas/mdas-slice";
+import authReducer from "./features/auth/auth-slice";
+import { authApi } from "./services/auth/auth-api";
+import { roleApi } from "./services/roles/role-api";
+import { userApi } from "./services/users/user-api";
+import { newsApi } from "./services/news/news-api";
+import { mdasApi } from "./services/mdas/mdas-api";
+import { tagsApi } from "./services/tags/tags-api";
+import { resourcesApi } from "./services/resources/resources-api";
+import { governmentApi } from "./services/government/government-api";
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
@@ -19,6 +19,7 @@ export const store = configureStore({
     [newsApi.reducerPath]: newsApi.reducer,
     [mdasApi.reducerPath]: mdasApi.reducer,
     [tagsApi.reducerPath]: tagsApi.reducer,
+    [governmentApi.reducerPath]: governmentApi.reducer,
     [resourcesApi.reducerPath]: resourcesApi.reducer,
     dashboard: dashboardReducer,
     auth: authReducer,
@@ -33,6 +34,7 @@ export const store = configureStore({
       mdasApi.middleware,
       tagsApi.middleware,
       resourcesApi.middleware,
+      governmentApi.middleware,
     ]),
   devTools: true,
 });
