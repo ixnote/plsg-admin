@@ -1,22 +1,60 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import UpdateExecutivesForm from "@/app/(admin)/components/government/UpdateExecutivesForm";
+import UpdateMembersForm from "@/app/(admin)/components/government/UpdateMembersForm";
+import UpdateOtherInfo from "@/app/(admin)/components/government/UpdateOtherInFo";
+import { Button } from "@/components/ui/button";
 import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+  useGetAGovernmentQuery,
+  useUpdateGovernmentMutation,
+} from "@/redux/services/government/government-api";
 import { ArrowLeftIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { showToast } from "@/lib/showToast";
 
 const UpdateGovernment = () => {
   const router = useRouter();
+  const { id } = useParams();
+  const { data } = useGetAGovernmentQuery({ governmentId: id });
+  const [members, setMembers] = useState([]);
+  const [executives, setExecutives] = useState([]);
+  const [otherInfo, setOtherInfo] = useState({});
+
+  const [updateGovernment, { isLoading }] = useUpdateGovernmentMutation();
+
+  useEffect(() => {
+    if (data) {
+      setMembers(data?.data?.members || []);
+      setExecutives(data?.data?.executives || []);
+      setOtherInfo(data?.data || {});
+    }
+  }, [data]);
 
   const handleGoBack = () => {
     router.back();
   };
+
+  const handleUpdate = async () => {
+    try {
+      const { name, role, image, biography } = otherInfo;
+      const updatedData = {
+        name,
+        role,
+        image,
+        biography,
+        members,
+        executives,
+      };
+
+      await updateGovernment({ id, updatedData }).unwrap();
+      showToast("success", <p>Government updated successfully</p>);
+      console.log("Updated data:", updatedData);
+    } catch (error) {
+      console.error("Failed to create government member:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col  gap-10 h-full p-10">
       <div className="flex flex-col gap-4">
@@ -32,14 +70,47 @@ const UpdateGovernment = () => {
           </div>
         </div>
 
-        <div className="flex flex-col w-full gap-6">
-          <div className="flex  w-full gap-x-4">
-            <div className="w-full">
-              <Input placeholder="Enter MDAS Official Name" />
+        <div className="w-full mb-8">
+          <div className="flex flex-col gap-2 mt-5">
+            <div className="w-full flex items-center justify-between">
+              <h1 className="text-xl font-geistsans font-semibold">
+                Update General Info
+              </h1>
             </div>
-            <div className="w-full">
-              <Input placeholder="Enter MDAS abbreviation" />
+            <UpdateOtherInfo
+              setOtherInfo={setOtherInfo}
+              initialData={data?.data}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 mt-5">
+            <div className="w-full flex items-center justify-between">
+              <h1 className="text-xl font-geistsans font-semibold">
+                Update Members
+              </h1>
             </div>
+            <UpdateMembersForm
+              setMembers={setMembers}
+              initialMembers={members}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 mt-5">
+            <div className="w-full flex items-center justify-between">
+              <h1 className="text-xl font-geistsans font-semibold">
+                Update Executives
+              </h1>
+            </div>
+            <UpdateExecutivesForm
+              setExecutives={setExecutives}
+              initialExecutives={executives}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 mt-5">
+            <Button className="w-full sm:w-fit" onClick={handleUpdate}>
+              Update Government
+            </Button>
           </div>
         </div>
       </div>
