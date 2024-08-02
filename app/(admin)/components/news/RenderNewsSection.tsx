@@ -41,9 +41,11 @@ const RenderNewsSection = ({ data }: RenderNewsSectionProps) => {
         </p>
       )}
       {data?.type === 'bullet' && (
-        <ol className=' py-2'>
+        <ol className='flex flex-col gap-3'>
           {data.value.map((i: any, index: number) => (
-            <li key={index}>{i}</li>
+            <li key={index}>
+              {index + 1}.{i}
+            </li>
           ))}
         </ol>
       )}
