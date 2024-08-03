@@ -5,7 +5,7 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'res.cloudinary.com',
-        pathname: '**',
+        // pathname: '**',
       },
       {
         protocol: 'https',
@@ -20,6 +20,16 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.pixabay.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'images.unsplash.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
         pathname: '**',
       },
     ],
