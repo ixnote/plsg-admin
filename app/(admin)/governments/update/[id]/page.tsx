@@ -17,7 +17,7 @@ const UpdateGovernment = () => {
   const router = useRouter();
   const { id } = useParams();
   const { data } = useGetAGovernmentQuery({ governmentId: id });
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<any>([]);
   const [executives, setExecutives] = useState([]);
   const [otherInfo, setOtherInfo] = useState<any>({});
 

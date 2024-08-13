@@ -46,7 +46,7 @@ const Resources = () => {
   return (
     <div className='flex w-full h-full p-6 overflow-y-scroll'>
       <div className='flex flex-col w-full gap-6'>
-        <h1 className='text-2xl font-semibold font-oswald'>Resources</h1>
+        <h1 className='text-2xl font-semibold font-oswald'>Articles</h1>
         <div className='flex w-full'>
           {isLoading ? (
             <LoadingSkeleton />

@@ -61,7 +61,7 @@ export const navItemsMdaAdmin = [
     icon: <Newspaper />,
   },
   {
-    title: 'Resources',
+    title: 'Articles',
     link: '/resources',
     icon: <SquareLibrary />,
   },
