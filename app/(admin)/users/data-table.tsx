@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,10 +19,10 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { Input } from "@/components/ui/input";
-import AddUsers from "../components/users/AddUsers";
-import PaginationButtons from "../components/PaginationButtons";
+} from '@tanstack/react-table';
+import { Input } from '@/components/ui/input';
+import AddUsers from '../components/users/AddUsers';
+import PaginationButtons from '../components/PaginationButtons';
 
 interface Pagination {
   currentPage: number;
@@ -80,23 +80,23 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-4 w-full">
-      <div className="flex w-full justify-between">
+    <div className='flex flex-col gap-4 w-full'>
+      <div className='flex w-full justify-between'>
         <Input
-          placeholder="Filter names..."
+          placeholder='Filter names...'
           value={
-            (table.getColumn("full_name")?.getFilterValue() as string) ?? ""
+            (table.getColumn('full_name')?.getFilterValue() as string) ?? ''
           }
           onChange={(event) =>
-            table.getColumn("full_name")?.setFilterValue(event.target.value)
+            table.getColumn('full_name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className='max-w-sm'
         />
         <AddUsers onUserCreated={onUserCreated} />
       </div>
-      <div className="rounded-md border w-full">
+      <div className='rounded-md border w-full'>
         {isLoading ? (
-          <h1 className="p-4 rounded-lg">Data is loading....</h1>
+          <h1 className='p-4 rounded-lg'>Data is loading....</h1>
         ) : (
           <Table>
             <TableHeader>
@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
+                    data-state={row.getIsSelected() && 'selected'}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -138,7 +138,7 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className='h-24 text-center'
                   >
                     No results.
                   </TableCell>
@@ -148,7 +148,7 @@ export function DataTable<TData, TValue>({
           </Table>
         )}
       </div>
-      <div className="py-4">
+      <div className='py-4'>
         <PaginationButtons
           currentPage={pagination.currentPage}
           totalPages={pagination.totalPages}
