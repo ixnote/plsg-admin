@@ -1,12 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useGetAGovernmentQuery } from "@/redux/services/government/government-api";
-import { useParams } from "next/navigation";
-import { DataTable } from "./data-table";
-import { columns } from "./columns";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import { useGetAGovernmentQuery } from '@/redux/services/government/government-api';
+import { useParams } from 'next/navigation';
+import { DataTable } from './data-table';
+import { columns } from './columns';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import LegislativeCard from '../../components/government/LegislativeCard';
 
 const SingleGovernment = () => {
   const { id } = useParams();
@@ -23,30 +24,37 @@ const SingleGovernment = () => {
   }, [data]);
 
   return (
-    <div className="flex w-full h-full p-6">
-      <div className="flex flex-col w-full gap-6">
-        <div className="w-full flex items-center justify-between">
-          <h1 className="text-2xl font-semibold font-oswald">
-            Government Members
-          </h1>
+    <div className='flex w-full h-full p-6 overflow-y-scroll scrollbar-hide'>
+      <div className='flex flex-col w-full gap-6'>
+        <div className='w-full flex items-center justify-between'>
+          <h1 className='text-2xl font-semibold font-oswald'>Governnor</h1>
 
-          <Button
-            className="w-full sm:w-fit"
+          {/* <Button
+            className='w-full sm:w-fit'
             onClick={() => {
               push(`/governments/update/${id}`);
             }}
           >
             Update Government
-          </Button>
+          </Button> */}
         </div>
-        <div className="flex w-full h-full">
-          <DataTable columns={columns} data={members} isLoading={false} />
+        <div className='flex w-full h-full'>
+          <LegislativeCard />
+          {/* <DataTable columns={columns} data={members} isLoading={false} /> */}
         </div>
-        <h1 className="text-2xl font-semibold font-oswald">
+        <h1 className='text-2xl font-semibold font-oswald'>
           Government Executives
         </h1>
-        <div className="flex w-full h-full">
-          <DataTable columns={columns} data={executives} isLoading={false} />
+        <div className='flex w-full h-full'>
+          <LegislativeCard />
+          {/* <DataTable columns={columns} data={executives} isLoading={false} /> */}
+        </div>
+        <h1 className='text-2xl font-semibold font-oswald'>
+          Government Members
+        </h1>
+        <div className='flex w-full h-full'>
+          <LegislativeCard />
+          {/* <DataTable columns={columns} data={executives} isLoading={false} /> */}
         </div>
       </div>
     </div>

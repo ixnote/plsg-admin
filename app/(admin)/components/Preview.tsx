@@ -18,8 +18,18 @@ const Preview = ({ value, amountOfWords = 50 }: PreviewProps) => {
     : value;
   const endText = splittedText.slice(amountOfWords - 1).join(' ');
   return (
-    <p className=' text-lg'>
-      {<QuillEditor value={beginText} theme='bubble' readOnly />}
+    <p className='text-lg'>
+      {
+        <QuillEditor
+          value={beginText}
+          theme='bubble'
+          readOnly
+          style={{
+            fontSize: '34px',
+          }}
+          className=''
+        />
+      }
       {itCanOverflow && (
         <>
           {!isExpanded && <span>... </span>}
