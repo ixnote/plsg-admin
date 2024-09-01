@@ -13,6 +13,7 @@ import { useFormContext } from 'react-hook-form';
 import { CldUploadWidget } from 'next-cloudinary';
 import Image from 'next/image';
 import { UploadCloud } from 'lucide-react';
+import Editor from '../Editor';
 
 type MDASInfoFormProps = {
   data: any;
@@ -80,6 +81,8 @@ const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
                 )}
               />
             </div>
+          </div>
+          <div className='flex  w-full gap-x-4'>
             <div className='w-full'>
               <FormField
                 control={form.control}
@@ -88,7 +91,15 @@ const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter Description' {...field} />
+                      <div className='flex w-full h-[400px]'>
+                        <Editor
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      </div>
+                      {/* <Input placeholder='Enter Description' {...field} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -105,7 +116,14 @@ const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
                   <FormItem>
                     <FormLabel>Vision</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter MDAS Vision' {...field} />
+                      <div className='flex w-full h-[400px]'>
+                        <Editor
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,7 +138,14 @@ const MDASInfoForm = ({ data }: MDASInfoFormProps) => {
                   <FormItem>
                     <FormLabel>MDAs Mission</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter MDAS Mission' {...field} />
+                      <div className='flex w-full h-[400px]'>
+                        <Editor
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

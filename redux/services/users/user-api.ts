@@ -39,11 +39,19 @@ export const userApi = createApi({
       }),
       providesTags: ['User'],
     }),
+    getAdminDashboard: builder.query<any, void>({
+      query: () => ({
+        url: `/statics/admin/dashboard`,
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
   }),
 });
 
 export const {
   useCreateTrackerMutation,
   useGetAllUsersQuery,
+  useGetAdminDashboardQuery,
   useGetAllAdminUsersQuery,
 } = userApi;
