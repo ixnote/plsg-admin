@@ -367,8 +367,6 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                           type='multiple'
                           defaultValue={field.value}
                           onValueChange={(v) => {
-                            console.log(v);
-
                             field.onChange(v);
                           }}
                           className='flex w-full justify-start flex-wrap'
