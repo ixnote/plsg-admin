@@ -108,7 +108,7 @@ const MDASDirectorForm = () => {
                 name='director.image'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image</FormLabel>
+                    <FormLabel>Directors Image</FormLabel>
                     <FormControl>
                       <CldUploadWidget
                         onSuccess={(result, { widget }) => {
