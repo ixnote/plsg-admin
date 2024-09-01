@@ -30,6 +30,8 @@ const UsersPage = () => {
   };
 
   const handlePageSizeChange = (size: number) => {
+    console.log(size);
+
     setPageSize(size);
   };
 
