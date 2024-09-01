@@ -13,6 +13,7 @@ import { useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 import { UploadCloud } from 'lucide-react';
 import { CldUploadWidget } from 'next-cloudinary';
+import Editor from '../Editor';
 
 const MDASDirectorForm = () => {
   const form = useFormContext<MDASFormSchemaType>();
@@ -75,6 +76,8 @@ const MDASDirectorForm = () => {
                 )}
               />
             </div>
+          </div>
+          <div className='flex  w-full gap-x-4'>
             <div className='w-full'>
               <FormField
                 control={form.control}
@@ -83,10 +86,14 @@ const MDASDirectorForm = () => {
                   <FormItem>
                     <FormLabel>Directors Meassage</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder='Enter MDAS Directors message'
-                        {...field}
-                      />
+                      <div className='flex w-full h-[400px]'>
+                        <Editor
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
