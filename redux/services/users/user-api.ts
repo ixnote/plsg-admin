@@ -34,7 +34,7 @@ export const userApi = createApi({
 
     getAllAdminUsers: builder.query<any, void>({
       query: () => ({
-        url: `/user`,
+        url: `/user?page=${1}&pageSize=${100}`,
         method: 'GET',
       }),
       providesTags: ['User'],
