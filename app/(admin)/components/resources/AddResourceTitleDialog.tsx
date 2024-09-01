@@ -29,7 +29,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 const AddResourceTitleDialog = ({
-  title = 'Create Resource',
+  title = 'Create Article',
 }: {
   title?: string;
 }) => {
@@ -78,11 +78,11 @@ const AddResourceTitleDialog = ({
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>New Resource</DialogTitle>
+          <DialogTitle>New Article</DialogTitle>
         </DialogHeader>
         <div className='flex w-full'>
           <Input
-            placeholder='Resource Name'
+            placeholder='Article Name'
             className='w-full'
             type='text'
             value={name}
@@ -91,22 +91,13 @@ const AddResourceTitleDialog = ({
         </div>
         <div className='flex w-full'>
           <Textarea
-            placeholder='Resource Description'
+            placeholder='Article Description'
             className='resize-none w-full'
             value={description}
             onChange={(e) =>
               setDescription(e.target.value.toString() as string)
             }
           />
-          {/* <Input
-            placeholder='Resource Description'
-            className='w-full'
-            type='text'
-            value={description}
-            onChange={(e) =>
-              setDescription(e.target.value.toString() as string)
-            }
-          /> */}
         </div>
         <div className='flex w-full'>
           <Select onValueChange={setTopictag}>

@@ -27,7 +27,7 @@ const MDASContactForm = () => {
                   <FormItem>
                     <FormLabel>Phone number 1</FormLabel>
                     <FormControl>
-                      <Input placeholder='Enter Contact Name' {...field} />
+                      <Input placeholder='Enter Phone number 1' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -42,10 +42,7 @@ const MDASContactForm = () => {
                   <FormItem>
                     <FormLabel>Phone number 2</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder='Enter MDAS Location/address'
-                        {...field}
-                      />
+                      <Input placeholder='Enter Phone number 2' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

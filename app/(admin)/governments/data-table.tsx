@@ -23,8 +23,9 @@ import {
 import { Input } from '@/components/ui/input';
 import AddUsers from '../components/users/AddUsers';
 import PaginationButtons from '../components/PaginationButtons';
-import AddGovernmentMembers from '../components/government/AddGovernmentMembers';
+
 import { useRouter } from 'next/navigation';
+import AddGovernment from '../components/government/AddGovernment';
 
 interface Pagination {
   currentPage: number;
@@ -93,7 +94,7 @@ export function DataTable<TData, TValue>({
           }
           className='max-w-sm'
         />
-        <AddGovernmentMembers onGovernmentCreated={onUserCreated} />
+        <AddGovernment onGovernmentCreated={onUserCreated} />
       </div>
       <div className='rounded-md border w-full'>
         {isLoading ? (
