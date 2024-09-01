@@ -89,7 +89,7 @@ const StepperFormPage = ({ data }: StepperFormPageProps) => {
           />
           <StepperIndicator
             step={2}
-            title='Director'
+            title='HEAD OF MDA'
             currentStep={step}
             onClick={() => {
               if (mdaInfoRequiredFieldsIsCompleted) {
