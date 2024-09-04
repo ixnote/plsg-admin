@@ -44,7 +44,7 @@ const MDAs = () => {
   }, [data]);
 
   return (
-    <div className='flex w-full h-full p-6 overflow-y-scroll'>
+    <div className='flex w-full h-full p-6 overflow-y-scroll pt-20'>
       <div className='flex flex-col w-full gap-6'>
         <h1 className='text-2xl font-semibold font-oswald'>
           Ministries, Departments and Agencies

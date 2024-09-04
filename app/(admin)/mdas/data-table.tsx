@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className=' flex flex-col gap-4 w-full'>
+    <div className=' flex flex-col gap-4 w-full h-full'>
       <div className='flex w-full justify-between'>
         <Input
           placeholder='Filter names...'
@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
         />
         <AddMdaTitleDialog />
       </div>
-      <div className='rounded-md border w-full min-h-full'>
+      <div className='rounded-md border w-full'>
         {isLoading ? (
           <h1 className='p-4 rounded-lg'>Data is loading....</h1>
         ) : (
