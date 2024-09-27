@@ -47,6 +47,7 @@ const formSchema = z.object({
   main_topic_tag: z.string(),
   body: z.string(),
   document: z.string(),
+  createdAt: z.string(),
   all_topic_tags: z.array(z.string()),
 });
 
@@ -84,6 +85,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
       image: data?.data?.image ?? '',
       body: data?.data?.body ?? '',
       document: data?.data?.document ?? '',
+      createdAt: data?.data?.createdAt ?? '',
       main_type_tag: data.data?.main_type_tag?.id ?? '',
       main_topic_tag: data?.data?.main_topic_tag?.id ?? '',
       all_topic_tags: data?.data.all_topic_tags.map((tag: any) => tag.id) ?? [],
@@ -293,7 +295,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                   name='document'
                   render={({ field }) => (
                     <FormItem className='w-full'>
-                      <FormLabel>Rich Text</FormLabel>
+                      <FormLabel>Document</FormLabel>
                       <FormControl>
                         <CldUploadWidget
                           onSuccess={(result, { widget }) => {
@@ -329,6 +331,24 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name='createdAt'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Upload Date</FormLabel>
+                      <FormControl>
+                        <Input
+                          type='date'
+                          placeholder='Enter name here'
+                          {...field}
+                          className=' col-span-2'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             ) : (
               <FormField
@@ -336,7 +356,7 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                 name='body'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Document</FormLabel>
+                    <FormLabel>Content</FormLabel>
                     <FormControl>
                       <div className='flex w-full h-[400px]'>
                         <Editor
