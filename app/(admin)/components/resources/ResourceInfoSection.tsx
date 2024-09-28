@@ -46,7 +46,10 @@ const formSchema = z.object({
   main_type_tag: z.string(),
   main_topic_tag: z.string(),
   body: z.string(),
-  document: z.string(),
+  document: z.object({
+    type: z.string(),
+    url: z.string(),
+  }),
   createdAt: z.string(),
   all_topic_tags: z.array(z.string()),
 });
@@ -299,7 +302,12 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                       <FormControl>
                         <CldUploadWidget
                           onSuccess={(result, { widget }) => {
-                            field.onChange((result?.info! as any).secure_url); // { public_id, secure_url, etc }
+                            console.log(result);
+
+                            field.onChange({
+                              url: (result?.info! as any).secure_url,
+                              type: 'pdf',
+                            }); // { public_id, secure_url, etc }
                             widget.close();
                           }}
                           uploadPreset='mymakaranta_preset'
@@ -314,13 +322,17 @@ const ResourceInfoSection = ({ data }: ResourceInfoSectionProps) => {
                                 onClick={handleOnClick}
                                 className='flex justify-center h-[250px] border border-dashed cursor-pointer  items-center w-full rounded-md relative  overflow-clip'
                               >
-                                {field.value === '' ? (
+                                {field.value.url === '' ? (
                                   <div className='flex flex-col justify-center items-center gap-2 '>
                                     <UploadCloud />
                                     <h1>Upload Document</h1>
                                   </div>
                                 ) : (
-                                  <Image src={field.value} alt='images' fill />
+                                  <Image
+                                    src={field.value.url}
+                                    alt='images'
+                                    fill
+                                  />
                                 )}
                               </div>
                             );
