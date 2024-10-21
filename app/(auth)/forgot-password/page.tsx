@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useLoginMutation } from '@/redux/services/auth/auth-api';
+import { useForgotPasswordMutation } from '@/redux/services/auth/auth-api';
 import { useRouter } from 'next/navigation';
 import { showToast } from '@/lib/showToast';
 import Loader from '@/app/(admin)/components/Loader';
@@ -26,36 +26,26 @@ const formSchema = z.object({
   email: z.string().email({
     message: 'A valid email is required.',
   }),
-  password: z.string().min(8, {
-    message: 'Valid password requires a minimun of 8 characters.',
-  }),
 });
 
-const Login = () => {
+const ForgotPassword = () => {
   const { push } = useRouter();
-  const [login, { data, isError, isLoading, isSuccess }] = useLoginMutation();
+  const [forgotPassword, { data, isError, isLoading, isSuccess }] = useForgotPasswordMutation();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const result = await login(values).unwrap();
-      showToast('success', <p>Login was successful</p>);
-      let url =
-        result?.data?.role === 'super' ? '/dashboard' : '/mdas-dashboard';
-      if (result.data.first_time_login) {
-        push('/change-password');
-      } else {
-        push(url);
-      }
+      const result = await forgotPassword(values).unwrap();
+      showToast('success', <p>{result.message}</p>);
+      push('/login');
     } catch (error: any) {
       showToast('error', <p>{error.data.message}</p>);
     }
@@ -74,9 +64,9 @@ const Login = () => {
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col gap-3'>
           <h1 className='text-sm text-green-700 font-medium'>
-            Login to your Account!
+            Forgot Password?
           </h1>
-          <h2 className=' text-3xl font-bold '>WELCOME BACK</h2>
+          <h2 className=' text-3xl font-bold '>Submit your email to reset your password.</h2>
         </div>
         <div className='flex flex-col gap-10'>
           <Form {...form}>
@@ -94,23 +84,6 @@ const Login = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Enter your password'
-                        {...field}
-                        type='password'
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <Button type='submit' className='w-full'>
                 {isLoading ? <Loader /> : <h1>Submit</h1>}
               </Button>
@@ -119,7 +92,7 @@ const Login = () => {
         </div>
 
         <div className='text-green-700 cursor-pointer underline'>
-          <Link className='' href='/forgot-password'>Forgot Password</Link>.
+          <Link className='' href='/login'>Login</Link>.
         </div>
       </div>
       <div className='flex flex-col h-full w-full justify-end'>
@@ -129,4 +102,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

@@ -1,50 +1,34 @@
-'use client';
-import React from 'react';
-import { ArrowLeftIcon } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
-import { useGetOneMdaQuery } from '@/redux/services/mdas/mdas-api';
-import StepperFormPage from '../../components/mdas/StepperForm';
+import SingleMDAs from './SingleMDAs';
+import { baseURL, constructURL } from '@/utils/baseUrl';
 
-const UpdateNews = () => {
-  const params = useParams();
-  const router = useRouter();
+export default function GovernmentPage() {
+  return <SingleMDAs />;
+}
 
-  const { data, error, isLoading } = useGetOneMdaQuery(
-    { id: params.id },
-    {
-      skip: !params?.id,
+// export async function generateStaticParams() {
+//   const mdas = await fetch(constructURL(baseURL, 'mda/admin')).then((res) => res.json())
+
+//   return mdas?.data?.mdas.map((mda: any) => ({
+//     id: mda.id,
+//   }))
+// }
+
+export async function generateStaticParams() {
+
+  try {
+    const mdas = await fetch(constructURL(baseURL, 'mda/admin')).then((res) => res.json())
+
+    if (!mdas.ok) {
+      return [
+        { id: '1' },
+        { id: '2' },
+      ];
     }
-  );
 
-  console.log(data);
+    return mdas?.data?.mdas.map((mda: any) => ({
+      id: mda.id,
+    }))
+  } catch (error) {
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  return (
-    <>
-      {data && (
-        <div className='flex flex-col  gap-10 h-full overflow-y-scroll p-10'>
-          <div className='flex flex-col gap-4'>
-            <div className='flex w-full items-center justify-between'>
-              <div
-                className='flex gap-3 items-center cursor-pointer'
-                onClick={handleGoBack}
-              >
-                <ArrowLeftIcon />
-                <h1 className='text-2xl font-geistsans font-semibold'>
-                  Edit MDA
-                </h1>
-              </div>
-            </div>
-            <h1>{data.data.name}</h1>
-          </div>
-          <StepperFormPage data={data.data} />
-        </div>
-      )}
-    </>
-  );
-};
-
-export default UpdateNews;
+  }
+}

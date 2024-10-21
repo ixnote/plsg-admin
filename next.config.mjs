@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  reactStrictMode: false,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',
@@ -33,6 +36,9 @@ const nextConfig = {
         pathname: '**',
       },
     ],
+  },
+  experimental: {
+    optimizePackageImports: ['@phosphor-icons/react'],
   },
 };
 
