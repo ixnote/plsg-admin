@@ -8,14 +8,13 @@ import ResourceInfoSection from '../../components/resources/ResourceInfoSection'
 import { useGetOneResourceQuery } from '@/redux/services/resources/resources-api';
 import LoadingSkeleton from '../../components/dashboard/LoadingSkeleton';
 
-const SingleResources = () => {
-    const params = useParams();
+const SingleResources = ({id}:any) => {
     const router = useRouter();
 
     const { data, error, isLoading } = useGetOneResourceQuery(
-        { id: params?.id },
+        { id: id },
         {
-            skip: !params?.id,
+            skip: !id,
         }
     );
 

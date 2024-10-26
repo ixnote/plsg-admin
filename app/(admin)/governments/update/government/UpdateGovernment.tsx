@@ -13,9 +13,9 @@ import { ArrowLeftIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { showToast } from '@/lib/showToast';
 
-const UpdateGovernment = ({ params }: any) => {
+const UpdateGovernment = ({ id }: any) => {
     const router = useRouter();
-    const { data } = useGetAGovernmentQuery({ governmentId: params?.id });
+    const { data } = useGetAGovernmentQuery({ governmentId: id });
     const [members, setMembers] = useState<any>([]);
     const [executives, setExecutives] = useState([]);
     const [otherInfo, setOtherInfo] = useState<any>({});
@@ -46,7 +46,7 @@ const UpdateGovernment = ({ params }: any) => {
                 executives,
             };
 
-            await updateGovernment({ id: params?.id, updatedData }).unwrap();
+            await updateGovernment({ id, updatedData }).unwrap();
             showToast('success', <p>Government updated successfully</p>);
             console.log('Updated data:', updatedData);
         } catch (error) {

@@ -14,14 +14,13 @@ import Loader from '../../components/Loader';
 import { useGetAllTagsQuery } from '@/redux/services/tags/tags-api';
 import { showToast } from '@/lib/showToast';
 
-const SingleNews = () => {
-    const params = useParams();
+const SingleNews = ({id}: any) => {
     const router = useRouter();
 
     const { data, error, isLoading } = useGetOneNewsQuery(
-        { id: params.id },
+        { id: id },
         {
-            skip: !params?.id,
+            skip: !id,
         }
     );
 
@@ -81,7 +80,7 @@ const SingleNews = () => {
                         <div className='flex gap-3'>
                             <Button
                                 onClick={() => {
-                                    window.open(`/preview/${data?.data.id}`, '_blank');
+                                    window.open(`/preview/preview?id=${data?.data.id}`, '_blank');
                                 }}
                                 disabled={!isCompleted}
                                 variant={'outline'}

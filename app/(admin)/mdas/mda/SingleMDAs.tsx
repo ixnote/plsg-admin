@@ -1,18 +1,17 @@
 'use client';
 import React from 'react';
 import { ArrowLeftIcon } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useGetOneMdaQuery } from '@/redux/services/mdas/mdas-api';
 import StepperFormPage from '../../components/mdas/StepperForm';
 
-const SingleMDAs = () => {
-    const params = useParams();
+const SingleMDAs = ({id}: any) => {
     const router = useRouter();
 
     const { data, error, isLoading } = useGetOneMdaQuery(
-        { id: params.id },
+        { id: id },
         {
-            skip: !params?.id,
+            skip: !id,
         }
     );
 

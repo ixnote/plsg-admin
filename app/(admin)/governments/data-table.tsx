@@ -124,9 +124,10 @@ export function DataTable<TData, TValue>({
                 table?.getRowModel()?.rows?.map((row: any) => (
                   <TableRow
                     key={row.id}
+                    // href={`/mda/one?slug=${mdaSlug}`}
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => {
-                      push(`/governments/${(data[row?.id] as any).id}`);
+                      push(`/governments/government?id=${(data[row?.id] as any).id}`);
                     }}
                     className='cursor-pointer'
                   >

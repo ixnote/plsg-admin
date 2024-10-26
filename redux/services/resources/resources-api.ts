@@ -29,7 +29,7 @@ export const resourcesApi = createApi({
     updateResource: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/resource/update/${id}`,
+          url: `/resource/update/resource?id=${id}`,
           method: 'PATCH',
           body: rest,
         };

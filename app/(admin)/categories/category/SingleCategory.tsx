@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 const SingleCategory = ({ category }: any): JSX.Element => {

@@ -2,15 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useGetAGovernmentQuery } from '@/redux/services/government/government-api';
-import { useParams } from 'next/navigation';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import LegislativeCard from '../../components/government/LegislativeCard';
 
-const SingleGovernment = () => {
-    const { id } = useParams();
+const SingleGovernment = ({id}: any) => {
     const [members, setMembers] = useState<any>([]);
     const [executives, setExecutives] = useState<any>([]);
     const { data } = useGetAGovernmentQuery({ governmentId: id });

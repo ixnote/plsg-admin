@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
-                      push(`/news/${(data[row.id] as any).id}`);
+                      push(`/news/news?id=${(data[row.id] as any).id}`);
                     }}
                     className=" cursor-pointer"
                   >

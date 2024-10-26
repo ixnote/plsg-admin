@@ -50,7 +50,7 @@ export const newsApi = createApi({
     updateNews: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/news/update/${id}`,
+          url: `/news/update/news?id=${id}`,
           method: 'PUT',
           body: rest,
         };
@@ -61,7 +61,7 @@ export const newsApi = createApi({
     publishNews: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/news/update/${id}/publish`,
+          url: `/news/update/publish?id=${id}/publish`,
           method: 'PUT',
           body: rest,
         };
@@ -90,7 +90,7 @@ export const newsApi = createApi({
 
     getOneNews: builder.query<any, any>({
       query: ({ id }) => ({
-        url: `/news/${id}`,
+        url: `/news/news?id=${id}`,
         method: 'GET',
       }),
       providesTags: ['News'],

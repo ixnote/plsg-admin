@@ -14,13 +14,12 @@ import { useGetOneNewsQuery } from '@/redux/services/news/news-api';
 import LoadingSkeleton from '@/app/(admin)/components/dashboard/LoadingSkeleton';
 import RenderNewsSection from '@/app/(admin)/components/news/RenderNewsSection';
 
-const PreviewPage = () => {
-    const params = useParams();
+const PreviewPage = ({id}: any) => {
 
     const { data, error, isLoading } = useGetOneNewsQuery(
-        { id: params.id },
+        { id: id },
         {
-            skip: !params?.id,
+            skip: !id,
         }
     );
     // const data = articleData;

@@ -30,7 +30,7 @@ const AddNewsTitleDialog = ({ title = 'Create News' }: { title?: string }) => {
       const result = await createNews({ headline: inputValue }).unwrap();
       console.log(result);
       showToast('success', <p>{result?.message}</p>);
-      push(`/news/${result.data.id}`);
+      push(`/news/news?id=${result.data.id}`);
     } catch (error: any) {
       showToast('error', <p>{error.data.message}</p>);
     }

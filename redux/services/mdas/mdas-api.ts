@@ -29,7 +29,7 @@ export const mdasApi = createApi({
     updateMda: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/mda/update/${id}`,
+          url: `/mda/update/mda?id=${id}`,
           method: 'PATCH',
           body: rest,
         };
