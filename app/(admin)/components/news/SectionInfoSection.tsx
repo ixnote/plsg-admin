@@ -15,6 +15,7 @@ import {
   Pilcrow,
   Trash2Icon,
   UploadCloud,
+  VideoIcon
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
@@ -155,6 +156,18 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                         )}
                       />
                     )}
+                    {fields[index].type === 'video' && (
+                      <Controller
+                        name={`fields.${index}.value`}
+                        control={control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            placeholder='eg. url link to a video'
+                          />
+                        )}
+                      />
+                    )}
                     {fields[index].type === 'bullet' && (
                       <Controller
                         name={`fields.${index}.value`}
@@ -162,6 +175,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                         render={({ field }) => (
                           <Input
                             {...field}
+                            type="url"
                             placeholder='eg. imformation,news,education'
                           />
                         )}
@@ -269,6 +283,13 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
                   handleAddSection('text');
                 }}
               />
+              <SectionBtn
+                title='Add Youtube Link'
+                icon={<VideoIcon />}
+                onClick={() => {
+                  handleAddSection('video');
+                }}
+              />
               {/* <SectionBtn
                 title='Add Highlight'
                 icon={<Highlighter />}
@@ -293,7 +314,7 @@ const SectionInfoSection = ({ data }: SectionInfoSectionProps) => {
         </div>
       ) : (
         <div className='flex flex-col w-full py-4 '>
-          {data?.data?.newsSections.length > 0 ? (
+          {data?.data?.newsSections?.length > 0 ? (
             <div className='flex flex-col  w-full min-h-[200px]'>
               <div className='flex flex-1 w-full'>
                 <SectionList

@@ -91,6 +91,7 @@ const MDASDashboardPage = () => {
             data={news}
             isLoading={isLoading}
             link='news'
+            link2='news'
           />
         </div>
 
@@ -103,6 +104,7 @@ const MDASDashboardPage = () => {
             data={resources}
             isLoading={isLoading}
             link='resources'
+            link2='resource'
           />
         </div>
       </div>

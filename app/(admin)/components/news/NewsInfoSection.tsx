@@ -47,9 +47,9 @@ const NewsInfoSection = ({ data, tags }: NewsInfoSectionProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      headline: data?.data.headline ?? '',
-      description: data?.data.description ?? '',
-      tags: data?.data.tags.map((tag: any) => tag.id) ?? [],
+      headline: data?.data?.headline ?? '',
+      description: data?.data?.description ?? '',
+      tags: data?.data?.tags?.map((tag: any) => tag.id) ?? [],
       image: data?.data?.image ?? '',
     },
   });
@@ -57,11 +57,10 @@ const NewsInfoSection = ({ data, tags }: NewsInfoSectionProps) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
-      const result = await updateNews({ id: data.data.id, ...values }).unwrap();
+      const result = await updateNews({ id: data?.data?.id, ...values }).unwrap();
       showToast('success', <p>{result?.message}</p>);
     } catch (error: any) {
-      showToast('error', <p>{error.data.message}</p>);
+      showToast('error', <p>{error?.data?.message ?? ''}</p>);
     }
   }
   return (

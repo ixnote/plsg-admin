@@ -49,6 +49,7 @@ const SectionList = ({ sections, onReOrder, isLoading }: SectionListProps) => {
     return null;
   }
 
+  console.log({ items })
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId='sections'>

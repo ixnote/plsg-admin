@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import {
     useGetOneNewsQuery,
@@ -17,6 +17,7 @@ import { showToast } from '@/lib/showToast';
 const SingleNews = ({id}: any) => {
     const router = useRouter();
 
+    
     const { data, error, isLoading } = useGetOneNewsQuery(
         { id: id },
         {
@@ -24,12 +25,14 @@ const SingleNews = ({id}: any) => {
         }
     );
 
+    console.log({ data, id })
+
     const requiredFields = [
         data?.data?.headline,
         data?.data?.description,
         data?.data?.image,
-        data?.data?.tags.length > 0,
-        data?.data?.newsSections.length > 0,
+        data?.data?.tags?.length > 0,
+        data?.data?.newsSections?.length > 0,
     ];
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;

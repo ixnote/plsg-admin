@@ -46,6 +46,7 @@ const RenderElement = ({ item, index }: RenderElementProps) => {
             <Grip className=' h-5 w-5' />
           </div>
           {item.type === 'paragraph' && <p>{item.value}</p>}
+          {item.type === 'video' && <p>{item.value}</p>}
           {item.type === 'heading' && (
             <h1 className=' text-3xl font-bold'>{item.value}</h1>
           )}
