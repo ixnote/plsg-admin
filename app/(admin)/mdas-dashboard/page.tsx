@@ -9,7 +9,7 @@ import { DataTable } from './data-table';
 import { useGetMdasDashboardQuery } from '@/redux/services/mdas/mdas-api';
 import { useGetAllResourcesQuery } from '@/redux/services/resources/resources-api';
 
-const MDASDashboard = () => {
+const MDASDashboardPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [news, setNews] = useState([]);
@@ -62,13 +62,13 @@ const MDASDashboard = () => {
             title={'Total news'}
             desc='Number of news using the system'
             amount={mdasDashboardData?.results?.articles?.all_time}
-            Icon={Rss}
+            Icon={<Rss/>}
           />
           <StatCard
             title='Total resource'
             desc='Number of resource on the system'
             amount={mdasDashboardData?.results?.resources?.all_time}
-            Icon={SquareLibrary}
+            Icon={<SquareLibrary/>}
           />
           {/* <StatCard
             title="team members"
@@ -91,6 +91,7 @@ const MDASDashboard = () => {
             data={news}
             isLoading={isLoading}
             link='news'
+            link2='news'
           />
         </div>
 
@@ -103,6 +104,7 @@ const MDASDashboard = () => {
             data={resources}
             isLoading={isLoading}
             link='resources'
+            link2='resource'
           />
         </div>
       </div>
@@ -110,4 +112,4 @@ const MDASDashboard = () => {
   );
 };
 
-export default MDASDashboard;
+export default MDASDashboardPage;

@@ -4,11 +4,11 @@ const StatCard = ({ title, amount, desc, Icon }: any) => {
   return (
     <div className='flex items-center justify-center p-6 border-gray-200 border-[1px] rounded-xl min-w-[200px] shadow-md'>
       <div className='flex flex-col gap-2'>
-        <div className='flex w-full justify-between'>
-          <h1 className='font-geistsans font-semibold text-sm'>
+        <div className='flex w-full justify-between items-center'>
+          <h1 className='font-geistsans font-semibold'>
             {title ?? 'Total Users'}
           </h1>
-          {Icon && <Icon className='w-7 h-7' />}
+          {Icon && <>{Icon}</>}
         </div>
         <div className='flex flex-col'>
           <h1 className='text-xl font-bold'>{amount ?? 250}</h1>

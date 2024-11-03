@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => {
-                      push(`/resources/${(data[row.id] as any).id}`);
+                      push(`/resources/resource?id=${(data[row.id] as any).id}`);
                     }}
                     className=' cursor-pointer'
                   >

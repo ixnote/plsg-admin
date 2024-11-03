@@ -28,6 +28,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   isLoading: boolean;
   link: string;
+  link2: string | undefined;
 }
 
 export function DataTable<TData, TValue>({
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
   link,
+  link2
 }: DataTableProps<TData, TValue>) {
   const { push } = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -98,7 +100,12 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
                     onClick={() => {
-                      push(`/${link}/${(data[row.id] as any).id}`);
+
+                      const linkToPush = link2 
+                        ? `/${link}/${link2}?id=${(data[row.id] as any).id}` 
+                        : `/${link}/${(data[row.id] as any).id}`
+
+                      push(linkToPush);
                     }}
                     className=' cursor-pointer'
                   >
