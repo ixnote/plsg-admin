@@ -61,7 +61,7 @@ export const newsApi = createApi({
     publishNews: builder.mutation<any, any>({
       query: ({ id, ...rest }) => {
         return {
-          url: `/news/update/publish?id=${id}/publish`,
+          url: `/news/update/publish?id=${id}`,
           method: 'PUT',
           body: rest,
         };
