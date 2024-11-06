@@ -50,6 +50,7 @@ const SingleNews = ({id}: any) => {
         router.back();
     };
 
+    
     const handlePublishNews = async () => {
         try {
             const result = await publishNews({
